@@ -1,3 +1,6 @@
 return {
-  no_consumer = true
+  no_consumer = true,
+  fields = {
+    template = {type = "string", required = true}
+  }
 }
