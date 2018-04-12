@@ -10,6 +10,27 @@ local MiddlewareHandler = BasePlugin:extend()
 
 MiddlewareHandler.PRIORITY = 1006
 
+local function log(premature, target_url, payload)
+  if premature then
+    return
+  end
+
+  local headers = {}
+  headers['Content-Type'] = "application/json"
+
+  ngx.log(ngx.NOTICE, "starting log-request")
+  local httpc = http:new()
+
+  httpc:request_uri(target_url, {
+    method = "POST",
+    ssl_verify = false,
+    headers = headers,
+    body = payload
+  })
+
+  ngx.log(ngx.NOTICE, "log-request done")
+end
+
 function MiddlewareHandler:new()
   MiddlewareHandler.super.new(self, "cerberus-plugin")
 end
@@ -43,54 +64,13 @@ function MiddlewareHandler:access(config)
     TypeName = "LogEntry"
   }}
 
-  local headers = {}
-  headers['Content-Type'] = "application/json"
-
   local string_payload = cjson.encode(log_payload)
   ngx.log(ngx.NOTICE, string.format("String payload: %s", string_payload))
-
-  local log = function(premature, target_url, payload)
-    if premature then
-      return
-    end
-
-    ngx.log(ngx.NOTICE, "starting log-request")
-    local httpc = http:new()
-
-    httpc:request_uri(target_url, {
-      method = "POST",
-      ssl_verify = false,
-      headers = headers,
-      body = payload
-    })
-
-    ngx.log(ngx.NOTICE, "log-request done")
-  end
 
   local ok, err = ngx.timer.at(0, log, config.url, string_payload)
   if not ok then
     ngx.log(ngx.NOTICE, "errou")
   end
 end
-
--- function MiddlewareHandler:log(config)
---   MiddlewareHandler.super.log(self)
-
---   local httpc = http:new()
---   local headers = {}
---   local req_headers = ngx.req.get_headers()
-
---   headers['Content-Type'] = "application/json"
-
---   -- Executa o request http http://dev-logger.stone.com.br:8733/v1/log
---   local url = config.url
---   ngx.log(ngx.DEBUG, "Executing out log-request")
---   local res, err = httpc:request_uri(config.url, {
---     method = "POST",
---     ssl_verify = false,
---     headers = headers,
---     body = string.format("{\"ApplicationKey\": %q, \"Token\": %q}", config.appKey, req_headers["token"])
---   })
--- end
 
 return MiddlewareHandler
