@@ -69,7 +69,7 @@ function MiddlewareHandler:access(config)
 
   local ok, err = ngx.timer.at(0, log, config.url, string_payload)
   if not ok then
-    ngx.log(ngx.NOTICE, "errou")
+    ngx.log(ngx.NOTICE, err)
   end
 end
 
