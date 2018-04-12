@@ -53,7 +53,7 @@ function MiddlewareHandler:access(config)
     NativeProcessId = unistd.getpid(),
     NativeThreadId = tostring( {} ):sub(8),
     OSFullName = os_utils.getOS(),
-    ProcessName = "COROUTINE STUFF AGAIN",
+    ProcessName = "kong-cerberus-plugin",
     ProcessPath = lfs.currentdir(),
     ProductCompany = config.product_company,
     ProductName = config.product_name,
