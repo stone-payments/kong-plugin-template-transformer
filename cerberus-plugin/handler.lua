@@ -6,9 +6,9 @@ local os_utils = require "kong.plugins.cerberus-plugin.os"
 local lfs = require "lfs"
 local unistd = require 'posix.unistd'
 
-local MiddlewareHandler = BasePlugin:extend()
+local LogRequestHandler = BasePlugin:extend()
 
-MiddlewareHandler.PRIORITY = 1006
+LogRequestHandler.PRIORITY = 1006
 
 local function log(premature, target_url, payload)
   if premature then
@@ -31,12 +31,12 @@ local function log(premature, target_url, payload)
   ngx.log(ngx.NOTICE, "log-request done")
 end
 
-function MiddlewareHandler:new()
-  MiddlewareHandler.super.new(self, "cerberus-plugin")
+function LogRequestHandler:new()
+  LogRequestHandler.super.new(self, "cerberus-plugin")
 end
 
-function MiddlewareHandler:access(config)
-  MiddlewareHandler.super.access(self)
+function LogRequestHandler:access(config)
+  LogRequestHandler.super.access(self)
 
   ngx.log(ngx.NOTICE, "Building payload")
 
@@ -73,4 +73,4 @@ function MiddlewareHandler:access(config)
   end
 end
 
-return MiddlewareHandler
+return LogRequestHandler
