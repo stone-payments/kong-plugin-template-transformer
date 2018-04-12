@@ -1,9 +1,10 @@
 local BasePlugin = require "kong.plugins.base_plugin"
-local copas = require "copas"
--- local http = require 'resty.http'
-local asynchttp = require("copas.http").request
 local cjson = require "cjson"
+local http = require 'resty.http'
 local utils = require "kong.plugins.cerberus-plugin.utils"
+local os_utils = require "kong.plugins.cerberus-plugin.os"
+local lfs = require "lfs"
+local unistd = require 'posix.unistd'
 
 local MiddlewareHandler = BasePlugin:extend()
 
@@ -13,33 +14,26 @@ function MiddlewareHandler:new()
   MiddlewareHandler.super.new(self, "cerberus-plugin")
 end
 
-local handler = function(host)
-  res, err = asynchttp(host)
-  print("Host done: "..host)
-end
-
 function MiddlewareHandler:access(config)
   MiddlewareHandler.super.access(self)
 
-  -- local httpc = http:new()
-  -- local req_headers = ngx.req.get_headers()
-
-  local headers = {}
-  headers['Content-Type'] = "application/json"
-
   ngx.log(ngx.NOTICE, "Building payload")
+
   local log_payload = {{
-    AdditionalData = "data",
-    ApplicationId = "data",
-    MachineName = "data",
-    ManagedThreadId = "data",
-    ManagedThreadName = "data",
-    Message = "data",
-    NativeProcessId = "data",
-    NativeThreadId = "data",
-    OSFullName = "data",
-    ProcessName = "data",
-    ProcessPath = "data",
+    AdditionalData = {{
+      requestMethod = ngx.req.get_method(),
+      requestHeaders = ngx.req.get_headers(),
+      requestUriArgs = ngx.req.get_uri_args(),
+      requestBodyData = ngx.req.get_body_data(),
+    }},
+    MachineName = utils.getHostname(),
+    ManagedThreadId = tostring( {} ):sub(8),
+    Message = "Log Request",
+    NativeProcessId = unistd.getpid(),
+    NativeThreadId = tostring( {} ):sub(8),
+    OSFullName = os_utils.getOS(),
+    ProcessName = "COROUTINE STUFF AGAIN",
+    ProcessPath = lfs.currentdir(),
     ProductCompany = config.product_company,
     ProductName = config.product_name,
     ProductVersion = config.product_version,
@@ -49,25 +43,34 @@ function MiddlewareHandler:access(config)
     TypeName = "LogEntry"
   }}
 
-  local string_payload = cjson.encode(log_payload)
+  local headers = {}
+  headers['Content-Type'] = "application/json"
 
+  local string_payload = cjson.encode(log_payload)
   ngx.log(ngx.NOTICE, string.format("String payload: %s", string_payload))
 
-  local handler = function(target_url)
+  local log = function(premature, target_url, payload)
+    if premature then
+      return
+    end
+
     ngx.log(ngx.NOTICE, "starting log-request")
-    asynchttp({
-      url = target_url,
+    local httpc = http:new()
+
+    httpc:request_uri(target_url, {
       method = "POST",
       ssl_verify = false,
       headers = headers,
-      body = string_payload
+      body = payload
     })
+
     ngx.log(ngx.NOTICE, "log-request done")
   end
 
-  copas.addthread(handler, config.url)
-  -- copas.step(5)
-  copas.loop()
+  local ok, err = ngx.timer.at(0, log, config.url, string_payload)
+  if not ok then
+    ngx.log(ngx.NOTICE, "errou")
+  end
 end
 
 -- function MiddlewareHandler:log(config)

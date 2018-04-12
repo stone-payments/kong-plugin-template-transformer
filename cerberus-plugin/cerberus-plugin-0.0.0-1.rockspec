@@ -17,6 +17,7 @@ build = {
    modules = {
     ["kong.plugins.cerberus-plugin.handler"] = "./handler.lua",
     ["kong.plugins.cerberus-plugin.utils"] = "./utils.lua",
+    ["kong.plugins.cerberus-plugin.os"] = "./os.lua",
     ["kong.plugins.cerberus-plugin.schema"] = "./schema.lua"
    }
 }
