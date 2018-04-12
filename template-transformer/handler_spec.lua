@@ -30,16 +30,16 @@ describe("TestHandler", function()
   it("should test replace with template without variables", function()
     TemplateTransformerHandler:new()
     local config = {
-        template = "hello im a template"
+        request_template = "hello im a template"
     }
     TemplateTransformerHandler:access(config)
-    assert.spy(ngx.req.set_body_data).was_called_with(config.template)
+    assert.spy(ngx.req.set_body_data).was_called_with(config.request_template)
   end)
   
   it("should test replace with template with variables", function()
     TemplateTransformerHandler:new()
     local config = {
-        template = "{{query_string['query']}} {{body['data']}} {{headers['my_cool_header']}}"
+        request_template = "{{query_string['query']}} {{body['data']}} {{headers['my_cool_header']}}"
     }
     TemplateTransformerHandler:access(config)
     assert.spy(ngx.req.set_body_data).was_called_with("oi1 oi2 oi3")

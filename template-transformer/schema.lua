@@ -1,6 +1,7 @@
 return {
   no_consumer = true,
   fields = {
-    template = {type = "string", required = true}
+    request_template = {type = "string", required = false}
+    response_template = {type = "string", required = false}
   }
 }

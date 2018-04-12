@@ -15,16 +15,18 @@ end
 
 function TemplateTransformerHandler:access(config)
   TemplateTransformerHandler.super.access(self)
-  ngx.log(ngx.NOTICE, string.format("Template :: %s", config.template))
-  local compiled_template = template.compile(config.template)
-  req_read_body()
-  local body = req_get_body_data()
-  local headers = req_get_headers()
-  local query_string = req_get_uri_args()
-  local transformed_body = compiled_template{query_string = query_string, headers = headers, body = body}
-  ngx.log(ngx.NOTICE, string.format("Rendered Template :: %s", transformed_body))
-  req_set_body_data(transformed_body)
-  req_set_header(CONTENT_LENGTH, #transformed_body)
+  if config.request_template then
+    ngx.log(ngx.NOTICE, string.format("Template :: %s", config.request_template))
+    local compiled_template = template.compile(config.request_template)
+    req_read_body()
+    local body = req_get_body_data()
+    local headers = req_get_headers()
+    local query_string = req_get_uri_args()
+    local transformed_body = compiled_template{query_string = query_string, headers = headers, body = body}
+    ngx.log(ngx.NOTICE, string.format("Rendered Template :: %s", transformed_body))
+    req_set_body_data(transformed_body)
+    req_set_header(CONTENT_LENGTH, #transformed_body)
+  end
 end
 
 TemplateTransformerHandler.PRIORITY = 801
