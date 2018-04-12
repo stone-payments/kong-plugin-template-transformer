@@ -1,5 +1,5 @@
 package = "template-transformer"
-version = "0.1.0-0"
+version = "0.1-0"
 source = {
    url = "https://github.com/stone-payments/kong-middlewares/template-transformer",
 }
@@ -9,7 +9,8 @@ description = {
 }
 dependencies = {
   "lua >= 5.1",
-  "lua-resty-http"
+  "lua-resty-http",
+  "lua-resty-template >= 1.9-1" 
 }
 build = {
    type = "builtin",
