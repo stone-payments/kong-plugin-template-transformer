@@ -19,7 +19,7 @@ local ngx =  {
     log = spy.new(function() end)
 }
 _G.ngx = ngx
-local TemplateTransformerHandler = require('handler')
+local TemplateTransformerHandler = require('../handler')
 
 describe("TestHandler", function()
   it("should test handler constructor", function()
