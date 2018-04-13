@@ -1,16 +1,16 @@
 local BasePlugin = require "kong.plugins.base_plugin"
 local cjson = require "cjson"
-local http = require 'resty.http'
-local utils = require "kong.plugins.cerberus-plugin.utils"
-local os_utils = require "kong.plugins.cerberus-plugin.os"
+local http = require "resty.http"
 local lfs = require "lfs"
-local unistd = require 'posix.unistd'
+local os_utils = require "kong.plugins.cerberus-plugin.os"
+local unistd = require "posix.unistd"
+local utils = require "kong.plugins.cerberus-plugin.utils"
 
 local LogRequestHandler = BasePlugin:extend()
 
-LogRequestHandler.PRIORITY = 1006
+LogRequestHandler.PRIORITY = 850
 
-local function log(premature, target_url, payload)
+function log(premature, target_url, payload, httpc)
   if premature then
     return
   end
@@ -18,9 +18,7 @@ local function log(premature, target_url, payload)
   local headers = {}
   headers['Content-Type'] = "application/json"
 
-  ngx.log(ngx.NOTICE, "starting log-request")
-  local httpc = http:new()
-
+  ngx.log(ngx.NOTICE, "Starting log-request")
   httpc:request_uri(target_url, {
     method = "POST",
     ssl_verify = false,
@@ -28,11 +26,12 @@ local function log(premature, target_url, payload)
     body = payload
   })
 
-  ngx.log(ngx.NOTICE, "log-request done")
+  ngx.log(ngx.NOTICE, "Log-request done")
 end
 
 function LogRequestHandler:new()
   LogRequestHandler.super.new(self, "cerberus-plugin")
+  self._httpc = http:new()
 end
 
 function LogRequestHandler:access(config)
@@ -67,7 +66,7 @@ function LogRequestHandler:access(config)
   local string_payload = cjson.encode(log_payload)
   ngx.log(ngx.NOTICE, string.format("String payload: %s", string_payload))
 
-  local ok, err = ngx.timer.at(0, log, config.url, string_payload)
+  local ok, err = ngx.timer.at(0, log, config.url, string_payload, self._httpc)
   if not ok then
     ngx.log(ngx.NOTICE, err)
   end
