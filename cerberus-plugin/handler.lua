@@ -10,6 +10,10 @@ local LogRequestHandler = BasePlugin:extend()
 
 LogRequestHandler.PRIORITY = 850
 
+function new_http_client()
+  return http:new()
+end
+
 function send_log_request(premature, target_url, payload)
   if premature then
     return
@@ -18,7 +22,7 @@ function send_log_request(premature, target_url, payload)
   local headers = {}
   headers['Content-Type'] = "application/json"
 
-  httpc = http:new()
+  httpc = new_http_client()
 
   ngx.log(ngx.NOTICE, "Starting log-request")
   httpc:request_uri(target_url, {
