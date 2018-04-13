@@ -4,7 +4,7 @@ source = {
    url = "https://github.com/stone-payments/kong-middlewares/cerberus-plugin",
 }
 description = {
-  summary = "A Kong plugin that enables services to act as middlewares for requests",
+  summary = "A Kong plugin that logs request and response using cerberus API.",
   license = "Apache License 2.0"
 }
 dependencies = {
