@@ -11,6 +11,8 @@ local req_get_headers = ngx.req.get_headers
 local req_read_body = ngx.req.read_body
 local res_get_headers = ngx.resp.get_headers
 local table_concat = table.concat
+local sub = string.sub
+local gsub = string.gsub
 local TemplateTransformerHandler = BasePlugin:extend()
 
 local function read_json_body(body)
@@ -40,7 +42,6 @@ function TemplateTransformerHandler:access(config)
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
   end
-  config.response_template = [[{"oi" : "oi"}]]
   if config.response_template then
     local ctx = ngx.ctx
     ctx.rt_body_chunks = {}
@@ -48,9 +49,14 @@ function TemplateTransformerHandler:access(config)
   end
 end
 
+function TemplateTransformerHandler:header_filter(config)
+  if config.response_template then
+    ngx.header["content-length"] = nil
+  end
+end
+
 function TemplateTransformerHandler:body_filter(config)
   TemplateTransformerHandler.super.body_filter(self)
-  config.response_template = [[{"stonecode" : "{{body.args.stonecode}}"}]]
   if config.response_template then
     local ctx = ngx.ctx
     local chunk, eof = ngx.arg[1], ngx.arg[2]
@@ -62,11 +68,16 @@ function TemplateTransformerHandler:body_filter(config)
         local headers = res_get_headers()
         local transformed_body = compiled_template{body = body, headers = headers}
         ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
-        ngx.arg[1] = cjson_encode(transformed_body)
+        local v = cjson_encode(transformed_body)
+        if sub(v, 1, 1) == [["]] and sub(v, -1, -1) == [["]] then
+          v = gsub(sub(v, 2, -2), [[\"]], [["]]) -- To prevent having double encoded quotes
+        end
+        v = gsub(v, [[\/]], [[/]]) -- To prevent having double encoded slashes
+        ngx.log(ngx.NOTICE, string.format("Encoded Body :: %s", v))
+        ngx.arg[1] = v
     else
       ctx.rt_body_chunks[ctx.rt_body_chunk_number] = chunk
       ctx.rt_body_chunk_number = ctx.rt_body_chunk_number + 1
-      ngx.log(ngx.NOTICE, string.format("rt_body_chunk_number :: %s", ctx.rt_body_chunk_number))
       ngx.arg[1] = nil
     end
   end
