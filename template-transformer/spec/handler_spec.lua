@@ -27,12 +27,20 @@ describe("TestHandler", function()
     assert.equal("template-transformer", TemplateTransformerHandler._name)
   end)
 
+  it("should not call set body data when there is no template", function()
+    TemplateTransformerHandler:new()
+    local config = {}
+    TemplateTransformerHandler:access(config)
+    assert.spy(ngx.req.set_body_data).was_called(0)
+  end)
+
   it("should test replace with template without variables", function()
     TemplateTransformerHandler:new()
     local config = {
         request_template = "hello im a template"
     }
     TemplateTransformerHandler:access(config)
+    assert.spy(ngx.req.set_body_data).was_called(1)
     assert.spy(ngx.req.set_body_data).was_called_with(config.request_template)
   end)
   
@@ -42,6 +50,7 @@ describe("TestHandler", function()
         request_template = "{{query_string['query']}} {{body['data']}} {{headers['my_cool_header']}}"
     }
     TemplateTransformerHandler:access(config)
+    assert.spy(ngx.req.set_body_data).was_called(2)
     assert.spy(ngx.req.set_body_data).was_called_with("oi1 oi2 oi3")
   end)
 end)
