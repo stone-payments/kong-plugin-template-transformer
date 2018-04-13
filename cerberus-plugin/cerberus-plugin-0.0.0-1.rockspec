@@ -1,16 +1,17 @@
 package = "cerberus-plugin"
 version = "0.0.0-1"
 source = {
-   url = "https://github.com/stone-payments/kong-middlewares",
+   url = "https://github.com/stone-payments/kong-middlewares/cerberus-plugin",
 }
 description = {
   summary = "A Kong plugin that enables services to act as middlewares for requests",
-  license = "MIT"
+  license = "Apache License 2.0"
 }
 dependencies = {
   "lua >= 5.1",
   "lua-resty-http",
-  "copas"
+  "luaposix >= 34.0.4-1",
+  "luafilesystem >= 1.7.0-2"
 }
 build = {
    type = "builtin",
