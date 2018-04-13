@@ -13,15 +13,8 @@ local ngx =  {
     timer = {
         at = spy.new(function() end)
     },
-    re = {match = spy.new(function() return {"match"} end)},
-    socket = {
-        tcp = spy.new(function()
-                        return {
-
-                      }
-                      end)
-        },
-    var = {scheme = "http"}
+    re = {match = spy.new(function() end)},
+    socket = {tcp = spy.new(function() end)}
 }
 _G.ngx = ngx
 
