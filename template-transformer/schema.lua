@@ -17,7 +17,6 @@ return {
       type = "string", 
       required = false,
       self_check = function(schema, config, dao, is_updating)
-        -- print(config.request_template)
         return check_template(config.request_template)
       end
     },
