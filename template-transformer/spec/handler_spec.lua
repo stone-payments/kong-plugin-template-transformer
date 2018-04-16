@@ -58,7 +58,7 @@ describe("TestHandler", function()
     assert.spy(ngx.req.set_body_data).was_called_with("oi1 oi2 oi3")
   end)
 
-  it("should test body filter is not ready yet", function()
+  it("should test body filter when body is not ready yet", function()
     TemplateTransformerHandler:new()
     local config = {
         response_template = "hello im a template"
@@ -66,6 +66,17 @@ describe("TestHandler", function()
     _G.ngx.arg = {'{ "key" : "value" }', false}
     TemplateTransformerHandler:body_filter(config)
     assert.equal(ngx.arg[1], nil)
+  end)
+
+  it("should test body filter when body is ready", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_template = "hello i am a template"
+    }
+    _G.ngx.ctx.buffer = 'oi'
+    _G.ngx.arg = {'{ "key" : "value" }', true}
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal(config.response_template, ngx.arg[1])
   end)
   
 end)
