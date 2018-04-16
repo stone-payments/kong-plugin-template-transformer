@@ -33,6 +33,8 @@ local function prepare_body(body)
   v = gsub(v, [[\/]], [[/]]) -- To prevent having double encoded slashes
   ngx.log(ngx.DEBUG, string.format("Encoded Body :: %s", v))
   return v
+end
+
 function TemplateTransformerHandler:new()
   TemplateTransformerHandler.super.new(self, 'template-transformer')
 end
@@ -44,7 +46,8 @@ function TemplateTransformerHandler:access(config)
     local body = req_get_body_data()
     local headers = req_get_headers()
     local query_string = req_get_uri_args()
-    local transformed_body = template_transformer.transform(config.request_template, {query_string = query_string, headers = headers, body = body})
+    local args = {query_string = query_string, headers = headers, body = body}
+    local transformed_body = template_transformer.transform(config.request_template, args)
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
   end
@@ -61,6 +64,7 @@ end
 
 function TemplateTransformerHandler:body_filter(config)
   TemplateTransformerHandler.super.body_filter(self)
+  ngx.log(ngx.DEBUG, string.format("config.response_templat :: %s", config.response_template))
   if config.response_template then
     local chunk, eof = ngx.arg[1], ngx.arg[2]
     if not eof then
@@ -76,6 +80,7 @@ function TemplateTransformerHandler:body_filter(config)
       ngx.log(ngx.DEBUG, string.format("Body :: %s", body))
       local headers = res_get_headers()
       local transformed_body = template_transformer.transform(config.response_template, {headers = headers, body = body})
+      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", transformed_body))
       ngx.arg[1] = prepare_body(transformed_body)
     end
   end
