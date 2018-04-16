@@ -19,18 +19,16 @@ local ngx =  {
 _G.ngx = ngx
 
 -- Mock http
-local http =  {
-    new  = spy.new(function() end),
-    request_uri  = spy.new(function() end)
+local mock_client = {
+        request_uri = spy.new(function() end)
 }
+local new_http_client =  spy.new(function() return mock_client end)
+
 local LogRequestHandler = require('../handler')
+_G.new_http_client = new_http_client
 
 -- tests
 describe("TestHandler", function()
-
-  setup(function()
-    LogRequestHandler._httpc = http
-  end)
 
   it("should test handler constructor", function()
     LogRequestHandler:new()
@@ -57,14 +55,14 @@ describe("TestHandler", function()
 
   it("should test log function does not executes http request", function()
     LogRequestHandler:new()
-    log(1, "http://mock.com", "payload", http)
-    assert.spy(http.request_uri).was_called(0)
+    send_log_request(1, "http://mock.com", "payload")
+    assert.spy(mock_client.request_uri).was_called(0)
   end)
 
   it("should test log function executes http request", function()
     LogRequestHandler:new()
-    log(nil, "http://mock.com", "payload", http)
-    assert.spy(http.request_uri).was_called(1)
+    send_log_request(nil, "http://mock.com", "payload")
+    assert.spy(mock_client.request_uri).was_called(1)
   end)
 
 end)
