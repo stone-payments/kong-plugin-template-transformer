@@ -41,7 +41,6 @@ function build_log_payload(config)
   return {{
     MachineName = utils.getHostname(),
     ManagedThreadId = tostring( {} ):sub(8),
-    Message = "Log Request",
     NativeProcessId = unistd.getpid(),
     NativeThreadId = tostring( {} ):sub(8),
     OSFullName = os_utils.getOS(),
@@ -71,7 +70,12 @@ function LogRequestHandler:access(config)
       requestHeaders = ngx.req.get_headers(),
       requestUriArgs = ngx.req.get_uri_args(),
       requestBodyData = ngx.req.get_body_data(),
+      route = ngx.ctx.route,
+      service = ngx.ctx.service,
+      api = ngx.ctx.api,
   }}
+  log_payload[1]["Message"] = "Log Kong Request"
+
 
   local string_payload = cjson.encode(log_payload)
   ngx.log(ngx.NOTICE, string.format("Log request payload: %s", string_payload))
@@ -89,8 +93,18 @@ function LogRequestHandler:log(conf)
 
   log_payload[1]["AdditionalData"] = {{
       responseHeaders = ngx.header,
+      responseStatus = ngx.status,
       responseBodyData = table.concat(ngx.ctx.rt_body_chunks),
+      latencies = {
+        kong = (ngx.ctx.KONG_ACCESS_TIME or 0) +
+               (ngx.ctx.KONG_RECEIVE_TIME or 0) +
+               (ngx.ctx.KONG_REWRITE_TIME or 0) +
+               (ngx.ctx.KONG_BALANCER_TIME or 0),
+        proxy = ngx.ctx.KONG_WAITING_TIME or -1,
+        request = ngx.var.request_time * 1000
+      },
   }}
+  log_payload[1]["Message"] = "Log Kong Response"
 
   local string_payload = cjson.encode(log_payload)
   ngx.log(ngx.NOTICE, string.format("Log response payload: %s", string_payload))
