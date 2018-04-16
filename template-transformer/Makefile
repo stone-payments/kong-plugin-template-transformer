@@ -15,6 +15,9 @@ install:
 	-@luarocks remove $(PROJECT)
 	@luarocks make
 
+test:
+	busted spec/
+
 coverage:
 	busted spec/ -c
 	luacov

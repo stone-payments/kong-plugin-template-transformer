@@ -18,16 +18,14 @@ We're using [busted](http://olivinelabs.com/busted) to run our tests. Every test
 
 ## running the tests
 
-`busted spec/` should do the job.
+`make test` or `busted spec/` should do the job.
 
 remember to run it as super user if your current environment needs it.
 
 ## test coverage
 
+If you're using our Makefile, just run `make coverage`.
+
 With Busted, a `-c` flag will do the job.
-
 It will generate a `luacov.stats.out` that you can use to generate coverage reports.
-
-## coverage reports
-
 You can run `luacov` and it will generate a `luacov.report.out` containing a comprehensive coverage report.
