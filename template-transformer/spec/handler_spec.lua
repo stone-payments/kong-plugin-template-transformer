@@ -7,6 +7,9 @@ local ngx =  {
         get_headers = spy.new(function() return { my_cool_header = "oi3" } end),
         read_body = spy.new(function() end),
     },
+    resp = {
+        get_headers = spy.new(function() return { my_cool_header = "oi3" } end)
+    },
     config = {
         prefix = spy.new(function()
             return "mock"
@@ -16,7 +19,8 @@ local ngx =  {
         capture = spy.new(function() end)
     },
     get_phase = spy.new(function() end),
-    log = spy.new(function() end)
+    log = spy.new(function() end),
+    ctx = {}
 }
 _G.ngx = ngx
 local TemplateTransformerHandler = require('../handler')
@@ -53,4 +57,26 @@ describe("TestHandler", function()
     assert.spy(ngx.req.set_body_data).was_called(2)
     assert.spy(ngx.req.set_body_data).was_called_with("oi1 oi2 oi3")
   end)
+
+  it("should test body filter when body is not ready yet", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_template = "hello im a template"
+    }
+    _G.ngx.arg = {'{ "key" : "value" }', false}
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal(ngx.arg[1], nil)
+  end)
+
+  it("should test body filter when body is ready", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_template = "hello i am a template"
+    }
+    _G.ngx.ctx.buffer = 'oi'
+    _G.ngx.arg = {'{ "key" : "value" }', true}
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal(config.response_template, ngx.arg[1])
+  end)
+  
 end)
