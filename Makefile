@@ -11,4 +11,4 @@ dev:
 	done;
 
 lint:
-	@luacheck -q .
+	luacheck -qqq . | grep "Total"
