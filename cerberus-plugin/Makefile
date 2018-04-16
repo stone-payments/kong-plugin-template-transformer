@@ -1,5 +1,5 @@
 DEV_ROCKS = "kong 0.13.0" "luacov 0.12.0" "busted 2.0.rc12"
-PROJECT = "template-transformer"
+PROJECT = "cerberus-plugin"
 
 setup:
 	@for rock in $(DEV_ROCKS) ; do \
