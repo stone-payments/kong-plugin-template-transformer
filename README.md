@@ -18,13 +18,13 @@ We're using [busted](http://olivinelabs.com/busted) to run our tests. Every test
 
 ## running the tests
 
-`make test` or `busted spec/` should do the job.
+`make test PROJECT=your-plugin-folder` or `busted spec/` in the plugin folder should do the job.
 
 remember to run it as super user if your current environment needs it.
 
 ## test coverage
 
-If you're using our Makefile, just run `make coverage`.
+If you're using our Makefile, just run `make coverage PROJECT=your-plugin-folder`.
 
 With Busted, a `-c` flag will do the job.
 It will generate a `luacov.stats.out` that you can use to generate coverage reports.

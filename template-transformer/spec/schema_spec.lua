@@ -1,4 +1,4 @@
-local schema = require('../schema')
+local schema = require('schema')
 
 describe("TestSchema", function()
     it("should test that schema is initialized", function()

@@ -1,7 +1,7 @@
 DEV_ROCKS = "kong 0.13.0" "luacov 0.12.0" "busted 2.0.rc12"
-PROJECT = "cerberus-plugin"
 
 setup:
+	cd $(PROJECT)
 	@for rock in $(DEV_ROCKS) ; do \
 		if luarocks list --porcelain $$rock | grep -q "installed" ; then \
 			echo $$rock already installed, skipping ; \
@@ -13,12 +13,10 @@ setup:
 
 install:
 	-@luarocks remove $(PROJECT)
-	@luarocks make
+	cd $(PROJECT) && luarocks make
 
 test:
-	busted spec/
+	cd $(PROJECT) && busted spec/
 
 coverage:
-	busted spec/ -c
-	luacov
-	cat luacov.report.out
+	cd $(PROJECT) && busted spec/ -c && luacov && cat luacov.report.out
