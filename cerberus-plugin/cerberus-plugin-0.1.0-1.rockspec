@@ -1,5 +1,5 @@
 package = "cerberus-plugin"
-version = "0.0.0-1"
+version = "0.1.0-1"
 source = {
    url = "https://github.com/stone-payments/kong-middlewares/cerberus-plugin",
 }
