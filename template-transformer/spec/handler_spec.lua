@@ -7,6 +7,9 @@ local ngx =  {
         get_headers = spy.new(function() return { my_cool_header = "oi3" } end),
         read_body = spy.new(function() end),
     },
+    resp = {
+        get_headers = spy.new(function() return { my_cool_header = "oi3" } end)
+    },
     config = {
         prefix = spy.new(function()
             return "mock"
