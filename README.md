@@ -12,3 +12,22 @@ Each folder has a similar structure, and it should contain at least a `schema.lu
 
 The `.rockspec` file should follow [LuaRocks' conventions](https://github.com/luarocks/luarocks/wiki/Rockspec-format)
 
+# testing
+
+We're using [busted](http://olivinelabs.com/busted) to run our tests. Every test file should live in a `spec` folder and end with `_spec.lua`.
+
+## running the tests
+
+`busted spec/` should do the job.
+
+remember to run it as super user if your current environment needs it.
+
+## test coverage
+
+With Busted, a `-c` flag will do the job.
+
+It will generate a `luacov.stats.out` that you can use to generate coverage reports.
+
+## coverage reports
+
+You can run `luacov` and it will generate a `luacov.report.out` containing a comprehensive coverage report.
