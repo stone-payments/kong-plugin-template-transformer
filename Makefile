@@ -22,4 +22,4 @@ coverage:
 	cd $(PROJECT) && busted spec/ -c && luacov && cat luacov.report.out
 
 lint:
-	luacheck -qqq . | grep "Total"
+	cd $(PROJECT) && luacheck -q .
