@@ -29,3 +29,7 @@ If you're using our Makefile, just run `make coverage PROJECT=your-plugin-folder
 With Busted, a `-c` flag will do the job.
 It will generate a `luacov.stats.out` that you can use to generate coverage reports.
 You can run `luacov` and it will generate a `luacov.report.out` containing a comprehensive coverage report.
+
+## lint
+
+`make lint PROJECT=your-plugin-folder` or `luacheck spec/` in the plugin folder should run the linter.
