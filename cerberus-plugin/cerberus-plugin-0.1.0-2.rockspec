@@ -11,7 +11,8 @@ dependencies = {
   "lua >= 5.1",
   "lua-resty-http",
   "luaposix >= 34.0.4-1",
-  "luafilesystem >= 1.7.0-2"
+  "luafilesystem >= 1.7.0-2",
+  "lua-cjson >= 2.1.0"
 }
 build = {
    type = "builtin",
