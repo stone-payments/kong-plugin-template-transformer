@@ -22,3 +22,6 @@ test:
 
 coverage:
 	cd $(PROJECT) && busted spec/ -c && luacov && cat luacov.report.out
+
+package:
+	cd $(PROJECT) && luarocks make --pack-binary-rock 
