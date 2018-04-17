@@ -7,7 +7,9 @@ setup:
 			echo $$rock already installed, skipping ; \
 		else \
 			echo $$rock not found, installing via luarocks... ; \
-			luarocks install $$rock ; \
+			if luarocks install $$rock | grep -q "error" ; then \
+				 $(error There was an error installing rock ) \
+			fi \
 		fi \
 	done;
 
