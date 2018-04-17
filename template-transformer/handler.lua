@@ -2,6 +2,7 @@ local BasePlugin = require 'kong.plugins.base_plugin'
 local cjson_decode = require('cjson').decode
 local cjson_encode = require('cjson').encode
 
+local req_set_uri = ngx.req.set_uri
 local req_set_body_data = ngx.req.set_body_data
 local req_get_body_data = ngx.req.get_body_data
 local req_get_uri_args = ngx.req.get_uri_args
@@ -9,6 +10,7 @@ local req_set_header = ngx.req.set_header
 local req_get_headers = ngx.req.get_headers
 local req_read_body = ngx.req.read_body
 local res_get_headers = ngx.resp.get_headers
+local req_set_method = ngx.req.set_method
 local table_concat = table.concat
 local sub = string.sub
 local gsub = string.gsub
@@ -46,10 +48,18 @@ function TemplateTransformerHandler:access(config)
     local body = req_get_body_data()
     local headers = req_get_headers()
     local query_string = req_get_uri_args()
-    local transformed_body = template_transformer.get_template(config.request_template){query_string = query_string, headers = headers, body = body}
+    local router_matches = ngx.ctx.router_matches
+
+
+
+    local transformed_body = template_transformer.get_template(config.request_template){query_string = query_string,
+                                                                                        headers = headers,
+                                                                                        body = body,
+                                                                                        route_groups = router_matches.uri_captures}
     ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
+
   end
   if config.response_template then
     ngx.ctx.buffer = ''
