@@ -14,7 +14,8 @@ local ngx =  {
         at = spy.new(function() end)
     },
     re = {match = spy.new(function() end)},
-    socket = {tcp = spy.new(function() end)}
+    socket = {tcp = spy.new(function() end)},
+    ctx = {}
 }
 _G.ngx = ngx
 
