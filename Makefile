@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 DEV_ROCKS = "lua-cjson 2.1.0" "kong 0.13.0" "luacov 0.12.0" "busted 2.0.rc12" "luacov-cobertura 0.2-1" "luacheck 0.20.0"
->>>>>>> 7a7347c00353deee527dbf34265eac40140ee9ed
 
 setup:
 	cd $(PROJECT)
