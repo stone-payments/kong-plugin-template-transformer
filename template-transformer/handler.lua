@@ -46,10 +46,18 @@ function TemplateTransformerHandler:access(config)
     local body = req_get_body_data()
     local headers = req_get_headers()
     local query_string = req_get_uri_args()
-    local transformed_body = template_transformer.get_template(config.request_template){query_string = query_string, headers = headers, body = body}
+    local router_matches = ngx.ctx.router_matches
+
+
+
+    local transformed_body = template_transformer.get_template(config.request_template){query_string = query_string,
+                                                                                        headers = headers,
+                                                                                        body = body,
+                                                                                        route_groups = router_matches.uri_captures}
     ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
+
   end
   if config.response_template then
     ngx.ctx.buffer = ''
