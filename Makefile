@@ -1,4 +1,4 @@
-DEV_ROCKS = "kong 0.13.0" "luacov 0.12.0" "busted 2.0.rc12"
+DEV_ROCKS = "kong 0.13.0" "luacov 0.12.0" "busted 2.0.rc12" "luacheck 0.20.0"
 
 setup:
 	cd $(PROJECT)
@@ -20,3 +20,6 @@ test:
 
 coverage:
 	cd $(PROJECT) && busted spec/ -c && luacov && cat luacov.report.out
+
+lint:
+	cd $(PROJECT) && luacheck -q .
