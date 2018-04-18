@@ -86,6 +86,21 @@ function LogRequestHandler:access(config)
   end
 end
 
+function LogRequestHandler:body_filter(config)
+  LogRequestHandler.super.body_filter(self)
+  if config.response_template then
+    local chunk, eof = ngx.arg[1], ngx.arg[2]
+    if not eof then
+      -- sometimes the data comes in chunks and every chunk is a different call
+      -- so we will buffer the chunks in the context
+      if ngx.ctx.buffer and chunk then
+        ngx.ctx.buffer = ngx.ctx.buffer .. chunk
+      end
+      ngx.arg[1] = nil
+    end
+  end
+end
+
 function LogRequestHandler:log(conf)
   LogRequestHandler.super.log(self)
 
@@ -94,7 +109,7 @@ function LogRequestHandler:log(conf)
   log_payload[1]["AdditionalData"] = {{
       responseHeaders = ngx.header,
       responseStatus = ngx.status,
-      responseBodyData = table.concat(ngx.ctx.rt_body_chunks),
+      responseBodyData = ngx.ctx.buffer,
       latencies = {
         kong = (ngx.ctx.KONG_ACCESS_TIME or 0) +
                (ngx.ctx.KONG_RECEIVE_TIME or 0) +
