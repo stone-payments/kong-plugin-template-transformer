@@ -25,7 +25,7 @@ local function read_json_body(body)
   end
 end
 
-local function prepare_body(body)
+function prepare_body(body)
   local v = cjson_encode(body)
   if sub(v, 1, 1) == [["]] and sub(v, -1, -1) == [["]] then
     v = gsub(sub(v, 2, -2), [[\"]], [["]]) -- To prevent having double encoded quotes
