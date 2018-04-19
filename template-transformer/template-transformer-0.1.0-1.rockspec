@@ -10,7 +10,7 @@ description = {
 dependencies = {
   "lua >= 5.1",
   "lua-resty-http",
-  "lua-resty-template >= 1.9-1" 
+  "lua-resty-template >= 1.9-1"
 }
 build = {
    type = "builtin",
