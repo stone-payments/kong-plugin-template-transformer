@@ -29,7 +29,7 @@ test:
 	cd $(PROJECT) && busted spec/
 
 coverage:
-	cd $(PROJECT) && busted spec/ -c && luacov && cat luacov.report.out && luacov-cobertura -o cobertura.xml
+	cd $(PROJECT) && busted spec/ -c && luacov && luacov-cobertura -o cobertura.xml
 
 package:
 	cd $(PROJECT) && luarocks make --pack-binary-rock 
