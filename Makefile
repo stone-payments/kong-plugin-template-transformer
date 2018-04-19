@@ -17,7 +17,7 @@ check:
 		if luarocks list --porcelain $$rock | grep -q "installed" ; then \
 			echo $$rock is installed ; \
 		else \
-			$(error Couldn't install one rock) ; \
+			echo $$rock is not installed ; \
 		fi \
 	done;
 
