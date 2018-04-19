@@ -26,7 +26,7 @@ install:
 	cd $(PROJECT) && luarocks make
 
 test:
-	cd $(PROJECT) && busted spec/
+	cd $(PROJECT) && busted spec/ ${ARGS}
 
 coverage:
 	cd $(PROJECT) && busted spec/ -c && luacov && luacov-cobertura -o cobertura.xml
