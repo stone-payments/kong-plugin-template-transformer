@@ -7,7 +7,17 @@ setup:
 			echo $$rock already installed, skipping ; \
 		else \
 			echo $$rock not found, installing via luarocks... ; \
-			luarocks install $$rock ; \
+			luarocks install $$rock; 
+		fi \
+	done;
+
+check:
+	cd $(PROJECT)
+	@for rock in $(DEV_ROCKS) ; do \
+		if luarocks list --porcelain $$rock | grep -q "installed" ; then \
+			echo $$rock is installed ; \
+		else \
+			$(error Couldn't install one rock) ; \
 		fi \
 	done;
 
