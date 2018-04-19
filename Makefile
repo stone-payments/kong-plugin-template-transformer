@@ -7,7 +7,7 @@ setup:
 			echo $$rock already installed, skipping ; \
 		else \
 			echo $$rock not found, installing via luarocks... ; \
-			luarocks install $$rock; 
+			luarocks install $$rock; \
 		fi \
 	done;
 
