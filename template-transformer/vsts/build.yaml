@@ -17,9 +17,9 @@ steps:
   inputs:
 
     code: |
-     make setup PROJECT=$(plugin)
-     make install PROJECT=$(plugin)
-     make check PROJECT=$(plugin)
+     make setup
+     make install
+     make check
 
 
 
@@ -28,9 +28,9 @@ steps:
   inputs:
 
     code: |
-     make test PROJECT=$(plugin)
-     make test PROJECT=$(plugin) ARGS="-o junit"  > $(System.DefaultWorkingDirectory)/results.xml
-     make coverage PROJECT=$(plugin)
+     make test
+     make test ARGS="-o junit"  > $(System.DefaultWorkingDirectory)/results.xml
+     make coverage
 
 
 
@@ -57,7 +57,7 @@ steps:
   inputs:
 
     code: |
-     make package PROJECT=$(plugin)
+     make package
      echo "##vso[task.setvariable variable=ArtifactName]$(ls $(plugin)/*.rock)"
 
 
