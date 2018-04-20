@@ -1,12 +1,11 @@
-# kong-middlewares
-Kong API Gateway middlewares repository
+![Build Status](https://stonepagamentos.visualstudio.com/_apis/public/build/definitions/3eb9c9ed-2656-4b52-ae5c-75ea4a42c98d/285/badge)
+# kong-plugin-template-transformer
 
-- [template-transformer](./template-transformer) - Template transformer plugin to allow complex transformation of requests and responses
-- [cerberus-plugin](./cerberus-plugin)  - Cerberus Logger plugin
+This is a Kong middleware to transform requests / responses, using pre-configured templates.
 
 # project structure
 
-Each folder has a similar structure, and it should contain at least a `schema.lua` and a `handler.lua`, alongside with a `spec` folder and a `.rockspec` file specifying the current version of the package.
+The plugin folder should contain at least a `schema.lua` and a `handler.lua`, alongside with a `spec` folder and a `.rockspec` file specifying the current version of the package.
 
 # rockspec format
 
@@ -20,7 +19,7 @@ We're using [busted](http://olivinelabs.com/busted) to run our tests. Every test
 
 `make test PROJECT=your-plugin-folder` or `busted spec/` in the plugin folder should do the job.
 
-remember to run it as super user if your current environment needs it.
+Remember to run it as super user if your current environment needs it.
 
 ## test coverage
 
