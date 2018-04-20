@@ -24,7 +24,7 @@
 -  **New Features** `feature/<Name of feature>` from `develop`.
 -  **Bugfix** `bugfix/<Name of bugfix>` from `develop`.
 -  **Improvements** `improvement/<Name of improvement>` from `develop`.
--  **Hotfix** `bugfix/<Name of hotfix>` from `master`.
+-  **Hotfix** `hotfix/<Name of hotfix>` from `master`.
 
 ### Tests and coverage
 
@@ -79,3 +79,4 @@ git commit -m ":arrow_up: Updates rockspec"
 - We allow anyone to participate in our projects. Tasks can be carried out by anyone that demonstrates the capability to complete them.
 - Always be respectful of one another. Assume the best in others and act with empathy at all times.
 - Collaborate closely with individuals maintaining the project or experienced users. Getting ideas out in the open and seeing a proposal before it's a pull request helps reduce redundancy and ensures we're all connected to the decision making process.
+- Don't be a jerk.
