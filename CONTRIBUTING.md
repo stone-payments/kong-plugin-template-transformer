@@ -57,11 +57,13 @@
 | `:facepunch:`         | :facepunch:         | when resolving conflicts                        |
 | `:hammer:`            | :hammer:            | when changing configuration files               |
 
+- If possible, link the commit to the corresponding task in our JIRA.
 
-Commit exemple:
+Commit example:
 ```
-git commit -m ":arrow_up: Updates rockspec"
+git commit -m ":arrow_up: (APIDC-001) Updates rockspec"
 ```
+
 
 ### Pull Requests
 
@@ -72,7 +74,7 @@ git commit -m ":arrow_up: Updates rockspec"
 - **DO** ensure each commit successfully builds. The entire PR must pass all tests in the Continuous Integration (CI) system before it'll be merged.
 - **DO NOT** mix independent, unrelated changes in one PR. Separate real product/test code changes from larger code formatting/dead code removal changes. Separate unrelated fixes into separate PRs, especially if they are in different assemblies.
 - **DO** address PR feedback in an additional commit(s) rather than amending the existing commits, and only rebase/squash them when necessary. This makes it easier for reviewers to track changes. If necessary, squashing should be handled by the merger using the "squash and merge" feature, and should only be done by the contributor upon request.
-- **DO** all the PRs to `develop` branch unless it is a `hotfix`
+- **DO** all the PRs to `develop` branch unless it is a `hotfix`. For this one you should do for both `develop` and `master` branches.
 
 ### Guiding Principles
 
