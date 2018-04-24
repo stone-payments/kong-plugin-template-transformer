@@ -1,0 +1,78 @@
+resources:
+
+- repo: self
+
+queue:
+
+  name: QaaS Linux
+
+#Your build definition references an undefined variable named ‘System.DefaultWorkingDirectory)/$(plugin)/cobertura.xm’. Create or edit the build definition for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+#Your build definition references an undefined variable named ‘ArtifactName’. Create or edit the build definition for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+steps:
+
+- task: tsuyoshiushio.shell-exec.shellexec.shellexec@0
+
+  inputs:
+
+    code: |
+     make setup
+     make install
+     make check
+
+
+
+- task: tsuyoshiushio.shell-exec.shellexec.shellexec@0
+
+  inputs:
+
+    code: |
+     make test
+     make test ARGS="-o junit"  > $(System.DefaultWorkingDirectory)/results.xml
+     make coverage
+
+
+
+- task: PublishTestResults@2
+
+  inputs:
+
+    testResultsFiles: result.xml
+
+
+
+- task: PublishCodeCoverageResults@1
+
+  inputs:
+
+    codeCoverageTool: Cobertura
+
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/$(plugin)/cobertura.xml'
+
+
+
+- task: tsuyoshiushio.shell-exec.shellexec.shellexec@0
+
+  inputs:
+
+    code: |
+     make package
+     echo "##vso[task.setvariable variable=ArtifactName]$(ls $(plugin)/*.rock)"
+
+
+
+- task: PublishBuildArtifacts@1
+
+  inputs:
+
+    PathtoPublish: '$(ArtifactName)'
+
+    ArtifactName: drop
+
+    publishLocation: Container
+
+
+
+
+
