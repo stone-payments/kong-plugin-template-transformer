@@ -1,5 +1,5 @@
 package = "template-transformer"
-version = "0.1.0-1"
+version = "0.2.0-0"
 source = {
    url = "https://github.com/stone-payments/kong-plugin-template-transformer",
 }
