@@ -1,8 +1,16 @@
 # Changelog
 
-Todas as mudanças neste projeto são documentadas neste arquivo seguindo as regras de formatação de [Keep a CHANGELOG](http://keepachangelog.com/en/0.3.0/). O padrão de versionamento adotado é o sugerido por [Semantic Versioning 2.0](http://semver.org/).
+All changes made on any release of this project should be commented on high level of this document.
 
-## [0.1.0](https://github.com/stone-payments/kong-middlewares/tree/v0.0.1) - 2018-04-16
+Document model based on [Semantic Versioning](http://semver.org/).
+Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
+
+## [0.2.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.2.0) - 2018-04-24
 ### Added
-- Implementa template transformer
-- Implementa cerberus plugin
+- Can use regex uri patterns inside the templates.
+- VSTS support.
+
+## [0.1.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.1.0) - 2018-04-16
+### Added
+- First version of the template transformer plugin
+

@@ -1,7 +1,7 @@
 package = "template-transformer"
-version = "0.1-0"
+version = "0.2.0-0"
 source = {
-   url = "https://github.com/stone-payments/kong-middlewares/template-transformer",
+   url = "https://github.com/stone-payments/kong-plugin-template-transformer",
 }
 description = {
   summary = "A Kong plugin that enables template transforming",
@@ -10,12 +10,13 @@ description = {
 dependencies = {
   "lua >= 5.1",
   "lua-resty-http",
-  "lua-resty-template >= 1.9-1" 
+  "lua-resty-template >= 1.9-1"
 }
 build = {
    type = "builtin",
    modules = {
     ["kong.plugins.template-transformer.handler"] = "./handler.lua",
-    ["kong.plugins.template-transformer.schema"] = "./schema.lua"
+    ["kong.plugins.template-transformer.schema"] = "./schema.lua",
+    ["kong.plugins.template-transformer.template_transformer"] = "./template_transformer.lua"
    }
 }

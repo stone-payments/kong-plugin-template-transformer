@@ -20,7 +20,9 @@ local ngx =  {
     },
     get_phase = spy.new(function() end),
     log = spy.new(function() end),
-    ctx = {}
+    ctx = {
+        router_matches = { uri_captures = {group_one = "oi4" } }
+    }
 }
 _G.ngx = ngx
 local TemplateTransformerHandler = require('../handler')
@@ -47,15 +49,15 @@ describe("TestHandler", function()
     assert.spy(ngx.req.set_body_data).was_called(1)
     assert.spy(ngx.req.set_body_data).was_called_with(config.request_template)
   end)
-  
+
   it("should test replace with template with variables", function()
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "{{query_string['query']}} {{body['data']}} {{headers['my_cool_header']}}"
+        request_template = "{{query_string['query']}} {{body['data']}} {{headers['my_cool_header']}} {{route_groups['group_one']}}"
     }
     TemplateTransformerHandler:access(config)
     assert.spy(ngx.req.set_body_data).was_called(2)
-    assert.spy(ngx.req.set_body_data).was_called_with("oi1 oi2 oi3")
+    assert.spy(ngx.req.set_body_data).was_called_with("oi1 oi2 oi3 oi4")
   end)
 
   it("should test body filter when body is not ready yet", function()
@@ -78,5 +80,10 @@ describe("TestHandler", function()
     TemplateTransformerHandler:body_filter(config)
     assert.equal(config.response_template, ngx.arg[1])
   end)
-  
+
+  it("should prepare_body as expected", function()
+    prepared_body = prepare_body("&amp &lt &gt &quot &#39 &#47 /;")
+    assert.equal(prepared_body, "& < > \" ' / /")
+  end)
+
 end)
