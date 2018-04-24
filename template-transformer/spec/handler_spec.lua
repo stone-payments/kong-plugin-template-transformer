@@ -81,4 +81,9 @@ describe("TestHandler", function()
     assert.equal(config.response_template, ngx.arg[1])
   end)
 
+  it("should prepare_body as expected", function()
+    prepared_body = prepare_body("&amp &lt &gt &quot &#39 &#47 /;")
+    assert.equal(prepared_body, "& < > \" ' / /")
+  end)
+
 end)

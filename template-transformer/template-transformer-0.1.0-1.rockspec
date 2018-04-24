@@ -16,6 +16,7 @@ build = {
    type = "builtin",
    modules = {
     ["kong.plugins.template-transformer.handler"] = "./handler.lua",
-    ["kong.plugins.template-transformer.schema"] = "./schema.lua"
+    ["kong.plugins.template-transformer.schema"] = "./schema.lua",
+    ["kong.plugins.template-transformer.template_transformer"] = "./template_transformer.lua"
    }
 }

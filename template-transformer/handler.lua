@@ -25,12 +25,23 @@ local function read_json_body(body)
   end
 end
 
-local function prepare_body(body)
+function prepare_body(body)
   local v = cjson_encode(body)
   if sub(v, 1, 1) == [["]] and sub(v, -1, -1) == [["]] then
     v = gsub(sub(v, 2, -2), [[\"]], [["]]) -- To prevent having double encoded quotes
   end
   v = gsub(v, [[\/]], [[/]]) -- To prevent having double encoded slashes
+
+  -- Resty-Template Escaped characters
+  -- https://github.com/bungle/lua-resty-template#a-word-about-html-escaping
+  v = gsub(v, "&amp", "&")
+  v = gsub(v, "&lt", "<")
+  v = gsub(v, "&gt", ">")
+  v = gsub(v, "&quot", "\"")
+  v = gsub(v, "&#39", "\'")
+  v = gsub(v, "&#47", "/")
+  v = gsub(v, "/;", "/")
+
   ngx.log(ngx.NOTICE, string.format("Encoded Body :: %s", v))
   return v
 end
