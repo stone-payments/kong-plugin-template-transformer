@@ -14,7 +14,7 @@ local sub = string.sub
 local gsub = string.gsub
 local TemplateTransformerHandler = BasePlugin:extend()
 
-local template_transformer = require 'template_transformer'
+local template_transformer = require 'kong.plugins.template-transformer.template_transformer'
 
 local function read_json_body(body)
   if body then
