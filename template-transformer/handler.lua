@@ -97,7 +97,7 @@ function TemplateTransformerHandler:body_filter(config)
       ngx.log(ngx.NOTICE, string.format("Body :: %s", ngx.ctx.buffer))
       local headers = res_get_headers()
       local body = nil
-      if header['Content-Type'] == "application/json" then
+      if headers['Content-Type'] == "application/json" then
         body = read_json_body(ngx.ctx.buffer)
       end
       local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
