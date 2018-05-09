@@ -6,6 +6,12 @@ Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## Unreleased
+### Added
+- Status-code as an argument to templates.
+
+### Fixed
+- Only reads response body as JSON when content-type is correct.
+
 ### Removed
 - Template files
 

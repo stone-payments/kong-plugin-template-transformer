@@ -59,8 +59,6 @@ function TemplateTransformerHandler:access(config)
     local query_string = req_get_uri_args()
     local router_matches = ngx.ctx.router_matches
 
-
-
     local transformed_body = template_transformer.get_template(config.request_template){query_string = query_string,
                                                                                         headers = headers,
                                                                                         body = body,
@@ -95,9 +93,14 @@ function TemplateTransformerHandler:body_filter(config)
     else
       -- body is fully read
       ngx.log(ngx.NOTICE, string.format("Body :: %s", ngx.ctx.buffer))
-      local body = read_json_body(ngx.ctx.buffer)
       local headers = res_get_headers()
-      local transformed_body = template_transformer.get_template(config.response_template){headers = headers, body = body}
+      local body = nil
+      if headers['Content-Type'] == "application/json" then
+        body = read_json_body(ngx.ctx.buffer)
+      end
+      local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
+                                                                                           body = body,
+                                                                                           status = ngx.status}
       ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
       ngx.arg[1] = prepare_body(transformed_body)
     end
