@@ -102,9 +102,7 @@ function TemplateTransformerHandler:body_filter(config)
                                                                                            body = body,
                                                                                            status = ngx.status}
       ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
-      local prepared_body = prepare_body(transformed_body)
-      ngx.arg[1] = prepared_body
-      ngx.log(ngx.NOTICE, string.format("Prepared Body :: %s", prepared_body))
+      ngx.arg[1] = prepare_body(transformed_body)
     end
   end
 end
