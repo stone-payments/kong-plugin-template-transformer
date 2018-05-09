@@ -12,6 +12,9 @@ Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](htt
 ### Fixed
 - Only reads response body as JSON when content-type is correct.
 
+### Removed
+- Template files
+
 ## [0.2.1](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.2.1) - 2018-05-04
 ### Fixed
 - Template transformer import
