@@ -8,6 +8,10 @@ This is a Kong middleware to transform requests / responses, using pre-configure
 
 The plugin folder should contain at least a `schema.lua` and a `handler.lua`, alongside with a `spec` folder and a `.rockspec` file specifying the current version of the package.
 
+# writing templates
+
+We use [lua-resty-template](https://github.com/bungle/lua-resty-template) to write templates. It's also **very important** that you don't leave any `\t` in the files.
+
 # rockspec format
 
 The `.rockspec` file should follow [LuaRocks' conventions](https://github.com/luarocks/luarocks/wiki/Rockspec-format)
