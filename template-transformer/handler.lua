@@ -59,8 +59,6 @@ function TemplateTransformerHandler:access(config)
     local query_string = req_get_uri_args()
     local router_matches = ngx.ctx.router_matches
 
-
-
     local transformed_body = template_transformer.get_template(config.request_template){query_string = query_string,
                                                                                         headers = headers,
                                                                                         body = body,
@@ -104,7 +102,9 @@ function TemplateTransformerHandler:body_filter(config)
                                                                                            body = body,
                                                                                            status = ngx.status}
       ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
-      ngx.arg[1] = prepare_body(transformed_body)
+      local prepared_body = prepare_body(transformed_body)
+      ngx.arg[1] = prepared_body
+      ngx.log(ngx.NOTICE, string.format("Prepared Body :: %s", prepared_body))
     end
   end
 end

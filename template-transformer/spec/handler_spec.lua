@@ -22,7 +22,8 @@ local ngx =  {
     log = spy.new(function() end),
     ctx = {
         router_matches = { uri_captures = {group_one = "oi4" } }
-    }
+    },
+    status = 200,
 }
 _G.ngx = ngx
 local TemplateTransformerHandler = require('../handler')
@@ -86,4 +87,13 @@ describe("TestHandler", function()
     assert.equal(prepared_body, "& < > \" ' / /")
   end)
 
+  it("should pass status code to template", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_template = "template with status = {{status}}"
+    }
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal("template with status = 200", ngx.arg[1])
+
+  end)
 end)
