@@ -1,14 +1,16 @@
+local mock_req_headers =  { my_cool_header = "oi3" }
+local mock_resp_headers = {['Content-Type'] = "application/json; charset=utf-8", }
 local ngx =  {
     req = {
         set_body_data = spy.new(function() end),
         get_body_data =  spy.new(function() return { data = "oi2" } end),
         get_uri_args = spy.new(function() return { query = "oi1" } end),
         set_header = spy.new(function() end),
-        get_headers = spy.new(function() return { my_cool_header = "oi3" } end),
+        get_headers = spy.new(function() return mock_req_headers end),
         read_body = spy.new(function() end),
     },
     resp = {
-        get_headers = spy.new(function() return { my_cool_header = "oi3" } end)
+        get_headers =  spy.new(function() return mock_resp_headers end)
     },
     config = {
         prefix = spy.new(function()
@@ -74,9 +76,9 @@ describe("TestHandler", function()
   it("should test body filter when body is ready", function()
     TemplateTransformerHandler:new()
     local config = {
-        response_template = "hello i am a template"
+        response_template = "template"
     }
-    _G.ngx.ctx.buffer = 'oi'
+    _G.ngx.ctx.buffer = '{ "body"  : "sent" }'
     _G.ngx.arg = {'{ "key" : "value" }', true}
     TemplateTransformerHandler:body_filter(config)
     assert.equal(config.response_template, ngx.arg[1])
@@ -96,4 +98,53 @@ describe("TestHandler", function()
     assert.equal("template with status = 200", ngx.arg[1])
 
   end)
+  
+  it("should pass status code to template", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_template = "template with status = {{status}}"
+    }
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal("template with status = 200", ngx.arg[1])
+
+  end)
+
+  it("should test body filter when body is ready", function()
+    TemplateTransformerHandler:new()
+    mock_resp_headers = {}
+    _G.ngx.ctx.buffer = '{ "foo" : "bar" }'
+    local config = {
+        response_template = '{ "bar" : "{{body.foo}}" }'
+    }
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal('{ "bar" : "bar" }', ngx.arg[1])
+  end)
+
+  it("should test body filter when body is ready and not json", function()
+    TemplateTransformerHandler:new()
+    mock_resp_headers = {}
+    ngx.arg[1] = nil
+    ngx.ERROR = "error"
+    local config = {
+        response_template = '{ "bar" : "{{body.foo}}" }'
+    }
+    _G.ngx.ctx.buffer = '<html>'
+    error = TemplateTransformerHandler:body_filter(config)
+    assert.equal(ngx.ERROR, error)
+    assert.equal(nil, ngx.arg[1])
+  end)
+
+  it("should test body filter when body is empty", function()
+    TemplateTransformerHandler:new()
+    mock_resp_headers = {}
+    ngx.arg[1] = nil
+    ngx.ERROR = "error"
+    local config = {
+        response_template = '{ "bar" : "{{body.foo}}" }'
+    }
+    _G.ngx.ctx.buffer = nil
+    error = TemplateTransformerHandler:body_filter(config)
+    assert.equal('{ "bar" : "" }', ngx.arg[1])
+  end)
+
 end)
