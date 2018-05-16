@@ -1,7 +1,7 @@
 local ngx =  {
     req = {
         set_body_data = spy.new(function() end),
-        get_body_data =  spy.new(function() return { data = "oi2" } end),
+        get_body_data =  spy.new(function() return '{ "data": "oi2" }' end),
         get_uri_args = spy.new(function() return { query = "oi1" } end),
         set_header = spy.new(function() end),
         get_headers = spy.new(function() return { my_cool_header = "oi3" } end),
@@ -94,6 +94,6 @@ describe("TestHandler", function()
     }
     TemplateTransformerHandler:body_filter(config)
     assert.equal("template with status = 200", ngx.arg[1])
-
   end)
+
 end)
