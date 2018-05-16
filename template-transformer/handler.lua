@@ -18,11 +18,15 @@ local template_transformer = require 'kong.plugins.template-transformer.template
 
 local function read_json_body(body)
   if body then
+    ngx.log(ngx.NOTICE, string.format("Body :: %s", body))
     local status, res = pcall(cjson_decode, body)
     if status then
       return res
     end
+    ngx.log(ngx.NOTICE, string.format("Error while decoding JSON :: %s", res))
+    return nil
   end
+  return {}
 end
 
 function prepare_body(string_body)
@@ -93,11 +97,10 @@ function TemplateTransformerHandler:body_filter(config)
       ngx.arg[1] = nil
     else
       -- body is fully read
-      ngx.log(ngx.NOTICE, string.format("Body :: %s", ngx.ctx.buffer))
       local headers = res_get_headers()
-      local body = nil
-      if headers['Content-Type'] == "application/json" then
-        body = read_json_body(ngx.ctx.buffer)
+      local body = read_json_body(ngx.ctx.buffer)
+      if body == nil then
+        return ngx.ERROR
       end
       local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
                                                                                            body = body,
