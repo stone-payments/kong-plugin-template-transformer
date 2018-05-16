@@ -108,6 +108,17 @@ describe("TestHandler", function()
     TemplateTransformerHandler:body_filter(config)
     assert.equal('{ "bar" : "bar" }', ngx.arg[1])
   end)
+    
+  it("should test body filter when body is ready", function()
+    TemplateTransformerHandler:new()
+    mock_resp_headers = {}
+    _G.ngx.ctx.buffer = '{ "foo" : "bar" }'
+    local config = {
+        response_template = '{ "bar" : "{{body.foo}}" }'
+    }
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal('{ "bar" : "bar" }', ngx.arg[1])
+  end)
 
   it("should test body filter when body is ready and not json", function()
     TemplateTransformerHandler:new()
