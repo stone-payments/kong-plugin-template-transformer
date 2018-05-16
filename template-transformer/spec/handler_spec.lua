@@ -3,7 +3,7 @@ local mock_resp_headers = {['Content-Type'] = "application/json; charset=utf-8",
 local ngx =  {
     req = {
         set_body_data = spy.new(function() end),
-        get_body_data =  spy.new(function() return { data = "oi2" } end),
+        get_body_data =  spy.new(function() return '{ "data": "oi2" }' end),
         get_uri_args = spy.new(function() return { query = "oi1" } end),
         set_header = spy.new(function() end),
         get_headers = spy.new(function() return mock_req_headers end),
@@ -96,19 +96,19 @@ describe("TestHandler", function()
     }
     TemplateTransformerHandler:body_filter(config)
     assert.equal("template with status = 200", ngx.arg[1])
-
   end)
-  
-  it("should pass status code to template", function()
+
+  it("should test body filter when body is ready", function()
     TemplateTransformerHandler:new()
+    mock_resp_headers = {}
+    _G.ngx.ctx.buffer = '{ "foo" : "bar" }'
     local config = {
-        response_template = "template with status = {{status}}"
+        response_template = '{ "bar" : "{{body.foo}}" }'
     }
     TemplateTransformerHandler:body_filter(config)
-    assert.equal("template with status = 200", ngx.arg[1])
-
+    assert.equal('{ "bar" : "bar" }', ngx.arg[1])
   end)
-
+    
   it("should test body filter when body is ready", function()
     TemplateTransformerHandler:new()
     mock_resp_headers = {}

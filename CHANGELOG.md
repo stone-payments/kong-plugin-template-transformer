@@ -8,6 +8,7 @@ Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](htt
 ## Unreleased
 ### Fixed
 - Stops relying on content-type header and tries to parse the response from the API, returning bad request if not possible
+- Passes body to the request table as a table, not string
 
 ## [0.2.2](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.2.2) - 2018-05-10
 ### Added
