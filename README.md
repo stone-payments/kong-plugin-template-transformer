@@ -37,6 +37,7 @@ You can run `luacov` and it will generate a `luacov.report.out` containing a com
 ## lint
 
 `make lint` or `luacheck -q .` in the plugin folder should run the linter.
+
 # credits
 
 made with :heart: by Stone Payments

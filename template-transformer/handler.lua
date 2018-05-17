@@ -18,15 +18,19 @@ local template_transformer = require 'kong.plugins.template-transformer.template
 
 local function read_json_body(body)
   if body then
+    ngx.log(ngx.NOTICE, string.format("Body :: %s", body))
     local status, res = pcall(cjson_decode, body)
     if status then
       return res
     end
+    ngx.log(ngx.NOTICE, string.format("Error while decoding JSON :: %s", res))
+    return nil
   end
+  return {}
 end
 
-function prepare_body(body)
-  local v = cjson_encode(body)
+function prepare_body(string_body)
+  local v = string_body
   if sub(v, 1, 1) == [["]] and sub(v, -1, -1) == [["]] then
     v = gsub(sub(v, 2, -2), [[\"]], [["]]) -- To prevent having double encoded quotes
   end
@@ -54,7 +58,8 @@ function TemplateTransformerHandler:access(config)
   TemplateTransformerHandler.super.access(self)
   if config.request_template then
     req_read_body()
-    local body = req_get_body_data()
+    local string_body = req_get_body_data()
+    local body = cjson_decode(prepare_body(string_body))
     local headers = req_get_headers()
     local query_string = req_get_uri_args()
     local router_matches = ngx.ctx.router_matches
@@ -92,17 +97,16 @@ function TemplateTransformerHandler:body_filter(config)
       ngx.arg[1] = nil
     else
       -- body is fully read
-      ngx.log(ngx.NOTICE, string.format("Body :: %s", ngx.ctx.buffer))
       local headers = res_get_headers()
-      local body = nil
-      if headers['Content-Type'] == "application/json" then
-        body = read_json_body(ngx.ctx.buffer)
+      local body = read_json_body(ngx.ctx.buffer)
+      if body == nil then
+        return ngx.ERROR
       end
       local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
                                                                                            body = body,
                                                                                            status = ngx.status}
       ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
-      ngx.arg[1] = prepare_body(transformed_body)
+      ngx.arg[1] = prepare_body(cjson_encode(transformed_body))
     end
   end
 end
