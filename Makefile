@@ -1,4 +1,4 @@
-DEV_ROCKS = "lua-cjson 2.1.0" "kong 0.13.0" "luacov 0.12.0" "busted 2.0.rc12" "luacov-cobertura 0.2-1" "luacheck 0.20.0"
+DEV_ROCKS = "lua-cjson 2.1.0" "kong 0.13.0" "luacov 0.12.0" "busted 2.0.rc12" "luacov-cobertura 0.2-1" "luacheck 0.20.0" "lua-resty-template 1.9-1"
 PROJECT = template-transformer
 
 setup:
@@ -33,7 +33,7 @@ coverage:
 	cd $(PROJECT) && busted spec/ -c && luacov && luacov-cobertura -o cobertura.xml
 
 package:
-	cd $(PROJECT) && luarocks make --pack-binary-rock 
+	cd $(PROJECT) && luarocks make --pack-binary-rock
 
 lint:
 	cd $(PROJECT) && luacheck -q .
