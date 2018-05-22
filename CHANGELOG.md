@@ -8,6 +8,7 @@ Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](htt
 ## Unreleased
 ### Fixed
 - Params validation that was not been called.
+- Empty body with request_templates that were broken.
 
 ## [0.3.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.3.0) - 2018-05-17
 ### Fixed
