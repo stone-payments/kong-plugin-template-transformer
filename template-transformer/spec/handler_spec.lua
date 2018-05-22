@@ -58,7 +58,7 @@ describe("Test TemplateTransformerHandler header_filter", function()
         response_template = "hello im a template"
     }
     TemplateTransformerHandler:header_filter(config)
-    assert.equal(mock_ngx_headers["content-length"], nil)
+    assert.is_nil(mock_ngx_headers["content-length"])
 
     mock_ngx_headers["content-length"] = 123
   end)
@@ -80,7 +80,7 @@ describe("Test TemplateTransformerHandler header_filter", function()
         response_template = "hello im a template"
     }
     TemplateTransformerHandler:header_filter(config)
-    assert.equal(mock_ngx_headers["content-length"], nil)
+    assert.is_nil(mock_ngx_headers["content-length"])
 
     mock_ngx_headers["content-length"] = 123
   end)
@@ -161,7 +161,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     }
     _G.ngx.arg = {'{ "key" : "value" }', false}
     TemplateTransformerHandler:body_filter(config)
-    assert.equal(ngx.arg[1], nil)
+    assert.is_nil(ngx.arg[1])
   end)
 
   it("should set first ngx arg to template when when body is fully read and there is no custom variables", function()
@@ -206,7 +206,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     _G.ngx.ctx.buffer = '<html>'
     actual = TemplateTransformerHandler:body_filter(config)
     assert.equal(ngx.ERROR, actual)
-    assert.equal(nil, ngx.arg[1])
+    assert.is_nil(ngx.arg[1])
   end)
 
   it("should leave empty string when there is no field in response", function()
@@ -226,7 +226,7 @@ end)
 describe("Test read_json_body", function()
   it("should return nil when payload is not a JSON", function()
     actual = read_json_body("{ , }")
-    assert.equal(actual, nil)
+    assert.is_nil(actual)
   end)
 
   it("should return empty table when there is no payload", function()
