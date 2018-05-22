@@ -17,7 +17,7 @@ local schema = require('schema')
 
 describe("TestSchema", function()
     it("should initialize schema correctly", function()
-      assert.equal(schema.no_consumer, true)
+      assert.is_true(schema.no_consumer)
       assert.not_nil(schema.fields.request_template)
       assert.not_nil(schema.fields.request_template.type, "string")
       assert.not_nil(schema.fields.request_template.required, false)
