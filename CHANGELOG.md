@@ -9,6 +9,7 @@ Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](htt
 ### Fixed
 - Params validation that was not been called.
 - Empty body with request_templates that were broken.
+- Special characters in request-templates.
 
 ### Changed
 - Package name in rockspec.
