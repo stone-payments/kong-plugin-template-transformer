@@ -8,6 +8,7 @@ Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](htt
 ## Unreleased
 ### Fixed
 - Params validation that was not been called.
+- Empty body with request_templates that were broken.
 
 ### Changed
 - Package name in rockspec.
