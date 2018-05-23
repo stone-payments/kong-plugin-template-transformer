@@ -1,4 +1,4 @@
-package = "template-transformer"
+package = "kong-plugin-template-transformer"
 version = "0.3.0-0"
 source = {
    url = "https://github.com/stone-payments/kong-plugin-template-transformer",
@@ -15,8 +15,8 @@ dependencies = {
 build = {
    type = "builtin",
    modules = {
-    ["kong.plugins.template-transformer.handler"] = "./handler.lua",
-    ["kong.plugins.template-transformer.schema"] = "./schema.lua",
-    ["kong.plugins.template-transformer.template_transformer"] = "./template_transformer.lua"
+    ["kong.plugins.kong-plugin-template-transformer.handler"] = "./handler.lua",
+    ["kong.plugins.kong-plugin-template-transformer.schema"] = "./schema.lua",
+    ["kong.plugins.kong-plugin-template-transformer.template_transformer"] = "./template_transformer.lua"
    }
 }
