@@ -258,31 +258,4 @@ describe("Test prepare_body", function()
     assert.equal(prepared_body, "& < > \" ' / /")
   end)
 
-  it("should test body filter when body is ready and not json", function()
-    TemplateTransformerHandler:new()
-    mock_resp_headers = {}
-    ngx.arg[1] = nil
-    ngx.ERROR = "error"
-    local config = {
-        response_template = '{ "bar" : "{{body.foo}}" }'
-    }
-    _G.ngx.ctx.buffer = '<html>'
-    error = TemplateTransformerHandler:body_filter(config)
-    assert.equal(ngx.ERROR, error)
-    assert.equal(nil, ngx.arg[1])
-  end)
-
-  it("should test body filter when body is empty", function()
-    TemplateTransformerHandler:new()
-    mock_resp_headers = {}
-    ngx.arg[1] = nil
-    ngx.ERROR = "error"
-    local config = {
-        response_template = '{ "bar" : "{{body.foo}}" }'
-    }
-    _G.ngx.ctx.buffer = nil
-    error = TemplateTransformerHandler:body_filter(config)
-    assert.equal('{ "bar" : "" }', ngx.arg[1])
-  end)
-
 end)
