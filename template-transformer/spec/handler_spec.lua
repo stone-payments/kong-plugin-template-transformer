@@ -114,6 +114,18 @@ describe("Test TemplateTransformerHandler access", function()
     assert.spy(ngx.req.set_body_data).was_called_with("query_args payload_data cool_header test_match")
   end)
 
+  it("should build the request body without error when query args have special characters", function()
+    local query_args = mock_query_args
+    mock_query_args = "& < > \" ' / /"
+    TemplateTransformerHandler:new()
+    local config = {
+        request_template = "query: {{query_string['query']}}"
+    }
+    TemplateTransformerHandler:access(config)
+    assert.spy(ngx.req.set_body_data).was_called_with("query: & < > \" ' / /")
+    mock_query_args = query_args
+  end)
+
   it("should build the request body without error when query args are missing", function()
     local query_args = mock_query_args
     mock_query_args = ""
@@ -234,7 +246,7 @@ describe("Test read_json_body", function()
     assert.same(actual, {})
   end)
 
-  it("should filled table when there is a JSON payload", function()
+  it("should return filled table when there is a JSON payload", function()
     actual = read_json_body("{\"abc\": 123}")
     assert.same(actual, {["abc"] = 123})
   end)
@@ -242,7 +254,7 @@ end)
 
 describe("Test prepare_body", function()
   it("should replace strings as expected", function()
-    prepared_body = prepare_body("&amp &lt &gt &quot &#39 &#47 /;")
+    prepared_body = prepare_body("&amp; &lt; &gt; &quot; &#39; &#47; /;")
     assert.equal(prepared_body, "& < > \" ' / /")
   end)
 end)
