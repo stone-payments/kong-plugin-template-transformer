@@ -6,6 +6,9 @@ Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## Unreleased
+### Fixed
+- Params validation that was not been called.
+
 ### Changed
 - Package name in rockspec.
 
