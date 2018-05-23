@@ -38,12 +38,12 @@ function prepare_body(string_body)
 
   -- Resty-Template Escaped characters
   -- https://github.com/bungle/lua-resty-template#a-word-about-html-escaping
-  v = gsub(v, "&amp", "&")
-  v = gsub(v, "&lt", "<")
-  v = gsub(v, "&gt", ">")
-  v = gsub(v, "&quot", "\"")
-  v = gsub(v, "&#39", "\'")
-  v = gsub(v, "&#47", "/")
+  v = gsub(v, "&amp;", "&")
+  v = gsub(v, "&lt;", "<")
+  v = gsub(v, "&gt;", ">")
+  v = gsub(v, "&quot;", "\"")
+  v = gsub(v, "&#39;", "\'")
+  v = gsub(v, "&#47;", "/")
   v = gsub(v, "/;", "/")
 
   ngx.log(ngx.NOTICE, string.format("Encoded Body :: %s", v))
@@ -73,6 +73,7 @@ function TemplateTransformerHandler:access(config)
                                                                                         headers = headers,
                                                                                         body = body,
                                                                                         route_groups = router_matches.uri_captures}
+    transformed_body = prepare_body(transformed_body)
     ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
