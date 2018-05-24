@@ -14,9 +14,9 @@ local sub = string.sub
 local gsub = string.gsub
 local TemplateTransformerHandler = BasePlugin:extend()
 
-local template_transformer = require 'kong.plugins.template-transformer.template_transformer'
+local template_transformer = require 'kong.plugins.kong-plugin-template-transformer.template_transformer'
 
-local function read_json_body(body)
+function read_json_body(body)
   if body then
     ngx.log(ngx.NOTICE, string.format("Body :: %s", body))
     local status, res = pcall(cjson_decode, body)
@@ -38,12 +38,12 @@ function prepare_body(string_body)
 
   -- Resty-Template Escaped characters
   -- https://github.com/bungle/lua-resty-template#a-word-about-html-escaping
-  v = gsub(v, "&amp", "&")
-  v = gsub(v, "&lt", "<")
-  v = gsub(v, "&gt", ">")
-  v = gsub(v, "&quot", "\"")
-  v = gsub(v, "&#39", "\'")
-  v = gsub(v, "&#47", "/")
+  v = gsub(v, "&amp;", "&")
+  v = gsub(v, "&lt;", "<")
+  v = gsub(v, "&gt;", ">")
+  v = gsub(v, "&quot;", "\"")
+  v = gsub(v, "&#39;", "\'")
+  v = gsub(v, "&#47;", "/")
   v = gsub(v, "/;", "/")
 
   ngx.log(ngx.NOTICE, string.format("Encoded Body :: %s", v))
@@ -57,9 +57,14 @@ end
 function TemplateTransformerHandler:access(config)
   TemplateTransformerHandler.super.access(self)
   if config.request_template then
+    local body = nil
+
     req_read_body()
     local string_body = req_get_body_data()
-    local body = cjson_decode(prepare_body(string_body))
+    if string_body then
+      body = cjson_decode(prepare_body(string_body))
+    end
+
     local headers = req_get_headers()
     local query_string = req_get_uri_args()
     local router_matches = ngx.ctx.router_matches
@@ -68,10 +73,10 @@ function TemplateTransformerHandler:access(config)
                                                                                         headers = headers,
                                                                                         body = body,
                                                                                         route_groups = router_matches.uri_captures}
+    transformed_body = prepare_body(transformed_body)
     ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
-
   end
   if config.response_template then
     ngx.ctx.buffer = ''
