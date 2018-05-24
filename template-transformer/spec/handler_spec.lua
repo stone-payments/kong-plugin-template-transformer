@@ -257,4 +257,5 @@ describe("Test prepare_body", function()
     prepared_body = prepare_body("&amp; &lt; &gt; &quot; &#39; &#47; /;")
     assert.equal(prepared_body, "& < > \" ' / /")
   end)
+
 end)
