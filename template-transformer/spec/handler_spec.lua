@@ -181,7 +181,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     local config = {
         response_template = "template"
     }
-    _G.ngx.ctx.buffer = '{ "body"  : "sent" }'
+    _G.ngx.ctx.template_transformer_buffer = '{ "body"  : "sent" }'
     _G.ngx.arg = {'{ "key" : "value" }', true}
     TemplateTransformerHandler:body_filter(config)
     assert.equal(config.response_template, ngx.arg[1])
@@ -199,7 +199,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
   it("should build first ngx arg correctly when body is fully read with custom variables", function()
     TemplateTransformerHandler:new()
     mock_resp_headers = {}
-    _G.ngx.ctx.buffer = '{ "foo" : "bar" }'
+    _G.ngx.ctx.template_transformer_buffer = '{ "foo" : "bar" }'
     local config = {
         response_template = '{ "data" : "{{body.foo}}" }'
     }
@@ -215,7 +215,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     local config = {
         response_template = '{ "bar" : "{{body.foo}}" }'
     }
-    _G.ngx.ctx.buffer = '<html>'
+    _G.ngx.ctx.template_transformer_buffer = '<html>'
     actual = TemplateTransformerHandler:body_filter(config)
     assert.equal(ngx.ERROR, actual)
     assert.is_nil(ngx.arg[1])
@@ -229,7 +229,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     local config = {
         response_template = '{ "bar" : "{{body.foo}}" }'
     }
-    _G.ngx.ctx.buffer = nil
+    _G.ngx.ctx.template_transformer_buffer = nil
     TemplateTransformerHandler:body_filter(config)
     assert.equal('{ "bar" : "" }', ngx.arg[1])
   end)
