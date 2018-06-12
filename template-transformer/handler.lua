@@ -79,7 +79,7 @@ function TemplateTransformerHandler:access(config)
     req_set_header(CONTENT_LENGTH, #transformed_body)
   end
   if config.response_template then
-    ngx.ctx.buffer = ''
+    ngx.ctx.template_transformer_buffer = ''
   end
 end
 
@@ -96,14 +96,14 @@ function TemplateTransformerHandler:body_filter(config)
     if not eof then
       -- sometimes the data comes in chunks and every chunk is a different call
       -- so we will buffer the chunks in the context
-      if ngx.ctx.buffer and chunk then
-        ngx.ctx.buffer = ngx.ctx.buffer .. chunk
+      if ngx.ctx.template_transformer_buffer and chunk then
+        ngx.ctx.template_transformer_buffer = ngx.ctx.template_transformer_buffer .. chunk
       end
       ngx.arg[1] = nil
     else
       -- body is fully read
       local headers = res_get_headers()
-      local body = read_json_body(ngx.ctx.buffer)
+      local body = read_json_body(ngx.ctx.template_transformer_buffer)
       if body == nil then
         return ngx.ERROR
       end
