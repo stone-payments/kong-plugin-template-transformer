@@ -2,44 +2,44 @@ local template = require 'resty.template'
 local Errors = require "kong.dao.errors"
 
 function check_template(schema, config, dao, is_updating)
-  if config.request_template then
-    local status, err = pcall(function ()
-      template.precompile(config.request_template)
-    end)
+    if config.request_template then
+        local status, err = pcall(function ()
+            template.precompile(config.request_template)
+        end)
 
-    if status ~= true then
-      return false, Errors.schema(err)
+        if status ~= true then
+            return false, Errors.schema(err)
+        end
+
+        return status, err
     end
 
-    return status, err
-  end
+    if config.response_template then
+        local status, err = pcall(function ()
+            template.precompile(config.response_template)
+        end)
 
-  if config.response_template then
-    local status, err = pcall(function ()
-      template.precompile(config.response_template)
-    end)
+        if status ~= true then
+            return false, Errors.schema(err)
+        end
 
-    if status ~= true then
-      return false, Errors.schema(err)
+        return status, err
     end
 
-    return status, err
-  end
-
-  return true
+    return true
 end
 
 return {
-  no_consumer = true,
-  fields = {
-    request_template = {
-      type = "string",
-      required = false
-    },
-    response_template = {
-      type = "string",
-      required = false
+    no_consumer = true,
+    fields = {
+        request_template = {
+            type = "string",
+            required = false
+        },
+        response_template = {
+            type = "string",
+            required = false
+        }},
+        self_check = check_template
     }
-  },
-  self_check = check_template
-}
+
