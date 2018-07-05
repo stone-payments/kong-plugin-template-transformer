@@ -29,7 +29,8 @@ local ngx =  {
     get_phase = spy.new(function() end),
     log = spy.new(function() end),
     ctx = {
-        router_matches = { uri_captures = mock_router_matches }
+        router_matches = { uri_captures = mock_router_matches },
+        custom_data = { important_stuff = 123 }
     },
     status = 200,
 }
@@ -159,6 +160,18 @@ describe("Test TemplateTransformerHandler access", function()
     }
     TemplateTransformerHandler:access(config)
     assert.spy(ngx.req.set_body_data).was_called_with("query: query_args data:  header: cool_header matches: test_match")
+    mock_body = old_body
+  end)
+
+  it("should build the request body with custom data", function()
+    local old_body = mock_body
+    mock_body = '{}'
+    TemplateTransformerHandler:new()
+    local config = {
+        request_template = "custom_data: {{custom_data['important_stuff']}} query: {{query_string['query']}} data: {{body['data']}} header: {{headers['my_cool_header']}} matches: {{route_groups['group_one']}}"
+    }
+    TemplateTransformerHandler:access(config)
+    assert.spy(ngx.req.set_body_data).was_called_with("custom_data: 123 query: query_args data:  header: cool_header matches: test_match")
     mock_body = old_body
   end)
 
