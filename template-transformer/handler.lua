@@ -72,6 +72,7 @@ function TemplateTransformerHandler:access(config)
     local transformed_body = template_transformer.get_template(config.request_template){query_string = query_string,
                                                                                         headers = headers,
                                                                                         body = body,
+                                                                                        custom_data = ngx.ctx.custom_data,
                                                                                         route_groups = router_matches.uri_captures}
     transformed_body = prepare_body(transformed_body)
     ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
