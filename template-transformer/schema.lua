@@ -39,6 +39,10 @@ return {
     response_template = {
       type = "string",
       required = false
+    },
+    hidden_fields = {
+      type = "array",
+      required = false
     }
   },
   self_check = check_template

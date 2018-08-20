@@ -17,6 +17,7 @@ build = {
    modules = {
     ["kong.plugins.kong-plugin-template-transformer.handler"] = "./handler.lua",
     ["kong.plugins.kong-plugin-template-transformer.schema"] = "./schema.lua",
-    ["kong.plugins.kong-plugin-template-transformer.template_transformer"] = "./template_transformer.lua"
+    ["kong.plugins.kong-plugin-template-transformer.template_transformer"] = "./template_transformer.lua",
+    ["kong.plugins.kong-plugin-template-transformer.utils"] = "./utils.lua"
    }
 }

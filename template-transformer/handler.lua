@@ -15,16 +15,19 @@ local gsub = string.gsub
 local TemplateTransformerHandler = BasePlugin:extend()
 
 local template_transformer = require 'kong.plugins.kong-plugin-template-transformer.template_transformer'
+local utils = require 'kong.plugins.kong-plugin-template-transformer.utils'
 
 function read_json_body(body)
   if body then
-    ngx.log(ngx.NOTICE, string.format("Body :: %s", body))
     local status, res = pcall(cjson_decode, body)
+
     if status then
       return res
     end
+
     ngx.log(ngx.NOTICE, string.format("Error while decoding JSON :: %s", res))
     return nil
+
   end
   return {}
 end
@@ -46,7 +49,6 @@ function prepare_body(string_body)
   v = gsub(v, "&#47;", "/")
   v = gsub(v, "/;", "/")
 
-  ngx.log(ngx.NOTICE, string.format("Encoded Body :: %s", v))
   return v
 end
 
@@ -75,9 +77,15 @@ function TemplateTransformerHandler:access(config)
                                                                                         custom_data = ngx.ctx.custom_data,
                                                                                         route_groups = router_matches.uri_captures}
     transformed_body = prepare_body(transformed_body)
-    ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
+
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
+
+    local json_transformed_body = cjson_decode(transformed_body)
+
+    utils.hide_fields(json_transformed_body, config.hidden_fields)
+
+    ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
   end
   if config.response_template then
     ngx.ctx.buffer = ''
@@ -111,8 +119,12 @@ function TemplateTransformerHandler:body_filter(config)
       local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
                                                                                            body = body,
                                                                                            status = ngx.status}
-      ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", transformed_body))
       ngx.arg[1] = prepare_body(cjson_encode(transformed_body))
+
+      local json_transformed_body = cjson_decode(transformed_body)
+      utils.hide_fields(json_transformed_body, config.hidden_fields)
+
+      ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
 end
