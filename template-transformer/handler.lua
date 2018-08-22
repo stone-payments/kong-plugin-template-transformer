@@ -81,11 +81,13 @@ function TemplateTransformerHandler:access(config)
     req_set_body_data(transformed_body)
     req_set_header(CONTENT_LENGTH, #transformed_body)
 
-    local json_transformed_body = cjson_decode(transformed_body)
+    if transformed_body ~= "" then
+      local json_transformed_body = cjson_decode(transformed_body)
 
-    utils.hide_fields(json_transformed_body, config.hidden_fields)
+      utils.hide_fields(json_transformed_body, config.hidden_fields)
 
-    ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+    end
   end
   if config.response_template then
     ngx.ctx.buffer = ''
