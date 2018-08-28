@@ -100,7 +100,7 @@ describe("Test TemplateTransformerHandler access", function()
   it("should set the request body when there is a request template with no variables", function()
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "hello im a template"
+        request_template = "{\"hello\": \"im a template\"}"
     }
     TemplateTransformerHandler:access(config)
     assert.spy(ngx.req.set_body_data).was_called_with(config.request_template)
@@ -109,21 +109,21 @@ describe("Test TemplateTransformerHandler access", function()
   it("should build the request body correctly when there is a request template with custom variables", function()
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "{{query_string['query']}} {{body['data']}} {{headers['my_cool_header']}} {{route_groups['group_one']}}"
+        request_template = "{ \"{{query_string['query']}}\": 1, \"{{body['data']}}\": 2, \"{{headers['my_cool_header']}}\": 3, \"{{route_groups['group_one']}}\": 4 }"
     }
     TemplateTransformerHandler:access(config)
-    assert.spy(ngx.req.set_body_data).was_called_with("query_args payload_data cool_header test_match")
+    assert.spy(ngx.req.set_body_data).was_called_with("{ \"query_args\": 1, \"payload_data\": 2, \"cool_header\": 3, \"test_match\": 4 }")
   end)
 
   it("should build the request body without error when query args have special characters", function()
     local query_args = mock_query_args
-    mock_query_args = "& < > \" ' / /"
+    mock_query_args = "& < > \\\" ' / /"
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "query: {{query_string['query']}}"
+        request_template = "{ \"query\": \"{{query_string['query']}}\" }"
     }
     TemplateTransformerHandler:access(config)
-    assert.spy(ngx.req.set_body_data).was_called_with("query: & < > \" ' / /")
+    assert.spy(ngx.req.set_body_data).was_called_with("{ \"query\": \"& < > \\\" ' / /\" }")
     mock_query_args = query_args
   end)
 
@@ -132,10 +132,10 @@ describe("Test TemplateTransformerHandler access", function()
     mock_query_args = ""
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "query: {{query_string['query']}} data: {{body['data']}} header: {{headers['my_cool_header']}} matches: {{route_groups['group_one']}}"
+        request_template = "{ \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
     TemplateTransformerHandler:access(config)
-    assert.spy(ngx.req.set_body_data).was_called_with("query:  data: payload_data header: cool_header matches: test_match")
+    assert.spy(ngx.req.set_body_data).was_called_with("{ \"query\": \"\", \"data\": \"payload_data\", \"header\": \"cool_header\", \"matches\": \"test_match\" }")
     mock_query_args = query_args
   end)
 
@@ -144,10 +144,10 @@ describe("Test TemplateTransformerHandler access", function()
     mock_req_headers = {}
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "query: {{query_string['query']}} data: {{body['data']}} header: {{headers['my_cool_header']}} matches: {{route_groups['group_one']}}"
+        request_template = "{ \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
     TemplateTransformerHandler:access(config)
-    assert.spy(ngx.req.set_body_data).was_called_with("query: query_args data: payload_data header:  matches: test_match")
+    assert.spy(ngx.req.set_body_data).was_called_with("{ \"query\": \"query_args\", \"data\": \"payload_data\", \"header\": \"\", \"matches\": \"test_match\" }")
     mock_req_headers = old_headers
   end)
 
@@ -156,10 +156,10 @@ describe("Test TemplateTransformerHandler access", function()
     mock_body = '{}'
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "query: {{query_string['query']}} data: {{body['data']}} header: {{headers['my_cool_header']}} matches: {{route_groups['group_one']}}"
+        request_template = "{ \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
     TemplateTransformerHandler:access(config)
-    assert.spy(ngx.req.set_body_data).was_called_with("query: query_args data:  header: cool_header matches: test_match")
+    assert.spy(ngx.req.set_body_data).was_called_with("{ \"query\": \"query_args\", \"data\": \"\", \"header\": \"cool_header\", \"matches\": \"test_match\" }")
     mock_body = old_body
   end)
 
@@ -168,10 +168,10 @@ describe("Test TemplateTransformerHandler access", function()
     mock_body = '{}'
     TemplateTransformerHandler:new()
     local config = {
-        request_template = "custom_data: {{custom_data['important_stuff']}} query: {{query_string['query']}} data: {{body['data']}} header: {{headers['my_cool_header']}} matches: {{route_groups['group_one']}}"
+        request_template = "{ \"custom_data\": \"{{custom_data['important_stuff']}}\", \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
     TemplateTransformerHandler:access(config)
-    assert.spy(ngx.req.set_body_data).was_called_with("custom_data: 123 query: query_args data:  header: cool_header matches: test_match")
+    assert.spy(ngx.req.set_body_data).was_called_with("{ \"custom_data\": \"123\", \"query\": \"query_args\", \"data\": \"\", \"header\": \"cool_header\", \"matches\": \"test_match\" }")
     mock_body = old_body
   end)
 
@@ -192,7 +192,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
   it("should set first ngx arg to template when when body is fully read and there is no custom variables", function()
     TemplateTransformerHandler:new()
     local config = {
-        response_template = "template"
+        response_template = "{ \"template\": 123 }"
     }
     _G.ngx.ctx.buffer = '{ "body"  : "sent" }'
     _G.ngx.arg = {'{ "key" : "value" }', true}
@@ -203,10 +203,10 @@ describe("Test TemplateTransformerHandler body_filter", function()
   it("should pass status code to template", function()
     TemplateTransformerHandler:new()
     local config = {
-        response_template = "template with status = {{status}}"
+        response_template = "{ \"status\": {{status}} }"
     }
     TemplateTransformerHandler:body_filter(config)
-    assert.equal("template with status = 200", ngx.arg[1])
+    assert.equal("{ \"status\": 200 }", ngx.arg[1])
   end)
 
   it("should build first ngx arg correctly when body is fully read with custom variables", function()
