@@ -25,7 +25,7 @@ function read_json_body(body)
       return res
     end
 
-    ngx.log(ngx.NOTICE, string.format("Error while decoding JSON :: %s", res))
+    ngx.log(ngx.ERR, string.format("Error while decoding %s :: %s", body, res))
     return nil
 
   end
@@ -86,7 +86,7 @@ function TemplateTransformerHandler:access(config)
 
       utils.hide_fields(json_transformed_body, config.hidden_fields)
 
-      ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
   if config.response_template then
@@ -126,7 +126,7 @@ function TemplateTransformerHandler:body_filter(config)
       local json_transformed_body = cjson_decode(transformed_body)
       utils.hide_fields(json_transformed_body, config.hidden_fields)
 
-      ngx.log(ngx.NOTICE, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
 end
