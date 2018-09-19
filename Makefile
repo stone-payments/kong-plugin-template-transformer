@@ -31,7 +31,7 @@ test:
 	cd $(PROJECT_FOLDER) && busted spec/ ${ARGS}
 
 coverage:
-	cd $(PROJECT_FOLDER) && busted spec/ -c && luacov && luacov-cobertura -o cobertura.xml
+	cd $(PROJECT_FOLDER) && busted spec/ -c ${ARGS} && luacov && luacov-cobertura -o cobertura.xml
 
 package:
 	cd $(PROJECT_FOLDER) && luarocks make --pack-binary-rock
