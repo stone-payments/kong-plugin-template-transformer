@@ -5,6 +5,10 @@ All changes made on any release of this project should be commented on high leve
 Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
+## [0.7.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.7.0) - 2018-09-20
+### Fixed
+- Log severities to better represent information.
+
 ## [0.6.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.6.0) - 2018-08-28
 ### Added
 - Configuration variable hide fields and not log them.
