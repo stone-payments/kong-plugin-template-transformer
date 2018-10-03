@@ -18,7 +18,7 @@ local template_transformer = require 'kong.plugins.kong-plugin-template-transfor
 local utils = require 'kong.plugins.kong-plugin-template-transformer.utils'
 
 function read_json_body(body)
-  if body then
+  if body and body ~= "" then
     local status, res = pcall(cjson_decode, body)
 
     if status then
