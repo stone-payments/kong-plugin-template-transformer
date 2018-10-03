@@ -259,6 +259,11 @@ describe("Test read_json_body", function()
     assert.same(actual, {})
   end)
 
+  it("should return empty table when the payload is an empty string", function()
+    actual = read_json_body("")
+    assert.same(actual, {})
+  end)
+
   it("should return filled table when there is a JSON payload", function()
     actual = read_json_body("{\"abc\": 123}")
     assert.same(actual, {["abc"] = 123})
