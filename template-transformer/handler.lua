@@ -58,7 +58,7 @@ end
 
 function TemplateTransformerHandler:access(config)
   TemplateTransformerHandler.super.access(self)
-  if config.request_template then
+  if config.request_template and config.request_template ~= "" then
     local body = nil
 
     req_read_body()
@@ -102,7 +102,7 @@ end
 
 function TemplateTransformerHandler:body_filter(config)
   TemplateTransformerHandler.super.body_filter(self)
-  if config.response_template then
+  if config.response_template and config.response_template ~= "" then
     local chunk, eof = ngx.arg[1], ngx.arg[2]
     if not eof then
       -- sometimes the data comes in chunks and every chunk is a different call
