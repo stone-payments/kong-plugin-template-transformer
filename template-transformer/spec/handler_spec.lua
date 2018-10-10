@@ -97,6 +97,15 @@ describe("Test TemplateTransformerHandler access", function()
     assert.spy(ngx.req.set_body_data).was_not_called()
   end)
 
+  it("should not call set body data when the template is an empty string", function()
+    TemplateTransformerHandler:new()
+    local config = {
+      request_template = ""
+    }
+    TemplateTransformerHandler:access(config)
+    assert.spy(ngx.req.set_body_data).was_not_called()
+  end)
+
   it("should set the request body when there is a request template with no variables", function()
     TemplateTransformerHandler:new()
     local config = {
@@ -178,6 +187,17 @@ describe("Test TemplateTransformerHandler access", function()
 end)
 
 describe("Test TemplateTransformerHandler body_filter", function()
+
+  it("should not run when response template is empty", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_template = ""
+    }
+    _G.ngx.arg = {'{ "key" : "value" }', false}
+    TemplateTransformerHandler:body_filter(config)
+    assert.spy(ngx.resp.get_headers).was_not_called()
+    assert.equal('{ "key" : "value" }', ngx.arg[1])
+  end)
 
   it("should set first ngx arg to nil when body is not fully read", function()
     TemplateTransformerHandler:new()
