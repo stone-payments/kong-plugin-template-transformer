@@ -7,7 +7,7 @@ Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](htt
 
 ## [0.7.2](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.7.2) - 2018-10-10
 ### Fixed
-- Application of templates when they are empty strings.
+- Execution of templates when they are empty strings.
 
 ## [0.7.1](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.7.1) - 2018-10-02
 ### Fixed
