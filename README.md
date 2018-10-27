@@ -1,4 +1,4 @@
-![Build Status](https://stonepagamentos.visualstudio.com/_apis/public/build/definitions/3eb9c9ed-2656-4b52-ae5c-75ea4a42c98d/285/badge)
+[![Build Status](https://travis-ci.org/stone-payments/kong-plugin-template-transformer.svg?branch=master)](https://travis-ci.org/stone-payments/kong-plugin-template-transformer)
 
 # kong-plugin-template-transformer
 
