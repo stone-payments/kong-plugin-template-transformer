@@ -1,0 +1,19 @@
+language: python
+sudo: false
+
+env:
+  - LUA="luajit=2.0"
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y libssl-dev
+  - pip install hererocks
+  - hererocks lua_install -r^ --$LUA
+  - export PATH=$PATH:$PWD/lua_install/bin
+
+install:
+  - make setup
+  - make install
+
+script:
+  - make test
