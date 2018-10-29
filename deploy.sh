@@ -1,0 +1,1 @@
+luarocks upload template-transformer/kong-plugin-template-transformer-*.rockspec
