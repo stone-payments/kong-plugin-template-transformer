@@ -1,1 +1,0 @@
-luarocks upload template-transformer/kong-plugin-template-transformer-*.rockspec --api-key=${LUAROCKS_API_KEY}
