@@ -6,7 +6,8 @@ Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## [0.8.0] (https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.8.0) - 2018-10-30
-- Add Travis for CI/CD
+### Added
+- Travis for CI/CD
 
 ## [0.7.2](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.7.2) - 2018-10-10
 ### Fixed
