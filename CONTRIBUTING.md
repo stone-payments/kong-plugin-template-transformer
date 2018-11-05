@@ -12,6 +12,28 @@
 - **DO NOT** surprise us with big pull requests. Instead, file an issue and start a discussion so we can agree on a direction before you invest a large amount of time working on it
 - **DO NOT** add API additions without filing an issue and discussing with us first
 
+## Testing
+
+We're using [busted](http://olivinelabs.com/busted) to run our tests. Every test file should live in a `spec` folder and end with `_spec.lua`.
+
+### Running the tests
+
+`make test` or `busted spec/` in the plugin folder should do the job.
+
+remember to run it as super user if your current environment needs it.
+
+### Test Coverage
+
+If you're using our Makefile, just run `make coverage`.
+
+With Busted, a `-c` flag will do the job.
+It will generate a `luacov.stats.out` that you can use to generate coverage reports.
+You can run `luacov` and it will generate a `luacov.report.out` containing a comprehensive coverage report.
+
+## Lint
+
+`make lint` or `luacheck -q .` in the plugin folder should run the linter.
+
 ### Adding External Library Dependencies
 
 - Add new dependencies to the project ONLY IF STRICTLY NECESSARY, we know that adding new dependencies is easier, but by doing so it increases the build time of the framework.
@@ -21,17 +43,18 @@
 - We use GitFlow, you can find more about this workfow [here](http://nvie.com/posts/a-successful-git-branching-model/).
 
 ### Branching
--  **New Features** `feature/<Name of feature>` from `develop`.
--  **Bugfix** `bugfix/<Name of bugfix>` from `develop`.
--  **Improvements** `improvement/<Name of improvement>` from `develop`.
--  **Hotfix** `hotfix/<Name of hotfix>` from `master`.
+
+- **New Features** `feature/<Name of feature>` from `develop`.
+- **Bugfix** `bugfix/<Name of bugfix>` from `develop`.
+- **Improvements** `improvement/<Name of improvement>` from `develop`.
+- **Hotfix** `hotfix/<Name of hotfix>` from `master`.
 
 ### Tests and coverage
 
 - Don't forget to write tests!!
 - We'd like to keep our project with a minimum of 60%, but 90% is the desirable target.
 
-### Commit messages 
+### Commit messages
 
 - Use emoji at the beginning of each message. It help us to identify what's the purpose for each commit.
 
@@ -60,10 +83,10 @@
 - If possible, link the commit to the corresponding task in our JIRA.
 
 Commit example:
-```
+
+```bash
 git commit -m ":arrow_up: (APIDC-001) Updates rockspec"
 ```
-
 
 ### Pull Requests
 
