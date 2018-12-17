@@ -25,7 +25,7 @@ check:
 
 install:
 	-@luarocks remove $(LUA_PROJECT)
-	cd $(PROJECT_FOLDER) && luarocks make
+	luarocks make
 
 test:
 	cd $(PROJECT_FOLDER) && busted spec/ ${ARGS}
@@ -34,7 +34,7 @@ coverage:
 	cd $(PROJECT_FOLDER) && busted spec/ -c ${ARGS} && luacov && luacov-cobertura -o cobertura.xml
 
 package:
-	cd $(PROJECT_FOLDER) && luarocks make --pack-binary-rock
+	luarocks make --pack-binary-rock
 
 lint:
 	cd $(PROJECT_FOLDER) && luacheck -q .
