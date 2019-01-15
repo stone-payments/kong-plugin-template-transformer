@@ -220,6 +220,16 @@ describe("Test TemplateTransformerHandler body_filter", function()
     assert.equal(config.response_template, ngx.arg[1])
   end)
 
+  it("should set first ngx arg to template when using raw_body in the template", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_template = "{ \"wrapper\": {{ raw_body }} }"
+    }
+    _G.ngx.ctx.buffer = '{ "name": "fred" }'
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal("{ \"wrapper\": { \"name\": \"fred\" } }", ngx.arg[1])
+  end)
+
   it("should pass status code to template", function()
     TemplateTransformerHandler:new()
     local config = {
