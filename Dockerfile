@@ -14,4 +14,4 @@ RUN luarocks install --server=http://luarocks.org/dev luaffi
 ADD Makefile .
 RUN make setup
 
-ADD kong-plugin-template-transformer-0.8.0-2.rockspec .
+ADD kong-plugin-template-transformer-*.rockspec .
