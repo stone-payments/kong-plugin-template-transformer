@@ -3,7 +3,6 @@ PROJECT_FOLDER = template-transformer
 LUA_PROJECT = kong-plugin-template-transformer
 
 setup:
-	cd $(PROJECT_FOLDER)
 	@for rock in $(DEV_ROCKS) ; do \
 		if luarocks list --porcelain $$rock | grep -q "installed" ; then \
 			echo $$rock already installed, skipping ; \
