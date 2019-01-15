@@ -197,6 +197,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     TemplateTransformerHandler:body_filter(config)
     assert.spy(ngx.resp.get_headers).was_not_called()
     assert.equal('{ "key" : "value" }', ngx.arg[1])
+    assert.equal(200, ngx.status)
   end)
 
   it("should set first ngx arg to nil when body is not fully read", function()
@@ -207,6 +208,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     _G.ngx.arg = {'{ "key" : "value" }', false}
     TemplateTransformerHandler:body_filter(config)
     assert.is_nil(ngx.arg[1])
+    assert.equal(200, ngx.status)
   end)
 
   it("should set first ngx arg to template when when body is fully read and there is no custom variables", function()
@@ -218,10 +220,24 @@ describe("Test TemplateTransformerHandler body_filter", function()
     _G.ngx.arg = {'{ "key" : "value" }', true}
     TemplateTransformerHandler:body_filter(config)
     assert.equal(config.response_template, ngx.arg[1])
+    assert.equal(200, ngx.status)
   end)
+
+  it("should set ngx status to status_template when body is fully read", function()
+    TemplateTransformerHandler:new()
+    local config = {
+        response_status_template = "{{body.carrots}}"
+    }
+    _G.ngx.ctx.buffer = '{ "carrots" : "401" }'
+    _G.ngx.arg = {'{ "key" : "value" }', true}
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal(401, ngx.status)
+  end)
+
 
   it("should pass status code to template", function()
     TemplateTransformerHandler:new()
+    _G.ngx.status = 200
     local config = {
         response_template = "{ \"status\": {{status}} }"
     }

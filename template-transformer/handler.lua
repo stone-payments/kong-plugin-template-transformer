@@ -102,7 +102,9 @@ end
 
 function TemplateTransformerHandler:body_filter(config)
   TemplateTransformerHandler.super.body_filter(self)
-  if config.response_template and config.response_template ~= "" then
+  local hasResponseBodyTemplate = config.response_template and config.response_template ~= ""
+  local hasResponseStatusTemplate = config.response_status_template and config.response_status_template ~= ""
+  if hasResponseBodyTemplate or hasResponseStatusTemplate then
     local chunk, eof = ngx.arg[1], ngx.arg[2]
     if not eof then
       -- sometimes the data comes in chunks and every chunk is a different call
@@ -118,15 +120,27 @@ function TemplateTransformerHandler:body_filter(config)
       if body == nil then
         return ngx.ERROR
       end
-      local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
-                                                                                           body = body,
-                                                                                           status = ngx.status}
-      ngx.arg[1] = prepare_body(cjson_encode(transformed_body))
 
-      local json_transformed_body = cjson_decode(transformed_body)
-      utils.hide_fields(json_transformed_body, config.hidden_fields)
+      if hasResponseBodyTemplate then
+        local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
+                                                                                            body = body,
+                                                                                            status = ngx.status}
+        ngx.arg[1] = prepare_body(cjson_encode(transformed_body))
 
-      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+        local json_transformed_body = cjson_decode(transformed_body)
+        utils.hide_fields(json_transformed_body, config.hidden_fields)
+
+        ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      end
+
+      if hasResponseStatusTemplate then
+        local updatedStatus = template_transformer.get_template(config.response_status_template){headers = headers,
+                                                                                            body = body,
+                                                                                            status = ngx.status}
+        ngx.log(ngx.DEBUG, string.format("Update status from :: %s to %s", ngx.status, updatedStatus))
+        ngx.status = tonumber(updatedStatus);
+      end
+
     end
   end
 end

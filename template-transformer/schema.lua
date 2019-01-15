@@ -26,6 +26,18 @@ function check_template(schema, config, dao, is_updating)
     return status, err
   end
 
+  if config.response_status_template then
+    local status, err = pcall(function ()
+      template.precompile(config.response_status_template)
+    end)
+
+    if status ~= true then
+      return false, Errors.schema(err)
+    end
+
+    return status, err
+  end
+
   return true
 end
 
@@ -37,6 +49,10 @@ return {
       required = false
     },
     response_template = {
+      type = "string",
+      required = false
+    },
+    response_status_template = {
       type = "string",
       required = false
     },
