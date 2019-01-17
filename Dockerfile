@@ -10,7 +10,6 @@ RUN apt-get install -y \
   libssl1.0-dev \
   make
 
-RUN luarocks install --server=http://luarocks.org/dev luaffi
 ADD Makefile .
 RUN make setup
 
