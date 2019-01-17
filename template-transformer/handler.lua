@@ -117,7 +117,7 @@ function TemplateTransformerHandler:body_filter(config)
     else
       -- body is fully read
       local headers = res_get_headers()
-      local raw_body = ngx.ctx.buffer;
+      local raw_body = ngx.ctx.buffer
       local body = read_json_body(raw_body)
       if body == nil then
         return ngx.ERROR
