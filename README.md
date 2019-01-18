@@ -39,6 +39,15 @@ curl -X POST http://kong:8001/routes/{route_id}/plugins \
 - config.response_template: Optional, the template to be applied before returning to the client.
 - config.hidden_fields: Optional, a list of request or response fields that you do not want Kong to save them in a log file.
 
+## Developing
+
+### In docker
+```
+docker build . -t kong-plugin-template-transformer-dev
+docker run -it -v ${PWD}/template-transformer:/template-transformer kong-plugin-template-transformer-dev bash
+```
+
+
 ## Credits
 
 made with :heart: by Stone Payments
