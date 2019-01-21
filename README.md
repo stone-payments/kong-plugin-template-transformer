@@ -42,11 +42,11 @@ curl -X POST http://kong:8001/routes/{route_id}/plugins \
 ## Developing
 
 ### In docker
-```
+
+```bash
 docker build . -t kong-plugin-template-transformer-dev
 docker run -it -v ${PWD}/template-transformer:/template-transformer kong-plugin-template-transformer-dev bash
 ```
-
 
 ## Credits
 
