@@ -5,6 +5,11 @@ All changes made on any release of this project should be commented on high leve
 Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
+## [0.9.0] (https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.9.0) - 2019-01-18
+### Added
+- Dockerfile to simplify development
+- Raw_body to template context
+
 ## [0.8.0] (https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.8.0) - 2018-10-30
 ### Added
 - Travis for CI/CD
