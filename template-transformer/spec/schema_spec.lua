@@ -14,22 +14,29 @@ local ngx =  {
 _G.ngx = ngx
 
 local schema = require('schema')
+local typedefs = require "kong.db.schema.typedefs"
 
 describe("TestSchema", function()
     it("should initialize schema correctly", function()
-      assert.is_true(schema.no_consumer)
-      assert.not_nil(schema.fields.request_template)
-      assert.not_nil(schema.fields.request_template.type, "string")
-      assert.not_nil(schema.fields.request_template.required, false)
-      assert.not_nil(schema.fields.response_template)
-      assert.not_nil(schema.fields.request_template.type, "string")
-      assert.not_nil(schema.fields.request_template.required, false)
+      local fields = schema.fields[3].config.fields;
+
+      assert.are_same(typedefs.no_consumer, schema.fields[1].consumer)
+      assert.not_nil(fields[1].request_template)
+      assert.not_nil(fields[1].request_template.type, "string")
+      assert.not_nil(fields[1].request_template.required, false)
+      assert.not_nil(fields[2].response_template)
+      assert.not_nil(fields[2].response_template.type, "string")
+      assert.not_nil(fields[2].response_template.required, false)
+      assert.not_nil(fields[3].hidden_fields)
+      assert.not_nil(fields[3].hidden_fields.type, "array")
+      assert.not_nil(fields[3].hidden_fields.required, false)
+      assert.not_nil(fields[3].hidden_fields.elements.type, "string")
     end)
 
     it("should return false then the request template is invalid", function()
       local string_template = "hello im a wrong {{a['}} template"
 
-      local valid = schema.self_check(nil, { request_template = string_template }, nil, nil)
+      local valid = schema.fields[3].config.custom_validator({ request_template = string_template })
 
       assert.is_false(valid)
     end)
@@ -37,7 +44,7 @@ describe("TestSchema", function()
     it("should return true then the request template is valid", function()
       local string_template = "hello im a correct {{a}} template"
 
-      local valid = schema.self_check(nil, { request_template = string_template }, nil, nil)
+      local valid = schema.fields[3].config.custom_validator({ request_template = string_template })
 
       assert.is_true(valid)
     end)
@@ -45,7 +52,7 @@ describe("TestSchema", function()
     it("should return false then the response template is invalid", function()
       local string_template = "hello im a wrong {{a['}} template"
 
-      local valid = schema.self_check(nil, { response_template = string_template }, nil, nil)
+      local valid = schema.fields[3].config.custom_validator({ request_template = string_template })
 
       assert.is_false(valid)
     end)
@@ -53,7 +60,7 @@ describe("TestSchema", function()
     it("should return true then the response template is valid", function()
       local string_template = "hello im a correct {{a}} template"
 
-      local valid = schema.self_check(nil, { response_template = string_template }, nil, nil)
+      local valid = schema.fields[3].config.custom_validator({ request_template = string_template })
 
       assert.is_true(valid)
     end)
