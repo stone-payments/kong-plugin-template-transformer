@@ -21,6 +21,7 @@ describe("TestSchema", function()
       local fields = schema.fields[3].config.fields;
 
       assert.are_same(typedefs.no_consumer, schema.fields[1].consumer)
+      assert.are_same(typedefs.run_on_first, schema.fields[2].run_on)
       assert.not_nil(fields[1].request_template)
       assert.not_nil(fields[1].request_template.type, "string")
       assert.not_nil(fields[1].request_template.required, false)
