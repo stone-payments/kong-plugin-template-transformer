@@ -8,7 +8,8 @@ RUN apt-get install -y \
   luarocks \
   git \
   libssl1.0-dev \
-  make
+  make \
+  m4
 
 ADD Makefile .
 RUN make setup

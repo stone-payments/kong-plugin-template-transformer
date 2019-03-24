@@ -1,4 +1,4 @@
-DEV_ROCKS = "lua-cjson 2.1.0" "kong 0.13.1" "luacov 0.12.0" "busted 2.0.rc12" "luacov-cobertura 0.2-1" "luacheck 0.20.0" "lua-resty-template 1.9-1" "--server=http://luarocks.org/dev luaffi scm-1"
+DEV_ROCKS = "lua-cjson 2.1.0" "kong 1.0.3" "luacov 0.12.0" "busted 2.0.rc12" "luacov-cobertura 0.2-1" "luacheck 0.20.0" "lua-resty-template 1.9-1" "--server=http://luarocks.org/dev luaffi scm-1"
 PROJECT_FOLDER = template-transformer
 LUA_PROJECT = kong-plugin-template-transformer
 
