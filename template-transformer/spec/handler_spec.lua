@@ -19,6 +19,7 @@ local ngx =  {
     },
     header = mock_ngx_headers,
     config = {
+        subsystem = "http",
         prefix = spy.new(function()
             return "mock"
         end)
