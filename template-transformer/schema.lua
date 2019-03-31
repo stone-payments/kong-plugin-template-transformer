@@ -1,5 +1,4 @@
 local template = require 'resty.template'
-local Errors = require "kong.dao.errors"
 
 function check_template(schema, config, dao, is_updating)
   if config.request_template then
@@ -8,7 +7,7 @@ function check_template(schema, config, dao, is_updating)
     end)
 
     if status ~= true then
-      return false, Errors.schema(err)
+      return false, err
     end
 
     return status, err
@@ -20,7 +19,7 @@ function check_template(schema, config, dao, is_updating)
     end)
 
     if status ~= true then
-      return false, Errors.schema(err)
+      return false, err
     end
 
     return status, err
