@@ -5,6 +5,10 @@ All changes made on any release of this project should be commented on high leve
 Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
+## [0.10.1](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.10.1) - 2019-05-17
+### Fixed
+- Special characters scaped in body_filter.
+
 ## [0.10.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.10.0) - 2019-04-15
 ### Added
 - Add Kong 1 support by removing kong.errors.dao
