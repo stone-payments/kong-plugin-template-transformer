@@ -5,6 +5,10 @@ All changes made on any release of this project should be commented on high leve
 Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
+## [0.11.1](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.11.1) - 2019-06-21
+### Fixed
+- Escape bars.
+
 ## [0.11.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.11.0) - 2019-05-22
 ### Fixed
 - Remove luajit and set lua version to 5.1.
