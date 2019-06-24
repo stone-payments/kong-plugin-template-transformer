@@ -20,6 +20,7 @@ local utils = require 'kong.plugins.kong-plugin-template-transformer.utils'
 function read_json_body(body)
   if body and body ~= "" then
     body = gsub(body, [[\"]], [[&__escaped__quot;]])
+    body = gsub(body, [[\\]], [[&__escaped__bar;]])
     ngx.log(ngx.ERR, body)
     local status, res = pcall(cjson_decode, body)
 
@@ -48,6 +49,7 @@ function prepare_body(string_body)
   v = gsub(v, "&gt;", ">")
   v = gsub(v, "&quot;", "\"")
   v = gsub(v, "&__escaped__quot;", '\\\"')
+  v = gsub(v, "&__escaped__bar;", '\\\\')
   v = gsub(v, "&#39;", "\'")
   v = gsub(v, "&#47;", "/")
   v = gsub(v, "/;", "/")
