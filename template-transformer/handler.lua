@@ -45,6 +45,8 @@ function prepare_body(string_body)
   -- Resty-Template Escaped characters
   -- https://github.com/bungle/lua-resty-template#a-word-about-html-escaping
   v = gsub(v, "&amp;", "&")
+  v = gsub(v, "&#9;", " ")
+  v = gsub(v, "\t", " ")
   v = gsub(v, "&lt;", "<")
   v = gsub(v, "&gt;", ">")
   v = gsub(v, "&quot;", "\"")
@@ -94,7 +96,7 @@ function TemplateTransformerHandler:access(config)
 
       utils.hide_fields(json_transformed_body, config.hidden_fields)
 
-      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      ngx.log(ngx.ERR, string.format("Transformed REQUEST Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
   if config.response_template then
@@ -131,9 +133,9 @@ function TemplateTransformerHandler:body_filter(config)
                                                                                            body = body,
                                                                                            raw_body = raw_body,
                                                                                            status = ngx.status}
-      
-      local transformed_body_json = prepare_body(transformed_body); 
-      
+
+      local transformed_body_json = prepare_body(transformed_body);
+
       ngx.arg[1] = transformed_body_json
 
       local json_transformed_body = cjson_decode(transformed_body_json)
