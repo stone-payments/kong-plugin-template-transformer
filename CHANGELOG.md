@@ -5,6 +5,10 @@ All changes made on any release of this project should be commented on high leve
 Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
+## [0.12.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.12.0) - 2019-07-10
+### Fixed
+- Escape tabs.
+
 ## [0.11.1](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.11.1) - 2019-06-21
 ### Fixed
 - Escape bars.
