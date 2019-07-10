@@ -96,7 +96,7 @@ function TemplateTransformerHandler:access(config)
 
       utils.hide_fields(json_transformed_body, config.hidden_fields)
 
-      ngx.log(ngx.ERR, string.format("Transformed REQUEST Body :: %s", cjson_encode(json_transformed_body)))
+      ngx.log(ngx.DEBUG, string.format("Transformed REQUEST Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
   if config.response_template then
