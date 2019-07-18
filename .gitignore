@@ -45,3 +45,6 @@ cobertura.xml
 
 # JSON files
 *.json
+
+# template files
+*.template

@@ -3,5 +3,5 @@
 ## Usage
 
 ```bash
-lua validate.lua <input_file> <output_file>
+lua validate.lua <template_file> <input_file> <output_file>
 ```
