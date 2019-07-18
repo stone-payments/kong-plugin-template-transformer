@@ -1,0 +1,7 @@
+{
+    "newDetails": [
+        {% for i, detail in ipairs(body.Details) do %}
+            {{detail}}{% if i ~= #body.Details then %},{% end %}
+        {% end %}
+    ]
+}

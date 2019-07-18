@@ -1,0 +1,7 @@
+{
+    {% if tostring(body.abc) ~= "userdata: (nil)" then %}
+        "def": {{body.abc}}
+    {% else %}  
+        "def": null
+    {% end %}
+}
