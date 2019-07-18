@@ -12,7 +12,7 @@ function prepare_body(string_body)
       v = gsub(sub(v, 2, -2), [[\"]], [["]]) -- To prevent having double encoded quotes
     end
     v = gsub(v, [[\/]], [[/]]) -- To prevent having double encoded slashes
-  
+
     -- Resty-Template Escaped characters
     -- https://github.com/bungle/lua-resty-template#a-word-about-html-escaping
     v = gsub(v, "&amp;", "&")
@@ -26,7 +26,7 @@ function prepare_body(string_body)
     v = gsub(v, "&#39;", "\'")
     v = gsub(v, "&#47;", "/")
     v = gsub(v, "/;", "/")
-  
+
     return v
   end
 
@@ -38,15 +38,15 @@ function file_exists(file)
     end
     return f ~= nil
 end
-  
-  -- get all lines from a file, returns an empty 
+
+  -- get all lines from a file, returns an empty
   -- list/table if the file does not exist
 function read_file(file)
     if not file_exists(file) then
         return {}
     end
     lines = ""
-    for line in io.lines(file) do 
+    for line in io.lines(file) do
       lines = lines .. line .. '\n'
     end
     return lines
@@ -65,7 +65,7 @@ function write_file(file, payload)
     -- closes the open file
     io.close(stream)
 end
-  
+
 -- tests the functions above
 local file = arg[2]
 local transformed_body = template_transformer.get_template(arg[1]){body = cjson_decode(read_file(file))}
