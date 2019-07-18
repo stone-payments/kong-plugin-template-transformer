@@ -39,8 +39,6 @@ function file_exists(file)
     return f ~= nil
 end
 
-  -- get all lines from a file, returns an empty
-  -- list/table if the file does not exist
 function read_file(file)
     if not file_exists(file) then
         return {}
@@ -53,20 +51,15 @@ function read_file(file)
 end
 
 function write_file(file, payload)
-    -- Opens a file in append mode
     stream = io.open(file, "w+")
 
-    -- sets the default output file
     io.output(stream)
 
-    -- appends a word test to the last line of the file
     io.write(payload)
 
-    -- closes the open file
     io.close(stream)
 end
 
--- tests the functions above
 local file = arg[2]
 local transformed_body = template_transformer.get_template(arg[1]){body = cjson_decode(read_file(file))}
 
