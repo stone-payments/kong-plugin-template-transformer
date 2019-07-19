@@ -42,3 +42,9 @@ luac.out
 
 # Cobertura
 cobertura.xml
+
+# JSON files
+*.json
+
+# template files
+*.template
