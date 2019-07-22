@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/stone-payments/kong-plugin-template-transformer.svg?branch=master)](https://travis-ci.org/stone-payments/kong-plugin-template-transformer)
-
 # Kong-plugin-template-transformer
+
+[![Build Status](https://travis-ci.org/stone-payments/kong-plugin-template-transformer.svg?branch=master)](https://travis-ci.org/stone-payments/kong-plugin-template-transformer)
 
 This is a Kong middleware to transform requests / responses, using pre-configured templates.
 
@@ -12,9 +12,13 @@ When using Kong, you can create routes that proxy to an upstream. The problem li
 
 The plugin folder should contain at least a `schema.lua` and a `handler.lua`, alongside with a `spec` folder and a `.rockspec` file specifying the current version of the package.
 
-# Writing Templates
+## Writing Templates
 
 We use [lua-resty-template](https://github.com/bungle/lua-resty-template) to write templates. It's also **very important** that you don't leave any `\t` in the files. We also only support JSON requests and responses for now.
+
+## Examples
+
+Inside `kong-plugin-template-transformer/template-transformer/validator/json/examples` you'll find some examples for json templates and request files.
 
 ## Rockspec Format
 
