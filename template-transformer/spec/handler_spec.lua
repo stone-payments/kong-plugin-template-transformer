@@ -252,6 +252,18 @@ describe("Test TemplateTransformerHandler body_filter", function()
     assert.equal("{ \"name\": \"im a string with \\\\bar\" }", ngx.arg[1])
   end)
 
+  it("Should return string with carriages", function()
+    TemplateTransformerHandler:new()
+    local userName = cjson_encode('im a string with \\r\\n')
+    local config = {
+      response_template = "{{ raw_body }}"
+    }
+    _G.ngx.ctx.buffer = '{ "name": '..userName..' }'
+    _G.ngx.arg = {'{ "key" : "value" }', true}
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal("{ \"name\": \"im a string with \\\\r\\\\n\" }", ngx.arg[1])
+  end)
+
   it("Should return string with scaped quotes", function()
     TemplateTransformerHandler:new()
     local userName = cjson_encode('Frango "Contudo" Dentro')
