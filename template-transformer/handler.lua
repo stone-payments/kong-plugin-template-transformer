@@ -21,7 +21,7 @@ function read_json_body(body)
   if body and body ~= "" then
     body = gsub(body, [[\"]], [[&__escaped__quot;]])
     body = gsub(body, [[\\]], [[&__escaped__bar;]])
-    body = gsub(body, [[\r\n]], [[&__escaped__carriage;]])
+    body = gsub(body, [[\\\r\\\n]], [[&__escaped__carriage;]])
     ngx.log(ngx.ERR, body)
     local status, res = pcall(cjson_decode, body)
 
@@ -48,6 +48,7 @@ function prepare_body(string_body)
   v = gsub(v, "&amp;", "&")
   v = gsub(v, "&#9;", " ")
   v = gsub(v, "\t", " ")
+  v = gsub(v, "\r\n", '\\\\r\\\\n')
   v = gsub(v, "&lt;", "<")
   v = gsub(v, "&gt;", ">")
   v = gsub(v, "&quot;", "\"")
@@ -88,6 +89,9 @@ function TemplateTransformerHandler:access(config)
                                                                                         raw_body = raw_body,
                                                                                         custom_data = ngx.ctx.custom_data,
                                                                                         route_groups = router_matches.uri_captures}
+
+    ngx.log(ngx.DEBUG, string.format("BEFORE PREPARE :: %s", cjson_encode(transformed_body)))
+
     transformed_body = prepare_body(transformed_body)
 
     req_set_body_data(transformed_body)
@@ -135,7 +139,7 @@ function TemplateTransformerHandler:body_filter(config)
                                                                                            body = body,
                                                                                            raw_body = raw_body,
                                                                                            status = ngx.status}
-
+      ngx.log(ngx.ERR, string.format("BEFORE PREPARE :: %s", cjson_encode(transformed_body)))
       local transformed_body_json = prepare_body(transformed_body);
 
       ngx.arg[1] = transformed_body_json
@@ -143,7 +147,7 @@ function TemplateTransformerHandler:body_filter(config)
       local json_transformed_body = cjson_decode(transformed_body_json)
       utils.hide_fields(json_transformed_body, config.hidden_fields)
 
-      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      ngx.log(ngx.ERR, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
 end

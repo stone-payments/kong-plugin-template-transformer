@@ -362,8 +362,8 @@ describe("Test prepare_body", function()
     prepared_body = prepare_body("&amp; &lt; &gt; &quot; &#39; &#47; /;")
     assert.equal(prepared_body, "& < > \" ' / /")
 
-    prepared_body = prepare_body("&amp; &lt; &gt; &quot; &#39; &#47; /; \t")
-    assert.equal(prepared_body, "& < > \" ' / /  ")
+    prepared_body = prepare_body("&amp; &lt; &gt; &quot; &#39; &#47; /; \t \r\n")
+    assert.equal(prepared_body, "& < > \" ' / /   \\\\r\\\\n")
   end)
 
 end)
