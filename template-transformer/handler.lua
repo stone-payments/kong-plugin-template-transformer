@@ -147,7 +147,7 @@ function TemplateTransformerHandler:body_filter(config)
       local json_transformed_body = cjson_decode(transformed_body_json)
       utils.hide_fields(json_transformed_body, config.hidden_fields)
 
-      ngx.log(ngx.INFO, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
 end
