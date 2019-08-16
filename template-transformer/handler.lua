@@ -93,8 +93,6 @@ function TemplateTransformerHandler:access(config)
                                                                                         custom_data = ngx.ctx.custom_data,
                                                                                         route_groups = router_matches.uri_captures}
 
-    ngx.log(ngx.DEBUG, string.format("BEFORE PREPARE :: %s", cjson_encode(transformed_body)))
-
     transformed_body = prepare_body(transformed_body)
 
     req_set_body_data(transformed_body)
@@ -142,7 +140,6 @@ function TemplateTransformerHandler:body_filter(config)
                                                                                            body = body,
                                                                                            raw_body = raw_body,
                                                                                            status = ngx.status}
-      ngx.log(ngx.ERR, string.format("BEFORE PREPARE :: %s", cjson_encode(transformed_body)))
       local transformed_body_json = prepare_body(transformed_body);
 
       ngx.arg[1] = transformed_body_json
