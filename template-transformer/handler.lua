@@ -21,6 +21,8 @@ function read_json_body(body)
   if body and body ~= "" then
     body = gsub(body, [[\"]], [[&__escaped__quot;]])
     body = gsub(body, [[\\]], [[&__escaped__bar;]])
+    body = gsub(body, [[\\\r\\\n]], [[&__escaped__eof;]])
+    body = gsub(body, [[\\\r]], [[&__escaped__carriage;]])
     ngx.log(ngx.ERR, body)
     local status, res = pcall(cjson_decode, body)
 
@@ -47,11 +49,15 @@ function prepare_body(string_body)
   v = gsub(v, "&amp;", "&")
   v = gsub(v, "&#9;", " ")
   v = gsub(v, "\t", " ")
+  v = gsub(v, "\r\n", '\\\\r\\\\n')
+  v = gsub(v, "\r", '\\\\r')
   v = gsub(v, "&lt;", "<")
   v = gsub(v, "&gt;", ">")
   v = gsub(v, "&quot;", "\"")
   v = gsub(v, "&__escaped__quot;", '\\\"')
   v = gsub(v, "&__escaped__bar;", '\\\\')
+  v = gsub(v, "&__escaped__carriage;", '\\\\r')
+  v = gsub(v, "&__escaped__eof", '\\\\r\\\\n')
   v = gsub(v, "&#39;", "\'")
   v = gsub(v, "&#47;", "/")
   v = gsub(v, "/;", "/")
@@ -86,6 +92,7 @@ function TemplateTransformerHandler:access(config)
                                                                                         raw_body = raw_body,
                                                                                         custom_data = ngx.ctx.custom_data,
                                                                                         route_groups = router_matches.uri_captures}
+
     transformed_body = prepare_body(transformed_body)
 
     req_set_body_data(transformed_body)
@@ -133,7 +140,6 @@ function TemplateTransformerHandler:body_filter(config)
                                                                                            body = body,
                                                                                            raw_body = raw_body,
                                                                                            status = ngx.status}
-
       local transformed_body_json = prepare_body(transformed_body);
 
       ngx.arg[1] = transformed_body_json
