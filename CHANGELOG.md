@@ -5,7 +5,13 @@ All changes made on any release of this project should be commented on high leve
 Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [0.12.2](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.12.1) - 2019-08-15
+## [0.12.3](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.12.3) - 2019-10-23
+
+### Fixed
+
+- No Content handling.
+
+## [0.12.2](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.12.2) - 2019-08-15
 
 ### Fixed
 
