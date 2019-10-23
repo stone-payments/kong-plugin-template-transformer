@@ -307,6 +307,17 @@ describe("Test TemplateTransformerHandler body_filter", function()
     assert.equal('{ "data" : "bar" }', ngx.arg[1])
   end)
 
+  it("should build first ngx arg correctly when template mapps to empty string", function()
+    TemplateTransformerHandler:new()
+    mock_resp_headers = {}
+    _G.ngx.ctx.buffer = ''
+    local config = {
+        response_template = '{% if true then %}{% else %}error{% end %}'
+    }
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal('', ngx.arg[1])
+  end)
+
   it("should call and return ngx error when body is ready and not JSON", function()
     TemplateTransformerHandler:new()
     mock_resp_headers = {}
