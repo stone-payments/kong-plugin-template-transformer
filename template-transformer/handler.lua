@@ -144,10 +144,17 @@ function TemplateTransformerHandler:body_filter(config)
 
       ngx.arg[1] = transformed_body_json
 
-      local json_transformed_body = cjson_decode(transformed_body_json)
-      utils.hide_fields(json_transformed_body, config.hidden_fields)
-
-      ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+      if transformed_body_json == nil or transformed_body_json == '' then 
+        ngx.log(ngx.DEBUG, string.format("Transformed Body JSON is nil or empty"))
+      else  
+        local status, json_transformed_body = pcall(cjson_decode, transformed_body_json)
+        if status then
+          utils.hide_fields(json_transformed_body, config.hidden_fields)
+          ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+        else
+          ngx.log(ngx.ERR, string.format("Error transforming Body :: %s", json_transformed_body))
+        end
+      end
     end
   end
 end
