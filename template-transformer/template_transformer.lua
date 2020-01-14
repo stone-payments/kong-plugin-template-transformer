@@ -1,6 +1,4 @@
 local resty_template = require 'resty.template'
-local utils = require 'kong.plugins.kong-plugin-template-transformer.utils'
-local cjson_decode = require('cjson').decode
 local cjson_encode = require('cjson').encode
 
 _M = {}
