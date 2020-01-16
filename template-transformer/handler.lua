@@ -90,6 +90,8 @@ function TemplateTransformerHandler:access(config)
                                                                                         headers = headers,
                                                                                         body = body,
                                                                                         raw_body = raw_body,
+                                                                                        cjson_encode = cjson_encode,
+                                                                                        cjson_decode = cjson_decode,
                                                                                         custom_data = ngx.ctx.custom_data,
                                                                                         route_groups = router_matches.uri_captures}
 
@@ -136,10 +138,12 @@ function TemplateTransformerHandler:body_filter(config)
       if body == nil then
         return ngx.ERROR
       end
-      local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
-                                                                                           body = body,
-                                                                                           raw_body = raw_body,
-                                                                                           status = ngx.status}
+      local transformed_body = template_transformer.get_template(config.response_template) {headers = headers,
+                                                                                            body = body,
+                                                                                            raw_body = raw_body,
+                                                                                            cjson_encode = cjson_encode,
+                                                                                            cjson_decode = cjson_decode,
+                                                                                            status = ngx.status}
       local transformed_body_json = prepare_body(transformed_body);
 
       ngx.arg[1] = transformed_body_json
