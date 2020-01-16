@@ -322,7 +322,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
     json_data = cjson_encode(table_data)
     _G.ngx.ctx.buffer = json_data
     local config = {
-        response_template = '{"data":"{{ body }}"}'
+        response_template = '{% json_body=cjson_encode(body) %}{"data":{{json_body}}}'
     }
     TemplateTransformerHandler:body_filter(config)
 
@@ -354,7 +354,9 @@ describe("Test TemplateTransformerHandler body_filter", function()
     json_data = cjson_encode(table_data)
     _G.ngx.ctx.buffer = json_data
     local config = {
-        response_template = '{"data":{"foo":"{{ body.foo }}","foo2":"{{ body.foo.bar }}"}}'
+        response_template = '{% json_foo = cjson_encode(body.foo) %}\
+                             {% json_bar = cjson_encode(body.foo.bar) %}\
+                             {"data":{"foo":{{ json_foo }},"bar":{{ json_bar }} }}'
     }
     TemplateTransformerHandler:body_filter(config)
 
@@ -369,7 +371,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
           bar = {"into_bar", 1, 2, 3},
           bar1 = "into_bar1"
         },
-        foo2 = {"into_bar", 1, 2, 3}
+        bar = {"into_bar", 1, 2, 3}
       }
     }
     table.sort(table_data)
