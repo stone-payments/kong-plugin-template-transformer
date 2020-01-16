@@ -1,5 +1,4 @@
 local resty_template = require 'resty.template'
-local cjson_encode = require('cjson').encode
 
 _M = {}
 
