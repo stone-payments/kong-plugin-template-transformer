@@ -5,6 +5,12 @@ All changes made on any release of this project should be commented on high leve
 Document model based on [Semantic Versioning](http://semver.org/).
 Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
 
+## [0.13.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.13.0) - 2020-01-17
+
+### Added
+
+- [Allow json objects in template](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/108772)
+
 ## [0.12.3](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.12.3) - 2019-10-23
 
 ### Fixed

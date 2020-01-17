@@ -62,7 +62,6 @@ end
 
 local file = arg[2]
 local transformed_body = template_transformer.get_template(arg[1]){body = cjson_decode(read_file(file))}
-
 local prepared_body = prepare_body(transformed_body)
 local json_transformed_body = cjson_decode(prepared_body)
 write_file(arg[3], prepared_body)
