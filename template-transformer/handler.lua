@@ -143,6 +143,7 @@ function TemplateTransformerHandler:body_filter(config)
                                                                                             raw_body = raw_body,
                                                                                             cjson_encode = cjson_encode,
                                                                                             cjson_decode = cjson_decode,
+                                                                                            mask_field = utils.mask_field,
                                                                                             status = ngx.status}
       local transformed_body_json = prepare_body(transformed_body);
 
