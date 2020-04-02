@@ -178,7 +178,7 @@ describe("mask_field", function()
     assert.equal(result, expected)
   end)
 
-  it("should return a number valeu", function()
+  it("should return a number value", function()
     local value = 12345
     local expected = 12345
     result = utils.mask_field(value, 1, 3, "*")
