@@ -11,6 +11,12 @@ Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](htt
 
 - [Allow other payload formats besides JSON](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/132149)
 
+## [0.14.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.14.0) - 2020-04-02
+
+### Added
+
+- [Field Mask Function on template](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/131789)
+
 ## [0.13.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.13.0) - 2020-01-17
 
 ### Added
