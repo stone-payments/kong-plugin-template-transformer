@@ -417,6 +417,17 @@ describe("Test TemplateTransformerHandler body_filter", function()
     TemplateTransformerHandler:body_filter(config)
     assert.equal('{ "bar" : "" }', ngx.arg[1])
   end)
+
+  it("should accept raw_body when data is not in JSON format", function()
+    TemplateTransformerHandler:new()
+    mock_resp_headers = { ["Content-Type"] = "text/csv" }
+    _G.ngx.ctx.buffer = "bar;foo\r\n1;2"
+    local config = {
+      response_template =  '{ "bar" : "{{body.foo}}" }'
+    }
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal('bar;foo\r\n1;2', ngx.arg[1])
+  end)
 end)
 
 describe("Test read_json_body", function()

@@ -12,6 +12,7 @@ local res_get_headers = ngx.resp.get_headers
 local table_concat = table.concat
 local sub = string.sub
 local gsub = string.gsub
+local gmatch = string.gmatch
 local TemplateTransformerHandler = BasePlugin:extend()
 
 local template_transformer = require 'kong.plugins.kong-plugin-template-transformer.template_transformer'
@@ -134,31 +135,42 @@ function TemplateTransformerHandler:body_filter(config)
       -- body is fully read
       local headers = res_get_headers()
       local raw_body = ngx.ctx.buffer
-      local body = read_json_body(raw_body)
-      if body == nil then
-        return ngx.ERROR
+      local body = nil
+
+      local content_type = headers['Content-Type']
+      if content_type == nil then
+        content_type = "application/json"
       end
-      local transformed_body = template_transformer.get_template(config.response_template) {headers = headers,
-                                                                                            body = body,
-                                                                                            raw_body = raw_body,
-                                                                                            cjson_encode = cjson_encode,
-                                                                                            cjson_decode = cjson_decode,
-                                                                                            status = ngx.status}
-      local transformed_body_json = prepare_body(transformed_body);
 
-      ngx.arg[1] = transformed_body_json
-
-      if transformed_body_json == nil or transformed_body_json == '' then 
-        ngx.log(ngx.DEBUG, string.format("Transformed Body JSON is nil or empty"))
-      else  
-        local status, json_transformed_body = pcall(cjson_decode, transformed_body_json)
-        if status then
-          utils.hide_fields(json_transformed_body, config.hidden_fields)
-          ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
-        else
-          ngx.log(ngx.ERR, string.format("Error transforming Body :: %s", json_transformed_body))
+      if gmatch(content_type, "(application/json)")() then
+        body = read_json_body(raw_body)
+        if body == nil then
+          return ngx.ERROR
         end
-      end
+        local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
+                                                                                             body = body,
+                                                                                             raw_body = raw_body,
+                                                                                             cjson_encode = cjson_encode,
+                                                                                             cjson_decode = cjson_decode,
+                                                                                             status = ngx.status}
+        
+        
+        transformed_body = prepare_body(transformed_body)
+        ngx.arg[1] = transformed_body
+        if transformed_body == nil or transformed_body == '' then 
+          ngx.log(ngx.DEBUG, string.format("Transformed Body JSON is nil or empty"))
+        else  
+          local status, json_transformed_body = pcall(cjson_decode, transformed_body)
+          if status then
+            utils.hide_fields(json_transformed_body, config.hidden_fields)
+            ngx.log(ngx.DEBUG, string.format("Transformed Body :: %s", cjson_encode(json_transformed_body)))
+          else
+            ngx.log(ngx.ERR, string.format("Error transforming Body to JSON :: %s", json_transformed_body))
+          end
+        end
+      else
+        ngx.arg[1] = raw_body
+      end 
     end
   end
 end
