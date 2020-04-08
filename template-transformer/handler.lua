@@ -66,6 +66,14 @@ function prepare_body(string_body)
   return v
 end
 
+function prepare_content_type(content_type)
+  local characters = { "-", "+" }
+  for k, v in ipairs(characters) do
+    content_type = gsub(content_type, v, string.format("%%%%%s", v))
+  end
+  return content_type
+end
+
 function TemplateTransformerHandler:new()
   TemplateTransformerHandler.super.new(self, 'template-transformer')
 end
@@ -170,8 +178,15 @@ function TemplateTransformerHandler:body_filter(config)
           end
         end
       else
-        ngx.arg[1] = raw_body
-      end 
+        if config.ignore_content_types then
+          for key, value in ipairs(config.ignore_content_types) do
+            value = prepare_content_type(value)
+            if gmatch(content_type, string.format("(%s)", value))() then
+              ngx.arg[1] = raw_body
+            end
+          end
+        end
+      end
     end
   end
 end

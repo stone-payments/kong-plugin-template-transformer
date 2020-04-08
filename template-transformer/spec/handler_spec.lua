@@ -423,7 +423,10 @@ describe("Test TemplateTransformerHandler body_filter", function()
     mock_resp_headers = { ["Content-Type"] = "text/csv" }
     _G.ngx.ctx.buffer = "bar;foo\r\n1;2"
     local config = {
-      response_template =  '{ "bar" : "{{body.foo}}" }'
+      response_template =  '{ "bar" : "{{body.foo}}" }',
+      ignore_content_types = {
+        "text/csv"
+      }
     }
     TemplateTransformerHandler:body_filter(config)
     assert.equal('bar;foo\r\n1;2', ngx.arg[1])
@@ -459,6 +462,17 @@ describe("Test prepare_body", function()
 
     prepared_body = prepare_body("&amp; &lt; &gt; &quot; &#39; &#47; /; \t \r\n")
     assert.equal(prepared_body, "& < > \" ' / /   \\\\r\\\\n")
+  end)
+
+end)
+
+describe("Test prepare_content_type", function()
+  it("should replace strings as expected", function()
+    prepared_body = prepare_content_type("application/vnd.api+json")
+    assert.equal(prepared_body, "application/vnd.api%+json")
+
+    prepared_body = prepare_content_type("application/x-www-form-urlencoded")
+    assert.equal(prepared_body, "application/x%-www%-form%-urlencoded")
   end)
 
 end)
