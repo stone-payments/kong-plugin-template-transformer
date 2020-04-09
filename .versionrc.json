@@ -1,0 +1,13 @@
+{
+    "header": "# CHANGELOG\n",
+    "issueUrlFormat": "https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/{{id}}",
+    "issuePrefixes": [
+        "AB#",
+        "Portal-",
+        "portal-",
+        "PORTAL-",
+        "Clb-",
+        "clb-",
+        "CLB-"
+    ]
+}
