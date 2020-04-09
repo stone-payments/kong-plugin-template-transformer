@@ -42,6 +42,10 @@ return {
     hidden_fields = {
       type = "array",
       required = false
+    },
+    ignore_content_types = {
+      type = "array",
+      required = false
     }
   },
   self_check = check_template
