@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.15.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v0.11.1...v0.15.0) (2020-04-09)
+
+
+### Features
+
+* [Portal-132149](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/132149) Allow other payload formats besides JSON ([19dffd4](https://github.com/stone-payments/kong-plugin-template-transformer/commit/19dffd448307d506ff2265d1f261dc040e868646))
+
 ## [0.14.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.14.0) - 2020-04-02
 
 ### Added
