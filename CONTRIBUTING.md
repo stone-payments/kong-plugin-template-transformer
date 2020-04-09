@@ -56,36 +56,14 @@ You can run `luacov` and it will generate a `luacov.report.out` containing a com
 
 ### Commit messages
 
-- Use emoji at the beginning of each message. It help us to identify what's the purpose for each commit.
+See [standard-version](https://github.com/conventional-changelog/standard-version#commit-message-convention-at-a-glance) for commit guidelines.
 
-| Code.                 | Emoji               | Description                                     |
-|-----------------------|---------------------|-------------------------------------------------|
-| `:rocket:`            | :rocket:            | when deploying a new version                    |
-| `:airplane:`          | :airplane:          | when releasing a new beta version               |
-| `:art:`               | :art:               | when improving the format/structure of the code |
-| `:racehorse:`         | :racehorse:         | when improving performance                      |
-| `:memo:`              | :memo:              | when writing docs                               |
-| `:bug:`               | :bug:               | when fixing a bug                               |
-| `:fire:`              | :fire:              | when removing code or files                     |
-| `:green_heart:`       | :green_heart:       | when work with CI                               |
-| `:white_check_mark:`  | :white_check_mark:  | when work with tests                            |
-| `:lock:`              | :lock:              | when dealing with security                      |
-| `:arrow_up:`          | :arrow_up:          | when upgrading dependencies                     |
-| `:arrow_down:`        | :arrow_down:        | when downgrading dependencies                   |
-| `:shirt:`             | :shirt:             | when removing linter warnings                   |
-| `:bulb:`              | :bulb:              | new idea                                        |
-| `:construction:`      | :construction:      | work in progress                                |
-| `:heavy_plus_sign:`   | :heavy_plus_sign:   | when adding feature                             |
-| `:heavy_minus_sign:`  | :heavy_minus_sign:  | when removing feature                           |
-| `:facepunch:`         | :facepunch:         | when resolving conflicts                        |
-| `:hammer:`            | :hammer:            | when changing configuration files               |
-
-- If possible, link the commit to the corresponding task in our JIRA.
-
-Commit example:
+Commit examples:
 
 ```bash
-git commit -m ":arrow_up: (APIDC-001) Updates rockspec"
+git commit -m "feat: Portal-12345 Add healthcheck endpoint"
+git commit -m "fix: CLB-12345 Field in healthcheck endpoint"
+git commit -m "chore: Fix tests"
 ```
 
 ### Pull Requests
@@ -105,3 +83,12 @@ git commit -m ":arrow_up: (APIDC-001) Updates rockspec"
 - Always be respectful of one another. Assume the best in others and act with empathy at all times.
 - Collaborate closely with individuals maintaining the project or experienced users. Getting ideas out in the open and seeing a proposal before it's a pull request helps reduce redundancy and ensures we're all connected to the decision making process.
 - Don't be a jerk.
+
+### Release steps
+
+1. Open a release branch, following gitflow branching conventions (`release/vx.x.x`), from `develop` branch.
+2. Fetch all tags by running: `git fetch --all --tags`.
+3. Update the CHANGELOG by running: `standard-version`.
+    - If you need to install it, run: `npm install -g standard-version`.
+4. Push the release branch.
+5. Open a pull-request to the `develop` branch and another one against the `master` branch.
