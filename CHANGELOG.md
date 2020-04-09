@@ -1,15 +1,6 @@
 # Changelog
 
-All changes made on any release of this project should be commented on high level of this document.
-
-Document model based on [Semantic Versioning](http://semver.org/).
-Examples of how to use this _markdown_ cand be found here [Keep a CHANGELOG](http://keepachangelog.com/).
-
-## Unreleased
-
-### Added
-
-- [Allow other payload formats besides JSON](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/132149)
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ## [0.14.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.14.0) - 2020-04-02
 
