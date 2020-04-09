@@ -7,19 +7,19 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* [Portal-132149](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/132149) Allow other payload formats besides JSON ([19dffd4](https://github.com/stone-payments/kong-plugin-template-transformer/commit/19dffd448307d506ff2265d1f261dc040e868646))
+* Allow other payload formats besides JSON ([19dffd4](https://github.com/stone-payments/kong-plugin-template-transformer/commit/19dffd448307d506ff2265d1f261dc040e868646))
 
 ## [0.14.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.14.0) - 2020-04-02
 
 ### Features
 
-- [Field Mask Function on template](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/131789)
+* Field Mask Function on template
 
 ## [0.13.0](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.13.0) - 2020-01-17
 
 ### Features
 
-- [Allow json objects in template](https://dev.azure.com/stonepagamentos/frt-portal/_workitems/edit/108772)
+* Allow json objects in template
 
 ## [0.12.3](https://github.com/stone-payments/kong-plugin-template-transformer/tree/v0.12.3) - 2019-10-23
 

@@ -61,8 +61,8 @@ See [standard-version](https://github.com/conventional-changelog/standard-versio
 Commit examples:
 
 ```bash
-git commit -m "feat: Portal-12345 Add healthcheck endpoint"
-git commit -m "fix: CLB-12345 Field in healthcheck endpoint"
+git commit -m "feat: Add healthcheck endpoint"
+git commit -m "fix: Field in healthcheck endpoint"
 git commit -m "chore: Fix tests"
 ```
 
