@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.16.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v0.15.0...v0.16.0) (2020-09-22)
+
+
+### Features
+
+* Add hidden_fields in context
+
 ## [0.15.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v0.11.1...v0.15.0) (2020-04-09)
 
 
