@@ -114,6 +114,13 @@ function TemplateTransformerHandler:access(config)
 
       utils.hide_fields(json_transformed_body, config.hidden_fields)
 
+      if ngx.ctx.custom_data then
+        ngx.ctx.custom_data.hidden_fields = config.hidden_fields
+      else
+        ngx.ctx.custom_data = {}
+        ngx.ctx.custom_data.hidden_fields = config.hidden_fields
+      end
+
       ngx.log(ngx.DEBUG, string.format("Transformed REQUEST Body :: %s", cjson_encode(json_transformed_body)))
     end
   end
