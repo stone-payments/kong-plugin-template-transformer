@@ -162,13 +162,15 @@ function TemplateTransformerHandler:body_filter(config)
         if body == nil then
           return ngx.ERROR
         end
+        local query_string = req_get_uri_args()
         local transformed_body = template_transformer.get_template(config.response_template){headers = headers,
                                                                                              body = body,
                                                                                              raw_body = raw_body,
                                                                                              cjson_encode = cjson_encode,
                                                                                              cjson_decode = cjson_decode,
                                                                                              mask_field = utils.mask_field,
-                                                                                             status = ngx.status}
+                                                                                             status = ngx.status,
+                                                                                             query_string = query_string}
         
         
         transformed_body = prepare_body(transformed_body)
