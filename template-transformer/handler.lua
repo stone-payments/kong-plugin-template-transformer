@@ -1,6 +1,8 @@
 local BasePlugin = require 'kong.plugins.base_plugin'
-local cjson_decode = require('cjson').decode
-local cjson_encode = require('cjson').encode
+local cjson = require('cjson.safe').new()
+cjson.decode_array_with_array_mt(true)
+local cjson_decode = cjson.decode
+local cjson_encode = cjson.encode
 
 local req_set_body_data = ngx.req.set_body_data
 local req_get_body_data = ngx.req.get_body_data
