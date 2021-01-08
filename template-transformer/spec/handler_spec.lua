@@ -231,6 +231,16 @@ describe("Test TemplateTransformerHandler body_filter", function()
     assert.equal(config.response_template, ngx.arg[1])
   end)
 
+  it("should preserve empty arrays", function()
+    TemplateTransformerHandler:new()
+    local config = {
+      response_template = "{ \"data\": {{ cjson_encode(body) }} }"
+  }
+  _G.ngx.ctx.buffer = '{"p2":"v1", "a":[]}'
+  TemplateTransformerHandler:body_filter(config)
+  assert.equal('{ "data": {"p2":"v1","a":[]} }', ngx.arg[1])
+  end)
+
   it("should set first ngx arg to template when using raw_body in the template", function()
     TemplateTransformerHandler:new()
     local config = {
