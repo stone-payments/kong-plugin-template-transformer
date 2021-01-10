@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master, develop]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: debian-stretch
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Update package lists and install necessary build/test systemwide deps
+      - name: Update apt sources/Install system-wide deps
+        run: |
+          apt-get update
+          apt-get install -y lua5.1 liblua5.1-0-dev luarocks git libssl1.0-dev make
+
+      # Runs the tests
+      - name: Setup project deps/Install package
+        run: |
+          make setup
+          make install
+
+      - name: Run tests
+        run: make test
