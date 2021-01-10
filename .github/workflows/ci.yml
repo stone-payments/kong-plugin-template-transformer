@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: debian-stretch
+  test:
+    runs-on: ubuntu-latest
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -17,14 +17,18 @@ jobs:
       # Update package lists and install necessary build/test systemwide deps
       - name: Update apt sources/Install system-wide deps
         run: |
-          apt-get update
-          apt-get install -y lua5.1 liblua5.1-0-dev luarocks git libssl1.0-dev make
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 liblua5.1-0-dev luarocks git make
 
-      # Runs the tests
-      - name: Setup project deps/Install package
+      - name: Setup project deps
+        run: sudo make setup
+
+      - name: Download and install kong
         run: |
-          make setup
-          make install
+          wget -c https://bintray.com/kong/kong-community-edition-deb/download_file?file_path=dists%2Fkong-community-edition-0.13.1.xenial.all.deb -O kong.deb
+          sudo apt-get install ./kong.deb
 
-      - name: Run tests
-        run: make test
+      - name: Install package/Execute tests
+        run: |
+          sudo make install
+          make test
