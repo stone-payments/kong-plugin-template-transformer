@@ -1,0 +1,34 @@
+name: CI-0.13.1
+
+on:
+  pull_request:
+    branches: [master, develop]
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Update package lists and install necessary build/test systemwide deps
+      - name: Update apt sources/Install system-wide deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 liblua5.1-0-dev luarocks git make
+
+      - name: Setup project deps
+        run: sudo make setup
+
+      - name: Download and install kong Community Edition 0.13.1
+        run: |
+          wget -c https://bintray.com/kong/kong-community-edition-deb/download_file?file_path=dists%2Fkong-community-edition-0.13.1.xenial.all.deb -O kong.deb
+          sudo apt-get install ./kong.deb
+
+      - name: Install package/Execute tests
+        run: |
+          sudo make install
+          make test
