@@ -1,4 +1,4 @@
-name: CI
+name: CI-0.13.1
 
 on:
   pull_request:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup project deps
         run: sudo make setup
 
-      - name: Download and install kong
+      - name: Download and install kong Community Edition 0.13.1
         run: |
           wget -c https://bintray.com/kong/kong-community-edition-deb/download_file?file_path=dists%2Fkong-community-edition-0.13.1.xenial.all.deb -O kong.deb
           sudo apt-get install ./kong.deb
