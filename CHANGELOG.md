@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [0.17.1](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v0.16.0...v0.17.0) (2020-12-29)
+## [0.17.2](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v0.17.1...v0.17.2) (2020-12-29)
+
+
+### Bug Fixes
+
+* Fix lua-cjson version
+
+## [0.17.1](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v0.17.0...v0.17.1) (2020-12-29)
 
 
 ### Bug Fixes
