@@ -90,7 +90,7 @@ function TemplateTransformerHandler:access(config)
     local string_body = req_get_body_data()
     if string_body then
       raw_body = prepare_body(string_body)
-      body = cjson_decode(raw_body)
+      body = read_json_body(string_body)
     end
 
     local headers = req_get_headers()
