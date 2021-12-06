@@ -1,3 +1,4 @@
+local typedefs = require "kong.db.schema.typedefs"
 local template = require 'resty.template'
 
 function check_template(schema, config, dao, is_updating)
@@ -28,25 +29,30 @@ function check_template(schema, config, dao, is_updating)
   return true
 end
 
-return {
-  no_consumer = true,
+local _M = {
+  name = "kong-plugin-template-transformer",
   fields = {
-    request_template = {
-      type = "string",
-      required = false
-    },
-    response_template = {
-      type = "string",
-      required = false
-    },
-    hidden_fields = {
-      type = "array",
-      required = false
-    },
-    ignore_content_types = {
-      type = "array",
-      required = false
+    { consumer = typedefs.no_consumer, },
+    {
+      config = {
+        type = "record",
+        fields = {
+          { request_template = { type = "string", required = false }, },
+          { response_template = { type = "string", required = false }, },
+          { hidden_fields = { type = "array", elements = { type = "string" }, required = false}, },
+          { ignore_content_types = { type = "array", elements = { type = "string" }, required = false }, },
+        }
+      }
     }
   },
-  self_check = check_template
 }
+
+local function constructor()
+  return setmetatable({
+    self_check = check_template
+  }, { __index = _M })
+end
+
+setmetatable(_M, { __call = constructor })
+
+return _M
