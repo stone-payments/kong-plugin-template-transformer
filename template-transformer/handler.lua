@@ -15,7 +15,9 @@ local table_concat = table.concat
 local sub = string.sub
 local gsub = string.gsub
 local gmatch = string.gmatch
-local TemplateTransformerHandler = BasePlugin:extend()
+local TemplateTransformerHandler = {
+  PRIORITY = 801
+}
 
 local template_transformer = require 'kong.plugins.kong-plugin-template-transformer.template_transformer'
 local utils = require 'kong.plugins.kong-plugin-template-transformer.utils'
@@ -76,12 +78,7 @@ function prepare_content_type(content_type)
   return content_type
 end
 
-function TemplateTransformerHandler:new()
-  TemplateTransformerHandler.super.new(self, 'template-transformer')
-end
-
 function TemplateTransformerHandler:access(config)
-  TemplateTransformerHandler.super.access(self)
   if config.request_template and config.request_template ~= "" then
     local body = nil
     local raw_body = nil
@@ -138,7 +135,6 @@ function TemplateTransformerHandler:header_filter(config)
 end
 
 function TemplateTransformerHandler:body_filter(config)
-  TemplateTransformerHandler.super.body_filter(self)
   if config.response_template and config.response_template ~= "" then
     local chunk, eof = ngx.arg[1], ngx.arg[2]
     if not eof then
@@ -201,7 +197,5 @@ function TemplateTransformerHandler:body_filter(config)
     end
   end
 end
-
-TemplateTransformerHandler.PRIORITY = 801
 
 return TemplateTransformerHandler
