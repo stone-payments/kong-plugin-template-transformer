@@ -2,7 +2,7 @@ name: CI-0.13.1
 
 on:
   pull_request:
-    branches: [master, develop]
+    branches: [legacy/v0]
 
   workflow_dispatch:
 
