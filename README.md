@@ -4,6 +4,10 @@
 
 This is a Kong middleware to transform requests / responses, using pre-configured templates.
 
+### DISCLAIMER
+
+This is a legacy version of this plugin, tested to work with kong <= v0.14.x. If you want the updated version checkout [this link](https://github.com/stone-payments/kong-plugin-template-transformer/tree/master)
+
 ## The Problem
 
 When using Kong, you can create routes that proxy to an upstream. The problem lies when the upstream has an ugly response/request contract. Sometimes the [kong bundled request transformer](https://docs.konghq.com/hub/kong-inc/request-transformer/) is not enough. This plugin was created for those situations, it can apply a [template](https://github.com/bungle/lua-resty-template) to JSON requests and responses, transforming them pretty much however you like.
