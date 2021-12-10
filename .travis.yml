@@ -23,7 +23,7 @@ deploy:
     skip_cleanup: true
     script: luarocks upload kong-plugin-template-transformer-*.rockspec --api-key=$LUAROCKS_API_KEY
     on:
-      branch: master
+      branch: legacy/v0
 
 notifications:
   email:
