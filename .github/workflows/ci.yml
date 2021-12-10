@@ -25,7 +25,7 @@ jobs:
 
       - name: Download and install kong Community Edition 0.13.1
         run: |
-          wget -c https://download.konghq.com/gateway-0.x-ubuntu-bionic/pool/all/k/kong-community-edition/kong-community-edition_0.13.1_all.deb -O kong.deb
+          wget -c https://download.konghq.com/gateway-0.x-ubuntu-xenial/pool/all/k/kong-community-edition/kong-community-edition_0.13.1_all.deb -O kong.deb
           sudo apt-get install ./kong.deb
 
       - name: Install package/Execute tests
