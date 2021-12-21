@@ -8,7 +8,7 @@ on:
 
 env:
   LUA: "lua=5.1"
-  LUAROCKS_API_KEY: "super-secreto"
+  GCP_PROJECT_ID: "si26ef9dii9zscrxrecql6kl8eguw2"
 
 jobs:
   publish:
@@ -34,6 +34,12 @@ jobs:
       - name: test
         run: |
           make test
+
+      - name: Get Luarocks API Key
+        uses: google-github-actions/get-secretmanager-secrets@v0.2.2
+        with:
+          secrets: |-
+            LUAROCKS_API_KEY:${{ env.GCP_PROJECT_ID }}/LUAROCKS_APIKEY
 
       - name: deploy
         run: |
