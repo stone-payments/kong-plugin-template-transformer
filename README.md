@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/stone-payments/kong-plugin-template-transformer.svg?branch=master)](https://travis-ci.org/stone-payments/kong-plugin-template-transformer)
 
-This is a Kong middleware to transform requests / responses, using pre-configured templates.
+This is a Kong middleware to transform requests / responses, using pre-configured templates. This plugin has been tested to work along with kong >= 2.6.x, for a legacy version of this plugin, please check [this link](https://github.com/stone-payments/kong-plugin-template-transformer/tree/legacy/v0).
 
 ## The Problem
 
