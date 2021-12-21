@@ -1,0 +1,40 @@
+name: PublishPlugin
+
+on:
+  push:
+    branches: [master]
+
+  workflow_dispatch:
+
+env:
+  LUA: "lua=5.1"
+  LUAROCKS_API_KEY: "super-secreto"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: before install
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev
+          pip install hererocks
+          hererocks lua_install -r^ --${{ env.LUA }}
+          export PATH=$PATH:$PWD/lua_install/bin
+
+      - name: install
+        run: |
+          make setup
+          make install
+
+      - name: test
+        run: |
+          make test
+
+      - name: deploy
+        run: |
+          luarocks upload kong-plugin-template-transformer-*.rockspec --api-key=$LUAROCKS_API_KEY
