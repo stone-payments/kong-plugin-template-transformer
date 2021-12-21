@@ -39,24 +39,14 @@ local ngx =  {
 _G.ngx = ngx
 local TemplateTransformerHandler = require('../handler')
 
-describe("Test TemplateTransformerHandler constructor", function()
-  it("should set object name correctly", function()
-    TemplateTransformerHandler:new()
-    assert.equal("template-transformer", TemplateTransformerHandler._name)
-  end)
-end)
-
 describe("Test TemplateTransformerHandler header_filter", function()
   it("should not unset content-length header when there is no templates", function()
-    TemplateTransformerHandler:new()
     local config = {}
     TemplateTransformerHandler:header_filter(config)
     assert.equal(mock_ngx_headers["content-length"], 123)
   end)
 
   it("should unset content-length header when there is only response_template", function()
-    TemplateTransformerHandler:new()
-
     local config = {
         response_template = "hello im a template"
     }
@@ -67,7 +57,6 @@ describe("Test TemplateTransformerHandler header_filter", function()
   end)
 
   it("should not unset content-length header when there is no response_template", function()
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "hello im a template"
     }
@@ -76,8 +65,6 @@ describe("Test TemplateTransformerHandler header_filter", function()
   end)
 
   it("should unset content-length header when there is response_template and request_template", function()
-    TemplateTransformerHandler:new()
-
     local config = {
         request_template = "hello im a template",
         response_template = "hello im a template"
@@ -93,14 +80,12 @@ end)
 describe("Test TemplateTransformerHandler access", function()
 
   it("should not call set body data when there is no template", function()
-    TemplateTransformerHandler:new()
     local config = {}
     TemplateTransformerHandler:access(config)
     assert.spy(ngx.req.set_body_data).was_not_called()
   end)
 
   it("should not call set body data when the template is an empty string", function()
-    TemplateTransformerHandler:new()
     local config = {
       request_template = ""
     }
@@ -109,7 +94,6 @@ describe("Test TemplateTransformerHandler access", function()
   end)
 
   it("should set the request body when there is a request template with no variables", function()
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "{\"hello\": \"im a template\"}"
     }
@@ -118,7 +102,6 @@ describe("Test TemplateTransformerHandler access", function()
   end)
 
   it("should build the request body correctly when there is a request template with custom variables", function()
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "{ \"{{query_string['query']}}\": 1, \"{{body['data']}}\": 2, \"{{headers['my_cool_header']}}\": 3, \"{{route_groups['group_one']}}\": 4 }"
     }
@@ -129,7 +112,6 @@ describe("Test TemplateTransformerHandler access", function()
   it("should build the request body without error when query args have special characters", function()
     local query_args = mock_query_args
     mock_query_args = "& < > \\\" ' / /"
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "{ \"query\": \"{{query_string['query']}}\" }"
     }
@@ -141,7 +123,6 @@ describe("Test TemplateTransformerHandler access", function()
   it("should build the request body without error when query args are missing", function()
     local query_args = mock_query_args
     mock_query_args = ""
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "{ \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
@@ -151,7 +132,6 @@ describe("Test TemplateTransformerHandler access", function()
   end)
 
   it("should build the request body when wrapping the original body", function()
-    TemplateTransformerHandler:new()
     local config = {
         request_template = '{ "wrapped": {{ raw_body }} }'
     }
@@ -162,7 +142,6 @@ describe("Test TemplateTransformerHandler access", function()
   it("should build the request body without error when header is missing", function()
     local old_headers = mock_req_headers
     mock_req_headers = {}
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "{ \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
@@ -174,7 +153,6 @@ describe("Test TemplateTransformerHandler access", function()
   it("should build the request body without error when payload data is missing", function()
     local old_body = mock_body
     mock_body = '{}'
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "{ \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
@@ -186,7 +164,6 @@ describe("Test TemplateTransformerHandler access", function()
   it("should build the request body with custom data", function()
     local old_body = mock_body
     mock_body = '{}'
-    TemplateTransformerHandler:new()
     local config = {
         request_template = "{ \"custom_data\": \"{{custom_data['important_stuff']}}\", \"query\": \"{{query_string['query']}}\", \"data\": \"{{body['data']}}\", \"header\": \"{{headers['my_cool_header']}}\", \"matches\": \"{{route_groups['group_one']}}\" }"
     }
@@ -200,7 +177,6 @@ end)
 describe("Test TemplateTransformerHandler body_filter", function()
 
   it("should not run when response template is empty", function()
-    TemplateTransformerHandler:new()
     local config = {
         response_template = ""
     }
@@ -211,7 +187,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should set first ngx arg to nil when body is not fully read", function()
-    TemplateTransformerHandler:new()
     local config = {
         response_template = "hello im a template"
     }
@@ -221,7 +196,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should set first ngx arg to template when when body is fully read and there is no custom variables", function()
-    TemplateTransformerHandler:new()
     local config = {
         response_template = "{ \"template\": 123 }"
     }
@@ -232,7 +206,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should preserve empty arrays", function()
-    TemplateTransformerHandler:new()
     local config = {
       response_template = "{ \"data\": {{ cjson_encode(body) }} }"
   }
@@ -242,7 +215,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should set first ngx arg to template when using raw_body in the template", function()
-    TemplateTransformerHandler:new()
     local config = {
         response_template = "{ \"wrapper\": {{ raw_body }} }"
     }
@@ -252,7 +224,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("Should return string with bars", function()
-    TemplateTransformerHandler:new()
     local userName = cjson_encode('im a string with \\bar')
     local config = {
       response_template = "{{ raw_body }}"
@@ -264,7 +235,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("Should return string with carriages", function()
-    TemplateTransformerHandler:new()
     local userName = cjson_encode('im a string with \\r\\n')
     local config = {
       response_template = "{{ raw_body }}"
@@ -276,7 +246,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("Should return string with scaped quotes", function()
-    TemplateTransformerHandler:new()
     local userName = cjson_encode('Frango "Contudo" Dentro')
     local config = {
       response_template = "{{ raw_body }}"
@@ -288,7 +257,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("lets you include json on the fly", function()
-    TemplateTransformerHandler:new()
     local config = {
         response_template = "{% local cjson_encode = require('cjson').encode  %} { \"template\": {{cjson_encode(body.thing)}} }"
     }
@@ -299,7 +267,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should pass status code to template", function()
-    TemplateTransformerHandler:new()
     local config = {
         response_template = "{ \"status\": {{status}} }"
     }
@@ -308,7 +275,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should build first ngx arg correctly when body is fully read with custom variables", function()
-    TemplateTransformerHandler:new()
     mock_resp_headers = {}
     _G.ngx.ctx.buffer = '{ "foo" : "bar" }'
     local config = {
@@ -319,7 +285,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should build first ngx arg correctly when body is fully read with table body variables", function()
-    TemplateTransformerHandler:new()
     mock_resp_headers = {}
     table_data = {
       foo = {
@@ -351,7 +316,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should build first ngx arg correctly when body is fully read with table any variables", function()
-    TemplateTransformerHandler:new()
     mock_resp_headers = {}
     table_data = {
       foo = {
@@ -391,7 +355,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should build first ngx arg correctly when template mapps to empty string", function()
-    TemplateTransformerHandler:new()
     mock_resp_headers = {}
     _G.ngx.ctx.buffer = ''
     local config = {
@@ -402,7 +365,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should call and return ngx error when body is ready and not JSON", function()
-    TemplateTransformerHandler:new()
     mock_resp_headers = {}
     ngx.arg[1] = nil
     ngx.ERROR = "error"
@@ -416,7 +378,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should leave empty string when there is no field in response", function()
-    TemplateTransformerHandler:new()
     mock_resp_headers = {}
     ngx.arg[1] = nil
     ngx.ERROR = "error"
@@ -429,7 +390,6 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 
   it("should accept raw_body when data is not in JSON format", function()
-    TemplateTransformerHandler:new()
     mock_resp_headers = { ["Content-Type"] = "text/csv" }
     _G.ngx.ctx.buffer = "bar;foo\r\n1;2"
     local config = {
