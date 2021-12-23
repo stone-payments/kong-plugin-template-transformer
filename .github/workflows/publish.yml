@@ -21,7 +21,7 @@ jobs:
       - name: before install
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev
+          sudo apt-get install -y libssl-dev luarocks
           pip install hererocks
           hererocks lua_install -r^ --${{ env.LUA }}
           export PATH=$PATH:$PWD/lua_install/bin
