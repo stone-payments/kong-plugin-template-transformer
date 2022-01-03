@@ -1,4 +1,3 @@
-local BasePlugin = require 'kong.plugins.base_plugin'
 local cjson = require('cjson.safe').new()
 cjson.decode_array_with_array_mt(true)
 local cjson_decode = cjson.decode
