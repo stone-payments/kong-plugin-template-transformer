@@ -105,7 +105,7 @@ function TemplateTransformerHandler:access(config)
     transformed_body = prepare_body(transformed_body)
 
     req_set_body_data(transformed_body)
-    req_set_header(CONTENT_LENGTH, #transformed_body)
+    req_set_header("Content-Length", #transformed_body)
 
     if transformed_body ~= "" then
       local json_transformed_body = cjson_decode(transformed_body)
