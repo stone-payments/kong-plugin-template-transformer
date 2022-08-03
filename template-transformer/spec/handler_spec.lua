@@ -223,6 +223,15 @@ describe("Test TemplateTransformerHandler body_filter", function()
     assert.equal("{ \"wrapper\": { \"name\": \"fred\" } }", ngx.arg[1])
   end)
 
+  it("should set first ngx arg to template when using route_groups in the template", function()
+    local config = {
+      response_template = "{ \"foo\": \"{{route_groups['group_one']}}\" }"
+    }
+    _G.ngx.ctx.buffer = '{ "name": "fred" }'
+    TemplateTransformerHandler:body_filter(config)
+    assert.equal("{ \"foo\": \"test_match\" }", ngx.arg[1])
+  end)
+
   it("Should return string with bars", function()
     local userName = cjson_encode('im a string with \\bar')
     local config = {
