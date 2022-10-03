@@ -1,4 +1,4 @@
-name: CI-2.6.x
+name: CI-3.0.x
 
 on:
   pull_request:
