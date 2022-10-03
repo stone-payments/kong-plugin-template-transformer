@@ -18,6 +18,20 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: 'Create PR: Merge master into develop branch'
+        id: create-develop-pull-request
+        uses: thomaseizinger/create-pull-request@1.2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          head: master
+          base: develop
+          labels: develop
+          title: Merge master into develop branch
+          body: |
+            This PR merges the master branch back into develop.
+            This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the develop branch.
+      
       - name: before install
         run: |
           sudo apt-get update
