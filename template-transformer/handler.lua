@@ -15,7 +15,8 @@ local sub = string.sub
 local gsub = string.gsub
 local gmatch = string.gmatch
 local TemplateTransformerHandler = {
-  PRIORITY = 801
+  PRIORITY = 801,
+  VERSION = "1.1.0"
 }
 
 local template_transformer = require 'kong.plugins.kong-plugin-template-transformer.template_transformer'
