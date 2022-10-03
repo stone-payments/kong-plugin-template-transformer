@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.0.0...v1.1.0) (2022-08-03)
+
+
+### Features
+
+* Add route_groups to the response template ([a611ce4](https://github.com/stone-payments/kong-plugin-template-transformer/commit/a611ce498a1bf4e252a7660e56ca4537c10f283d))
+
+
+### Bug Fixes
+
+* Set content length header name ([6d13a24](https://github.com/stone-payments/kong-plugin-template-transformer/commit/6d13a24b6001fecdba3196907121b3841154d002))
+
 ## [1.0.1](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.0.0...v1.0.1) (2021-12-21)
 
 

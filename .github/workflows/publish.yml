@@ -28,6 +28,7 @@ jobs:
 
       - name: install
         run: |
+          git config --global url.https://github.com/.insteadOf git://github.com/
           sudo make setup
           sudo make install
 

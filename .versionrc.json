@@ -1,0 +1,17 @@
+{
+    "header": "# Changelog\n\nAll notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.\n",
+    "bumpFiles": [
+        {
+            "filename": "rockspec.template",
+            "updater": ".standard-version/rockspec-updater.js"
+        },
+        {
+            "filename": "Makefile",
+            "updater": ".standard-version/makefile-updater.js"
+        },
+        {
+            "filename": "template-transformer/handler.lua",
+            "updater": ".standard-version/package-updater.js"
+        }
+    ]
+}

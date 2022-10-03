@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+
+  kong:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    volumes: 
+      - ./${PROJECT_FOLDER}:/home/plugin
+    ports:
+      - "8001:8001"
+      - "8000:8000"
+    entrypoint: /bin/bash
