@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.1.0...v1.2.0) (2022-10-03)
+
+
+### Features
+
+* Ensures compatibility with kong 3.0 ([122f628](https://github.com/stone-payments/kong-plugin-template-transformer/commit/122f628331f1960c90fc8d42593f66f8e6217bdb))
+
 ## [1.1.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.0.0...v1.1.0) (2022-08-03)
 
 
