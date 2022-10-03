@@ -8,6 +8,10 @@
         {
             "filename": "Makefile",
             "updater": ".standard-version/makefile-updater.js"
+        },
+        {
+            "filename": "template-transformer/handler.lua",
+            "updater": ".standard-version/package-updater.js"
         }
     ]
 }
