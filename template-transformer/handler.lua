@@ -28,7 +28,7 @@ function read_json_body(body)
     body = gsub(body, [[\\]], [[&__escaped__bar;]])
     body = gsub(body, [[\\\r\\\n]], [[&__escaped__eof;]])
     body = gsub(body, [[\\\r]], [[&__escaped__carriage;]])
-    ngx.log(ngx.ERR, body)
+    ngx.log(ngx.DEBUG, body)
     local status, res = pcall(cjson_decode, body)
 
     if status then
