@@ -7,6 +7,17 @@ local mock_router_matches = { group_one = "test_match" }
 local cjson_encode = require('cjson').encode
 local cjson_decode = require('cjson').decode
 
+local kong = {
+  log = {
+    debug = spy.new(function() end)
+  },
+  ctx = {
+    shared = {
+      proxy_cache_hit = nil
+    }
+  }
+}
+
 local ngx =  {
     req = {
         set_body_data = spy.new(function() end),
@@ -37,6 +48,8 @@ local ngx =  {
     status = 200,
 }
 _G.ngx = ngx
+_G.kong = kong
+
 local TemplateTransformerHandler = require('../handler')
 
 describe("Test TemplateTransformerHandler header_filter", function()
@@ -186,6 +199,23 @@ describe("Test TemplateTransformerHandler body_filter", function()
     assert.equal('{ "key" : "value" }', ngx.arg[1])
   end)
 
+  it("should not run when there is a cached response", function()
+    local config = {
+      response_template = "{ \"template\": 123 }"
+  }
+    kong.ctx.shared.proxy_cache_hit = {
+      res = {
+        body = '{ "key" : "value" }'
+      }
+    }
+
+    TemplateTransformerHandler:body_filter(config)
+    assert.spy(ngx.resp.get_headers).was_not_called()
+    assert.equal('{ "key" : "value" }', ngx.arg[1])
+
+    kong.ctx.shared.proxy_cache_hit = nil
+  end)
+  
   it("should set first ngx arg to nil when body is not fully read", function()
     local config = {
         response_template = "hello im a template"

@@ -10,7 +10,6 @@ local req_set_header = ngx.req.set_header
 local req_get_headers = ngx.req.get_headers
 local req_read_body = ngx.req.read_body
 local res_get_headers = ngx.resp.get_headers
-local table_concat = table.concat
 local sub = string.sub
 local gsub = string.gsub
 local gmatch = string.gmatch
@@ -28,7 +27,7 @@ function read_json_body(body)
     body = gsub(body, [[\\]], [[&__escaped__bar;]])
     body = gsub(body, [[\\\r\\\n]], [[&__escaped__eof;]])
     body = gsub(body, [[\\\r]], [[&__escaped__carriage;]])
-    ngx.log(ngx.ERR, body)
+    ngx.log(ngx.DEBUG, body)
     local status, res = pcall(cjson_decode, body)
 
     if status then
@@ -136,6 +135,14 @@ end
 
 function TemplateTransformerHandler:body_filter(config)
   if config.response_template and config.response_template ~= "" then
+
+    local cache_response = kong.ctx.shared.proxy_cache_hit
+    if cache_response ~= nil then
+      -- No need to do anything. Cache response is already transformed.
+        kong.log.debug("Cache response raw body :: ", cache_response.res.body)
+        return
+    end
+
     local chunk, eof = ngx.arg[1], ngx.arg[2]
     if not eof then
       -- sometimes the data comes in chunks and every chunk is a different call
