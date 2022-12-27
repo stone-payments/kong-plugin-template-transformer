@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.2.0...v1.3.0) (2022-12-27)
+
+
+### Features
+
+* Adds ability to bypass when proxy cache plugin has a hit ([b9ae165](https://github.com/stone-payments/kong-plugin-template-transformer/commit/b9ae16594d6a732525a46dddf528c9b49992e3ec))
+
 ## [1.2.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.1.0...v1.2.0) (2022-10-03)
 
 
