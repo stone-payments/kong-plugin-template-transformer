@@ -3,8 +3,10 @@ PROJECT_FOLDER = template-transformer
 LUA_PROJECT = kong-plugin-template-transformer
 VERSION = 1.3.0-0
 
-setup:
+rockspec:
 	cp rockspec.template kong-plugin-template-transformer-$(VERSION).rockspec
+
+setup: rockspec
 	@for rock in $(DEV_ROCKS) ; do \
 		if luarocks list --porcelain $$rock | grep -q "installed" ; then \
 			echo $$rock already installed, skipping ; \
