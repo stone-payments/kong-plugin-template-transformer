@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.3.0...v1.4.0) (2023-11-27)
+
+
+### Features
+
+* Adds Makefile entry to generate rockspec file ([9595a5a](https://github.com/stone-payments/kong-plugin-template-transformer/commit/9595a5a7e9540fa52749a6b488095fd7875ddf67))
+
 ## [1.3.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.2.0...v1.3.0) (2022-12-27)
 
 
