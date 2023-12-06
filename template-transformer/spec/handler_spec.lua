@@ -15,6 +15,11 @@ local kong = {
     shared = {
       proxy_cache_hit = nil
     }
+  },
+  response = {
+    get_source = function ()
+      return "service"
+    end
   }
 }
 
@@ -197,6 +202,22 @@ describe("Test TemplateTransformerHandler body_filter", function()
     TemplateTransformerHandler:body_filter(config)
     assert.spy(ngx.resp.get_headers).was_not_called()
     assert.equal('{ "key" : "value" }', ngx.arg[1])
+  end)
+
+  it("should not run when response source is not service", function()
+    local config = {
+      response_template = "{ \"template\": 123 }"
+    }
+    local old_get_source = kong.response.get_source
+    kong.response.get_source = function ()
+      return "exit"
+    end
+
+    TemplateTransformerHandler:body_filter(config)
+    assert.spy(ngx.resp.get_headers).was_not_called()
+    assert.equal('{ "key" : "value" }', ngx.arg[1])
+
+    kong.response.get_source = old_get_source
   end)
 
   it("should not run when there is a cached response", function()
