@@ -1,5 +1,6 @@
 local cjson = require('cjson.safe').new()
 cjson.decode_array_with_array_mt(true)
+cjson.encode_empty_table_as_object(false)
 local cjson_decode = cjson.decode
 local cjson_encode = cjson.encode
 
