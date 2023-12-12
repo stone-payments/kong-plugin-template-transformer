@@ -1,5 +1,6 @@
 local cjson = require('cjson.safe').new()
 cjson.decode_array_with_array_mt(true)
+cjson.encode_empty_table_as_object(false)
 local cjson_decode = cjson.decode
 local cjson_encode = cjson.encode
 
@@ -15,7 +16,7 @@ local gsub = string.gsub
 local gmatch = string.gmatch
 local TemplateTransformerHandler = {
   PRIORITY = 801,
-  VERSION = "1.4.0"
+  VERSION = "1.4.1"
 }
 
 local template_transformer = require 'kong.plugins.kong-plugin-template-transformer.template_transformer'
