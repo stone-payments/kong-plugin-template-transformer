@@ -17,9 +17,8 @@ local kong = {
     }
   },
   response = {
-    get_source = function ()
-      return "service"
-    end
+    get_source = function () return "service" end,
+    error = spy.new(function () return "ERROR" end)
   }
 }
 
@@ -51,6 +50,7 @@ local ngx =  {
         custom_data = { important_stuff = 123 }
     },
     status = 200,
+    HTTP_INTERNAL_SERVER_ERROR = 500
 }
 _G.ngx = ngx
 _G.kong = kong
@@ -427,13 +427,14 @@ describe("Test TemplateTransformerHandler body_filter", function()
   it("should call and return ngx error when body is ready and not JSON", function()
     mock_resp_headers = {}
     ngx.arg[1] = nil
-    ngx.ERROR = "error"
+    local expected = "ERROR"
     local config = {
         response_template = '{ "bar" : "{{body.foo}}" }'
     }
     _G.ngx.ctx.buffer = '<html>'
     actual = TemplateTransformerHandler:body_filter(config)
-    assert.equal(ngx.ERROR, actual)
+    assert.equal(expected, actual)
+    assert.spy(kong.response.error).was_called_with(500)
     assert.is_nil(ngx.arg[1])
   end)
 
