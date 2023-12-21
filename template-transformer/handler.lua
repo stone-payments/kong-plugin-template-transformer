@@ -137,6 +137,11 @@ end
 function TemplateTransformerHandler:body_filter(config)
   if config.response_template and config.response_template ~= "" then
 
+    if kong.response.get_source() ~= "service" then
+      kong.log.debug("Response is from kong itself or an error ocurred. Not applying any transformations.")
+      return
+    end
+    
     local cache_response = kong.ctx.shared.proxy_cache_hit
     if cache_response ~= nil then
       -- No need to do anything. Cache response is already transformed.
@@ -166,7 +171,7 @@ function TemplateTransformerHandler:body_filter(config)
       if gmatch(content_type, "(application/json)")() then
         body = read_json_body(raw_body)
         if body == nil then
-          return ngx.ERROR
+          return kong.response.error(ngx.HTTP_INTERNAL_SERVER_ERROR)
         end
         local req_query_string = req_get_uri_args()
         local router_matches = ngx.ctx.router_matches
