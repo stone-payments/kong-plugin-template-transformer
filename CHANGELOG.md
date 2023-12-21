@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.4.0...v1.4.1) (2023-12-12)
+
+
+### Bug Fixes
+
+* Makes encoding always transform empty tables into arrays ([5be78f7](https://github.com/stone-payments/kong-plugin-template-transformer/commit/5be78f78ef0663d99e260a6fcc29c2b111af818f))
+
 ## [1.4.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.3.0...v1.4.0) (2023-11-27)
 
 
