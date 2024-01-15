@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.4.1...v2.0.0) (2024-01-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* Disables templating when response comes from kong itself
+
+### Features
+
+* Disables templating when response comes from kong itself ([a4d0a6a](https://github.com/stone-payments/kong-plugin-template-transformer/commit/a4d0a6aace5260fdfe7f31e5373d4c3b1ed613a4))
+
+
+### Bug Fixes
+
+* Replaces ngx error call with kong corresponding one ([091e0f0](https://github.com/stone-payments/kong-plugin-template-transformer/commit/091e0f02f81ae2b60c655535883e201363bd35e7))
+
+## [2.0.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.4.1...v2.0.0) (2024-01-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* Disables templating when response comes from kong itself
+
+### Features
+
+* Disables templating when response comes from kong itself ([a4d0a6a](https://github.com/stone-payments/kong-plugin-template-transformer/commit/a4d0a6aace5260fdfe7f31e5373d4c3b1ed613a4))
+
+
+### Bug Fixes
+
+* Replaces ngx error call with kong corresponding one ([091e0f0](https://github.com/stone-payments/kong-plugin-template-transformer/commit/091e0f02f81ae2b60c655535883e201363bd35e7))
+
 ### [1.4.1](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.4.0...v1.4.1) (2023-12-12)
 
 
