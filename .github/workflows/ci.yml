@@ -1,34 +1,31 @@
-name: CI-3.0.x
+name: "Test"
+
+concurrency:
+  group: ${{ github.workflow }} ${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 on:
-  pull_request:
-    branches: [master, develop]
-
-  workflow_dispatch:
+  pull_request: {}
+  push:
+    branches:
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        kongVersion:
+          - "3.7.1.2"
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      # Update package lists and install necessary build/test systemwide deps
-      - name: Update apt sources/Install system-wide deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lua5.1 liblua5.1-0-dev luarocks git make
+      - uses: Kong/kong-pongo-action@v1
+        with:
+          pongo_version: 2.18.0
+          kong_version: ${{ matrix.kongVersion }}
 
-      - name: Setup project deps
-        run: sudo make setup
-
-      - name: Download and install kong Community Edition 3.0.0
-        run: |
-          wget -c https://download.konghq.com/gateway-3.x-ubuntu-bionic/pool/all/k/kong/kong_3.0.0_amd64.deb -O kong.deb
-          sudo apt-get install ./kong.deb
-
-      - name: Install package/Execute tests
-        run: |
-          sudo make install
-          make test
+      - run: pongo run -- --Xoutput "--color" --coverage

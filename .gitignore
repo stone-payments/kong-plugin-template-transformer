@@ -46,3 +46,8 @@ cobertura.xml
 # template files
 *.template
 !rockspec.template
+!**/validator/json/examples/*.template
+
+# Local development files
+kong.y*ml
+.env

@@ -1,15 +1,27 @@
-version: "3.8"
-
 services:
+  echo:
+    image: ealen/echo-server:0.9.2
+    networks:
+      - kong-net
+    ports:
+      - "3000:80"
 
   kong:
     build:
       context: .
-      dockerfile: Dockerfile
-    stdin_open: true
-    volumes: 
-      - ./${PROJECT_FOLDER}:/home/plugin
+    networks:
+      - kong-net
     ports:
-      - "8001:8001"
-      - "8000:8000"
-    entrypoint: /bin/bash
+      - "8000:8000" # Listener
+      - "8001:8001" # Admin API
+      - "8002:8002" # Admin GUI
+      - "8443:8443" # Listener  (SSL)
+      - "8444:8444" # Admin API (SSL)
+
+    volumes:
+      - ./kong.yaml:/home/kong/kong.yaml
+      - ./kong.conf:/etc/kong/kong.conf
+
+networks:
+  kong-net:
+    driver: bridge

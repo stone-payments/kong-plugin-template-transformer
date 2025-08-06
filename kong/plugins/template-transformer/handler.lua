@@ -14,13 +14,14 @@ local res_get_headers = ngx.resp.get_headers
 local sub = string.sub
 local gsub = string.gsub
 local gmatch = string.gmatch
+
 local TemplateTransformerHandler = {
   PRIORITY = 801,
   VERSION = "2.0.0" -- x-release-please-version
 }
 
-local template_transformer = require 'kong.plugins.kong-plugin-template-transformer.template_transformer'
-local utils = require 'kong.plugins.kong-plugin-template-transformer.utils'
+local template_transformer = require 'kong.plugins.template-transformer.template_transformer'
+local utils = require 'kong.plugins.template-transformer.utils'
 
 function read_json_body(body)
   if body and body ~= "" then

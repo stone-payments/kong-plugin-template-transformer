@@ -1,0 +1,51 @@
+_format_version: "3.0"
+
+services:
+  - name: echo
+    enabled: true
+    host: echo
+    port: 80
+    protocol: http
+    routes:
+      - name: echo-get
+        protocols:
+          - http
+        methods:
+          - GET
+        paths:
+          - /foo
+        strip_path: false
+        plugins:
+          - name: template-transformer
+            enabled: true
+            protocols:
+              - http
+            config:
+              response_template: |
+                {
+                  "message": "Hello from template-transformer!",
+                  "kong-request-id": "{{ body.request.headers['x-kong-request-id'] }}"
+                }
+
+      - name: echo-post
+        protocols:
+          - http
+        methods:
+          - POST
+        paths:
+          - /foo
+        strip_path: false
+        plugins:
+          - name: template-transformer
+            enabled: true
+            protocols:
+              - http
+            config:
+              request_template: |
+                {
+                  {% if type(body.foo) == "string" and body.foo == "bar" then %}
+                  "foo": "{{ body.foo }}"
+                  {% else %}
+                  "foo": "no-foo"
+                  {% end %}
+                }

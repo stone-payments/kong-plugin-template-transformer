@@ -1,17 +1,24 @@
-FROM ubuntu:22.04
+FROM kong/kong-gateway:3.7.1.2-amazonlinux-2023 AS lua_builder
 
+USER root
+WORKDIR /
 
-RUN apt update -y && apt install -y lua5.1 liblua5.1-dev build-essential wget git zip unzip
-RUN git config --global url.https://github.com/.insteadOf git://github.com/
-RUN wget https://download.konghq.com/gateway-3.x-ubuntu-bionic/pool/all/k/kong/kong_3.0.2_amd64.deb &&\
-  apt install -y ./kong_3.0.2_amd64.deb
+RUN yum -y install tar-2:1.34-1.amzn2023.0.4 git-2.40.1-1.amzn2023.0.3 openssl-devel-1:3.0.8-1.amzn2023.0.12 make-1:4.3-5.amzn2023.0.2 && yum -y clean all
 
+COPY . /
+RUN make rockspec \
+  && luarocks make --pack-binary-rock --only-server https://raw.githubusercontent.com/rocks-moonscript-org/moonrocks-mirror/daab2726276e3282dc347b89a42a5107c3500567 \
+  && mkdir -p /build/plugin \
+  && find . -name *.rock -exec cp {} /build/plugin \;
 
-RUN wget https://luarocks.org/releases/luarocks-3.3.1.tar.gz &&\
-  tar zxpf luarocks-3.3.1.tar.gz &&\
-  cd luarocks-3.3.1 && ./configure --with-lua-include=/usr/include/lua5.1 &&\
-  make && make install
+FROM kong/kong-gateway:3.7.1.2-amazonlinux-2023
 
-WORKDIR /home/plugin
+USER root
 
-RUN chmod -R a+rw /home/plugin
+RUN yum -y install git-2.40.1-1.amzn2023.0.3 && yum -y clean all
+
+WORKDIR /
+COPY --from=lua_builder  /build/plugin/* /
+RUN find . -name *.rock -exec luarocks install ./{} --only-server https://raw.githubusercontent.com/rocks-moonscript-org/moonrocks-mirror/daab2726276e3282dc347b89a42a5107c3500567 \;
+
+USER kong

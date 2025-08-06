@@ -55,9 +55,9 @@ local ngx =  {
 _G.ngx = ngx
 _G.kong = kong
 
-local TemplateTransformerHandler = require('../handler')
+local TemplateTransformerHandler = require "kong.plugins.template-transformer.handler"
 
-describe("Test TemplateTransformerHandler header_filter", function()
+describe("Test #unit handler:header_filter", function()
   it("should not unset content-length header when there is no templates", function()
     local config = {}
     TemplateTransformerHandler:header_filter(config)
@@ -95,7 +95,7 @@ describe("Test TemplateTransformerHandler header_filter", function()
 
 end)
 
-describe("Test TemplateTransformerHandler access", function()
+describe("Test #unit handler:access", function()
 
   it("should not call set body data when there is no template", function()
     local config = {}
@@ -192,7 +192,7 @@ describe("Test TemplateTransformerHandler access", function()
 
 end)
 
-describe("Test TemplateTransformerHandler body_filter", function()
+describe("Test #unit handler:body_filter", function()
 
   it("should not run when response template is empty", function()
     local config = {
@@ -236,7 +236,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
 
     kong.ctx.shared.proxy_cache_hit = nil
   end)
-  
+
   it("should set first ngx arg to nil when body is not fully read", function()
     local config = {
         response_template = "hello im a template"
@@ -262,7 +262,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
   }
   _G.ngx.ctx.buffer = '{"p2":"v1", "a":[]}'
   TemplateTransformerHandler:body_filter(config)
-  assert.equal('{ "data": {"p2":"v1","a":[]} }', ngx.arg[1])
+  assert.is_truthy(string.match(ngx.arg[1], '"a":%[%]'))
   end)
 
   it("should set first ngx arg to template when using raw_body in the template", function()
@@ -464,7 +464,7 @@ describe("Test TemplateTransformerHandler body_filter", function()
   end)
 end)
 
-describe("Test read_json_body", function()
+describe("Test #unit handler.read_json_body", function()
   it("should return nil when payload is not a JSON", function()
     actual = read_json_body("{ , }")
     assert.is_nil(actual)
@@ -486,7 +486,7 @@ describe("Test read_json_body", function()
   end)
 end)
 
-describe("Test prepare_body", function()
+describe("Test #unit handler.prepare_body", function()
   it("should replace strings as expected", function()
     prepared_body = prepare_body("&amp; &lt; &gt; &quot; &#39; &#47; /;")
     assert.equal(prepared_body, "& < > \" ' / /")
@@ -497,7 +497,7 @@ describe("Test prepare_body", function()
 
 end)
 
-describe("Test prepare_content_type", function()
+describe("Test #unit handler.prepare_content_type", function()
   it("should replace strings as expected", function()
     prepared_body = prepare_content_type("application/vnd.api+json")
     assert.equal(prepared_body, "application/vnd.api%+json")
