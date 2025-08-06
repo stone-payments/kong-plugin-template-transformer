@@ -44,10 +44,10 @@ You can run `luacov` and it will generate a `luacov.report.out` containing a com
 
 ### Branching
 
-- **New Features** `feature/<Name of feature>` from `develop`.
-- **Bugfix** `bugfix/<Name of bugfix>` from `develop`.
-- **Improvements** `improvement/<Name of improvement>` from `develop`.
-- **Hotfix** `hotfix/<Name of hotfix>` from `master`.
+- **New Features** `feature/<Name of feature>` from `main`.
+- **Bugfix** `bugfix/<Name of bugfix>` from `main`.
+- **Improvements** `improvement/<Name of improvement>` from `main`.
+- **Hotfix** `hotfix/<Name of hotfix>` from `main`.
 
 ### Tests and coverage
 
@@ -56,7 +56,7 @@ You can run `luacov` and it will generate a `luacov.report.out` containing a com
 
 ### Commit messages
 
-See [standard-version](https://github.com/conventional-changelog/standard-version#commit-message-convention-at-a-glance) for commit guidelines.
+See [release-please](https://github.com/googleapis/release-please?tab=readme-ov-file#how-should-i-write-my-commits) for commit guidelines.
 
 Commit examples:
 
@@ -75,7 +75,6 @@ git commit -m "chore: Fix tests"
 - **DO** ensure each commit successfully builds. The entire PR must pass all tests in the Continuous Integration (CI) system before it'll be merged.
 - **DO NOT** mix independent, unrelated changes in one PR. Separate real product/test code changes from larger code formatting/dead code removal changes. Separate unrelated fixes into separate PRs, especially if they are in different assemblies.
 - **DO** address PR feedback in an additional commit(s) rather than amending the existing commits, and only rebase/squash them when necessary. This makes it easier for reviewers to track changes. If necessary, squashing should be handled by the merger using the "squash and merge" feature, and should only be done by the contributor upon request.
-- **DO** all the PRs to `develop` branch unless it is a `hotfix`. For this one you should do for both `develop` and `master` branches.
 
 ### Guiding Principles
 
@@ -86,9 +85,4 @@ git commit -m "chore: Fix tests"
 
 ### Release steps
 
-1. Open a release branch, following gitflow branching conventions (`release/vx.x.x`), from `develop` branch.
-2. Fetch all tags by running: `git fetch --all --tags`.
-3. Update the CHANGELOG by running: `standard-version`.
-    - If you need to install it, run: `npm install -g standard-version`.
-4. Push the release branch.
-5. Open a pull-request to the `develop` branch and another one against the `master` branch.
+This repository uses [release-please](https://github.com/googleapis/release-please) with default options.
