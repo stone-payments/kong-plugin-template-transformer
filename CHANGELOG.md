@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v2.0.0...v3.0.0) (2025-08-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Aligns plugin structure with modern kong plugin conventions
+
+### Features
+
+* Aligns plugin structure with modern kong plugin conventions ([1020b6c](https://github.com/stone-payments/kong-plugin-template-transformer/commit/1020b6c0d3b543c9bb70acce250f4e1c5186379d))
+
 ## [2.0.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v1.4.1...v2.0.0) (2024-01-09)
 
 
