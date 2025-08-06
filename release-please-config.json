@@ -9,7 +9,7 @@
       "prerelease": false,
       "extra-files": [
         "version.txt",
-        "template-transformer/handler.lua"
+        "kong/plugins/template-transformer/handler.lua"
       ]
     }
   },

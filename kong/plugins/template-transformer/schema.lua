@@ -1,7 +1,7 @@
 local typedefs = require "kong.db.schema.typedefs"
 
 return {
-  name = "kong-plugin-template-transformer",
+  name = "template-transformer",
   fields = {
     { consumer = typedefs.no_consumer, },
     {

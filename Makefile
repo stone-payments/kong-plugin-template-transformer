@@ -1,5 +1,6 @@
-DEV_ROCKS = "lua-cjson 2.1.0.10-1" "kong 3.0.2" "luacov 0.12.0" "busted 2.0.0-1" "luacov-cobertura 0.2-1" "luacheck 0.20.0" "lua-resty-template 1.9-1"
-PROJECT_FOLDER = template-transformer
+KONG_VERSION = 3.7.1.2
+DEV_ROCKS = "lua-cjson 2.1.0.10-1" "kong $(KONG_VERSION)" "luacov 0.12.0" "busted 2.0.0-1" "luacov-cobertura 0.2-1" "luacheck 0.20.0" "lua-resty-template 1.9-1"
+PROJECT_FOLDER = kong/plugins/template-transformer
 LUA_PROJECT = kong-plugin-template-transformer
 VERSION = $(shell cat version.txt)
 
@@ -35,8 +36,8 @@ install:
 	-@luarocks remove $(LUA_PROJECT)
 	luarocks make
 
-test:
-	cd $(PROJECT_FOLDER) && busted spec/ ${ARGS}
+test: rockspec
+	KONG_VERSION=$(KONG_VERSION) pongo run -- -t unit
 
 coverage:
 	cd $(PROJECT_FOLDER) && busted spec/ -c ${ARGS} && luacov && luacov-cobertura -o cobertura.xml

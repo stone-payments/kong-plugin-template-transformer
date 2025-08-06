@@ -61,7 +61,7 @@ function self_check(config)
   return true
 end
 
-describe("TestSchema", function()
+describe("Test #unit schema", function()
     it("should initialize schema correctly", function()
       assert.is_false(schema.fields[1].consumer)
       assert.not_nil(schema.fields[2].config.fields[1].request_template)

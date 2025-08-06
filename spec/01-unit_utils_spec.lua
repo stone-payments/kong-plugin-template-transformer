@@ -1,6 +1,6 @@
-local utils = require('../utils')
+local utils = require "kong.plugins.template-transformer.utils"
 
-describe("has_value", function()
+describe("Test #unit utils.has_value", function()
     it("should return false when table is empty", function()
       local l = {}
       assert.is_false(utils.has_value(l, "desired_value"))
@@ -29,7 +29,7 @@ describe("has_value", function()
     end)
 end)
 
-describe("hide_fields", function()
+describe("Test #unit utils.hide_fields", function()
     it("should not hide keys when there is no fields to hide", function()
       local l = {a = 123, password = 456, c = 789}
       local hidden_fields = {}
@@ -58,7 +58,7 @@ describe("hide_fields", function()
     end)
 end)
 
-describe("mask_field", function()
+describe("Test #unit utils.mask_field", function()
   it("should set mask between 2 initial and 2 end characters", function()
     local value = "1234567890"
     local expected = "12******90"
