@@ -6,6 +6,10 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   LUA: "lua=5.1"
   GCP_PROJECT_ID: "si26ef9dii9zscrxrecql6kl8eguw2"
