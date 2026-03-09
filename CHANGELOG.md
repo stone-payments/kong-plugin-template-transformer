@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v3.0.0...v3.1.0) (2026-03-09)
+
+
+### Features
+
+* Add missing permissions to workflows ([#184](https://github.com/stone-payments/kong-plugin-template-transformer/issues/184)) ([ff8a271](https://github.com/stone-payments/kong-plugin-template-transformer/commit/ff8a271df4b5bc4f034c7eabe9f3a332899b128b))
+
 ## [3.0.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v2.0.0...v3.0.0) (2025-08-06)
 
 
