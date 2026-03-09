@@ -1,9 +1,9 @@
 package = "kong-plugin-template-transformer"
-version = "3.0.0-1"
+version = "3.1.0-1"
 source = {
    url = "git://github.com/stone-payments/kong-plugin-template-transformer",
    branch = "main",
-   tag = "v3.0.0",
+   tag = "v3.1.0",
 }
 description = {
   summary = "A Kong plugin that enables template transforming",
