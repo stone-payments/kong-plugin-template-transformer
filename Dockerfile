@@ -1,24 +1,28 @@
-FROM kong/kong-gateway:3.7.1.2-amazonlinux-2023 AS lua_builder
+ARG KONG_IMAGE=kong/kong-gateway:3.14-amazonlinux-2023
 
+# Stage 1: builder — gera o .rock
+FROM ${KONG_IMAGE} AS builder
 USER root
-WORKDIR /
+WORKDIR /work
 
-RUN yum -y install tar-2:1.34-1.amzn2023.0.4 git-2.40.1-1.amzn2023.0.3 openssl-devel-1:3.0.8-1.amzn2023.0.12 make-1:4.3-5.amzn2023.0.2 && yum -y clean all
+RUN yum -y install tar-2:1.34-1.amzn2023.0.4 git-2.50.1-1.amzn2023.0.1 openssl-devel-1:3.5.5-1.amzn2023.0.3 make-1:4.3-5.amzn2023.0.2 && yum -y clean all
 
-COPY . /
+COPY . .
 RUN make rockspec \
-  && luarocks make --pack-binary-rock --only-server https://raw.githubusercontent.com/rocks-moonscript-org/moonrocks-mirror/daab2726276e3282dc347b89a42a5107c3500567 \
-  && mkdir -p /build/plugin \
-  && find . -name *.rock -exec cp {} /build/plugin \;
+    && luarocks make --pack-binary-rock --deps-mode=none
 
-FROM kong/kong-gateway:3.7.1.2-amazonlinux-2023
+# Stage 2: export — apenas o .rock
+FROM scratch AS export
+COPY --from=builder /work/*.rock /
 
+# Stage 3: runtime — preserva o uso atual do Dockerfile
+FROM ${KONG_IMAGE} AS runtime
 USER root
 
-RUN yum -y install git-2.40.1-1.amzn2023.0.3 && yum -y clean all
+RUN yum -y install git-2.50.1-1.amzn2023.0.1 unzip-6.0-68.amzn2023.0.1 && yum -y clean all
 
-WORKDIR /
-COPY --from=lua_builder  /build/plugin/* /
-RUN find . -name *.rock -exec luarocks install ./{} --only-server https://raw.githubusercontent.com/rocks-moonscript-org/moonrocks-mirror/daab2726276e3282dc347b89a42a5107c3500567 \;
+WORKDIR /work
+COPY --from=builder /work/*.rock /tmp/
+RUN luarocks install /tmp/*.rock
 
 USER kong
