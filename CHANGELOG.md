@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v3.1.0...v3.2.0) (2026-06-16)
+
+
+### Features
+
+* Build and upload .rock artifact on release ([#186](https://github.com/stone-payments/kong-plugin-template-transformer/issues/186)) ([7748feb](https://github.com/stone-payments/kong-plugin-template-transformer/commit/7748febd3dda67df7a75e072175454049c8613ac))
+
 ## [3.1.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v3.0.0...v3.1.0) (2026-03-09)
 
 
