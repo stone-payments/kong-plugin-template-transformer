@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.1](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v3.2.0...v3.2.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* Installs JSON library for LuaRocks upload ([2e2689f](https://github.com/stone-payments/kong-plugin-template-transformer/commit/2e2689fb6012918423724622a8a585fe9024792f))
+
 ## [3.2.0](https://github.com/stone-payments/kong-plugin-template-transformer/compare/v3.1.0...v3.2.0) (2026-06-16)
 
 
