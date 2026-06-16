@@ -1,0 +1,8 @@
+.git
+.github
+spec
+.pongo
+kong-pongo
+servroot
+*.rock
+docs

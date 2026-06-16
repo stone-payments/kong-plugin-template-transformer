@@ -20,6 +20,23 @@ jobs:
       - name: Checkout repo at main
         uses: actions/checkout@v4
 
+      - name: Build and upload .rock
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_BUILDKIT: '1'
+          KONG_IMAGE: kong/kong-gateway:3.14-amazonlinux-2023
+        run: |
+          docker build \
+            --target export \
+            --build-arg KONG_IMAGE="$KONG_IMAGE" \
+            --output ./out .
+          KONG_VERSION=$(echo "$KONG_IMAGE" | sed -E 's|.*:([0-9]+\.[0-9]+).*|\1|')
+          for rock in ./out/*.rock; do
+            mv "$rock" "${rock%.rock}.kong-${KONG_VERSION}.rock"
+          done
+          gh release upload "${{ steps.release.outputs.tag_name }}" ./out/*.rock --repo "$GITHUB_REPOSITORY" --clobber
+
       - name: Check if remote release branch exists
         id: branch_check
         run: |
