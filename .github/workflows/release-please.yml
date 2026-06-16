@@ -42,6 +42,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y luarocks
+          sudo luarocks install dkjson
           luarocks upload kong-plugin-template-transformer-*.rockspec --api-key=${{ secrets.LUAROCKS_API_KEY }}
 
       - name: Check if remote release branch exists
