@@ -12,13 +12,13 @@ name: release-please
 
 jobs:
   release-please:
-    runs-on: ubuntu-latest
+    runs-on: medium-runner
     steps:
       - id: release
-        uses: googleapis/release-please-action@v4
+        uses: stone-payments/approved-actions/googleapis/release-please-action/v4@stable
 
       - name: Checkout repo at main
-        uses: actions/checkout@v4
+        uses: stone-payments/approved-actions/actions/checkout/v4@stable
 
       - name: Build and upload .rock
         if: ${{ steps.release.outputs.release_created == 'true' }}
@@ -37,13 +37,25 @@ jobs:
           done
           gh release upload "${{ steps.release.outputs.tag_name }}" ./out/*.rock --repo "$GITHUB_REPOSITORY" --clobber
 
+      - name: Setup Pongo
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        uses: stone-payments/approved-actions/Kong/kong-pongo-action/v1@stable
+        with:
+          pongo_version: 2.18.0
+          kong_version: "3.7.1.2"
+
+      - name: Write LuaRocks API key
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: echo "${{ secrets.LUAROCKS_API_KEY }}" > .luarocks-api-key
+
       - name: Publish to LuaRocks
         if: ${{ steps.release.outputs.release_created == 'true' }}
         run: |
-          sudo apt-get update
-          sudo apt-get install -y luarocks
-          sudo luarocks install dkjson
-          luarocks upload kong-plugin-template-transformer-*.rockspec --api-key=${{ secrets.LUAROCKS_API_KEY }}
+          pongo shell sh -c "cd /kong-plugin && luarocks install dkjson && luarocks upload kong-plugin-template-transformer-*.rockspec --api-key=\$(cat .luarocks-api-key)"
+
+      - name: Clean up LuaRocks API key file
+        if: always()
+        run: rm -f .luarocks-api-key
 
       - name: Check if remote release branch exists
         id: branch_check
@@ -56,7 +68,7 @@ jobs:
           echo "BRANCH_EXISTS=true" >> "$GITHUB_OUTPUT"
 
       - name: Checkout release branch
-        uses: actions/checkout@v4
+        uses: stone-payments/approved-actions/actions/checkout/v4@stable
         if: ${{ steps.branch_check.outputs.BRANCH_EXISTS == 'true' }}
         with:
           ref: release-please--branches--main

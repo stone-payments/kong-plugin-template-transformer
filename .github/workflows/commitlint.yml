@@ -8,13 +8,21 @@ on: [pull_request]
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: small-runner
     steps:
-      - uses: actions/checkout@v2
+      - uses: stone-payments/approved-actions/actions/checkout/v4@stable
         with:
           fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v1
+
+      - uses: stone-payments/approved-actions/actions/setup-node/v4@stable
         with:
-          configFile: .commitlintrc.json
+          node-version: 20
+
+      - name: Install commitlint
+        run: |
+          npm install conventional-changelog-conventionalcommits
+          npm install commitlint@latest
+
+      - name: Validate PR commits with commitlint
+        run: |
+          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose

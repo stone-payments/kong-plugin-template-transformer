@@ -16,7 +16,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: medium-runner
 
     strategy:
       fail-fast: false
@@ -25,9 +25,9 @@ jobs:
           - "3.7.1.2"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: stone-payments/approved-actions/actions/checkout/v4@stable
 
-      - uses: Kong/kong-pongo-action@v1
+      - uses: stone-payments/kong-pongo-action@ae932e91d1808205b5ee9a156500d510a9e30879
         with:
           pongo_version: 2.18.0
           kong_version: ${{ matrix.kongVersion }}
